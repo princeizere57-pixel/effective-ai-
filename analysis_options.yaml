@@ -4,7 +4,6 @@ include: package:flutter_lints/flutter.yaml
 linter:
   rules:
     prefer_single_quotes: true
-    require_trailing_commas: true
     avoid_print: true
     prefer_const_constructors: true
     lines_longer_than_80_chars: false
