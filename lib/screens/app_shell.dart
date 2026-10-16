@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 
+import '../navigation.dart';
 import '../theme/app_colors.dart';
+import '../widgets/common.dart';
 import '../widgets/sidebar.dart';
 import 'analytics_screen.dart';
-import 'courses_screen.dart';
 import 'dashboard_screen.dart';
+import 'help_screen.dart';
+import 'knowledge_screen.dart';
+import 'plan_screen.dart';
+import 'practice_screen.dart';
+import 'settings_screen.dart';
+import 'understand_screen.dart';
 
-/// Sidebar on wide screens, bottom navigation on phones.
+/// Fixed sidebar on wide screens, slide-out drawer on phones.
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -15,35 +22,40 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  int _index = 0;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  AppSection _section = AppSection.home;
 
-  void _select(int i) => setState(() => _index = i);
-
-  Widget _page() {
-    switch (_index) {
-      case 1:
-        return const CoursesScreen();
-      case 2:
-        return const AnalyticsScreen();
-      default:
-        return DashboardScreen(onOpenCourses: () => _select(1));
-    }
+  void _select(AppSection s) {
+    _scaffoldKey.currentState?.closeDrawer();
+    setState(() => _section = s);
   }
+
+  Widget _page() => switch (_section) {
+        AppSection.home => DashboardScreen(onOpenKnowledge: () => _select(AppSection.knowledge)),
+        AppSection.knowledge => const KnowledgeScreen(),
+        AppSection.understand => const UnderstandScreen(),
+        AppSection.practice => const PracticeScreen(),
+        AppSection.plan => const PlanScreen(),
+        AppSection.progress => const AnalyticsScreen(),
+        AppSection.help => const HelpScreen(),
+        AppSection.settings => const SettingsScreen(),
+      };
 
   @override
   Widget build(BuildContext context) {
     final body = AnimatedSwitcher(
       duration: const Duration(milliseconds: 250),
-      child: KeyedSubtree(key: ValueKey(_index), child: _page()),
+      child: KeyedSubtree(key: ValueKey(_section), child: _page()),
     );
 
     return LayoutBuilder(
       builder: (context, constraints) {
         if (constraints.maxWidth >= 900) {
           return Scaffold(
+            key: _scaffoldKey,
             body: Row(
               children: [
-                Sidebar(selectedIndex: _index, onSelect: _select),
+                Sidebar(selected: _section, onSelect: _select),
                 Expanded(child: body),
               ],
             ),
@@ -51,30 +63,25 @@ class _AppShellState extends State<AppShell> {
         }
 
         return Scaffold(
+          key: _scaffoldKey,
           appBar: AppBar(
             backgroundColor: AppColors.navy,
             foregroundColor: Colors.white,
-            titleSpacing: 16,
             title: const BrandMark(),
             actions: [
               IconButton(
-                onPressed: () {},
+                onPressed: () => showToast(context, 'No new notifications'),
                 icon: const Icon(Icons.notifications_none),
                 tooltip: 'Notifications',
               ),
             ],
           ),
-          body: body,
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: _index,
-            onDestinationSelected: _select,
-            backgroundColor: AppColors.surface,
-            indicatorColor: AppColors.violetPale,
-            destinations: [
-              for (final item in navItems)
-                NavigationDestination(icon: Icon(item.icon), label: item.label),
-            ],
+          drawer: Drawer(
+            width: 288,
+            backgroundColor: AppColors.navy,
+            child: Sidebar(selected: _section, onSelect: _select, width: 288),
           ),
+          body: body,
         );
       },
     );

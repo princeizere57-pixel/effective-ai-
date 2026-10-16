@@ -1,58 +1,68 @@
 import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
+import '../navigation.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
 
-class NavItem {
-  const NavItem(this.label, this.icon);
-
-  final String label;
-  final IconData icon;
-}
-
-const navItems = <NavItem>[
-  NavItem('Dashboard', Icons.space_dashboard_outlined),
-  NavItem('Courses', Icons.menu_book_outlined),
-  NavItem('Analytics', Icons.insights_outlined),
-];
-
+/// Navy sidebar: logo, streak, main sections, help/settings and the signed-in user.
+/// Used as a fixed column on wide screens and inside a Drawer on phones.
 class Sidebar extends StatelessWidget {
-  const Sidebar({super.key, required this.selectedIndex, required this.onSelect});
+  const Sidebar({
+    super.key,
+    required this.selected,
+    required this.onSelect,
+    this.width = 264,
+  });
 
-  final int selectedIndex;
-  final ValueChanged<int> onSelect;
+  final AppSection selected;
+  final ValueChanged<AppSection> onSelect;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
+    Widget tile(AppSection s) => _SidebarTile(
+          section: s,
+          selected: s == selected,
+          onTap: () => onSelect(s),
+        );
+
     return Container(
-      width: 248,
+      width: width,
       color: AppColors.navy,
-      padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const BrandMark(),
-          const SizedBox(height: 32),
-          Padding(
-            padding: const EdgeInsets.only(left: 12, bottom: 8),
-            child: Text(
-              'MENU',
-              style: AppTheme.mono(10, color: AppColors.navyMuted).copyWith(letterSpacing: 1.4),
+      child: SafeArea(
+        right: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Padding(
+              padding: EdgeInsets.fromLTRB(20, 24, 20, 0),
+              child: BrandMark(),
             ),
-          ),
-          for (var i = 0; i < navItems.length; i++)
-            _SidebarTile(
-              item: navItems[i],
-              selected: i == selectedIndex,
-              onTap: () => onSelect(i),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(12, 24, 12, 12),
+              child: StreakPill(),
             ),
-          const Spacer(),
-          const _UpgradeCard(),
-          const SizedBox(height: 16),
-          const _UserTile(),
-        ],
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                children: [for (final s in mainSections) tile(s)],
+              ),
+            ),
+            const Divider(color: AppColors.navyBorder, height: 1, thickness: 1),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
+              child: Column(
+                children: [
+                  for (final s in footerSections) tile(s),
+                  const SizedBox(height: 12),
+                  const _UserTile(),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -74,7 +84,7 @@ class BrandMark extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             boxShadow: AppShadows.violet,
           ),
-          child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
+          child: const Icon(Icons.auto_stories, color: Colors.white, size: 20),
         ),
         const SizedBox(width: 10),
         Text('Effective AI', style: AppTheme.display(20, color: Colors.white)),
@@ -83,85 +93,91 @@ class BrandMark extends StatelessWidget {
   }
 }
 
-class _SidebarTile extends StatelessWidget {
-  const _SidebarTile({required this.item, required this.selected, required this.onTap});
+class StreakPill extends StatelessWidget {
+  const StreakPill({super.key});
 
-  final NavItem item;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: AppColors.amber.withValues(alpha: 0.08),
+        border: Border.all(color: AppColors.amber.withValues(alpha: 0.45)),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: const Row(
+        children: [
+          Icon(Icons.local_fire_department_outlined, color: AppColors.amber, size: 18),
+          SizedBox(width: 8),
+          Text(
+            '$streakDays-day streak',
+            style: TextStyle(color: AppColors.amber, fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SidebarTile extends StatelessWidget {
+  const _SidebarTile({required this.section, required this.selected, required this.onTap});
+
+  final AppSection section;
   final bool selected;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final color = selected ? Colors.white : AppColors.navyText;
+    final badge = section.badge;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: selected ? AppColors.navyLighter : Colors.transparent,
-              border: Border.all(color: selected ? AppColors.navyBorder : Colors.transparent),
-              borderRadius: BorderRadius.circular(12),
+              color: selected ? AppColors.navyMuted : Colors.transparent,
+              borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
               children: [
-                Icon(item.icon, size: 20, color: selected ? AppColors.violetLight : color),
-                const SizedBox(width: 12),
-                Text(
-                  item.label,
-                  style: TextStyle(color: color, fontSize: 14, fontWeight: FontWeight.w600),
+                Icon(section.icon, size: 21, color: selected ? AppColors.violetMuted : color),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Text(
+                    section.label,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: color, fontSize: 15, fontWeight: FontWeight.w600),
+                  ),
                 ),
+                if (badge != null && badge > 0)
+                  Container(
+                    width: 26,
+                    height: 26,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.violet.withValues(alpha: 0.35),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '$badge',
+                      style: const TextStyle(
+                        color: AppColors.violetMuted,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _UpgradeCard extends StatelessWidget {
-  const _UpgradeCard();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.navyLight,
-        border: Border.all(color: AppColors.navyBorder),
-        borderRadius: BorderRadius.circular(AppRadius.xl2),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Go Pro',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(height: 4),
-          const Text(
-            'Unlock the AI tutor and offline lessons.',
-            style: TextStyle(color: AppColors.navyText, fontSize: 12, height: 1.4),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: () => showToast(context, 'Pro plans are coming soon'),
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.violet,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              ),
-              child: const Text('Upgrade'),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -172,31 +188,47 @@ class _UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        CircleAvatar(
-          radius: 18,
-          backgroundColor: AppColors.violet,
-          child: Text(
-            userFullName[0],
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(colors: [AppColors.violet, AppColors.blue]),
+            ),
+            child: Text(
+              userFullName[0],
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
           ),
-        ),
-        const SizedBox(width: 10),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                userFullName,
-                style: TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.w600),
-              ),
-              Text(userEmail, style: TextStyle(color: AppColors.navyText, fontSize: 11)),
-            ],
+          const SizedBox(width: 12),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  userFullName,
+                  style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                ),
+                Text(
+                  userEmail,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: AppColors.navyText, fontSize: 12),
+                ),
+              ],
+            ),
           ),
-        ),
-        const Icon(Icons.more_horiz, color: AppColors.navyText),
-      ],
+          IconButton(
+            onPressed: () => showToast(context, 'Signed out'),
+            icon: const Icon(Icons.logout, size: 20, color: AppColors.navyText),
+            tooltip: 'Sign out',
+          ),
+        ],
+      ),
     );
   }
 }

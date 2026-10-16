@@ -56,6 +56,14 @@ class _CourseCardState extends State<CourseCard> {
                     child: Icon(course.icon, color: course.accent, size: 22),
                   ),
                   const Spacer(),
+                  if (course.isNew) ...[
+                    const Pill(
+                      label: 'New',
+                      color: AppColors.violetDark,
+                      background: AppColors.violetPale,
+                    ),
+                    const SizedBox(width: 6),
+                  ],
                   Pill(
                     label: course.category,
                     color: AppColors.textSecondary,

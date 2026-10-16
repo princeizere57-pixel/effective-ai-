@@ -11,9 +11,9 @@ import '../widgets/stat_card.dart';
 import 'page_scaffold.dart';
 
 class DashboardScreen extends StatelessWidget {
-  const DashboardScreen({super.key, required this.onOpenCourses});
+  const DashboardScreen({super.key, required this.onOpenKnowledge});
 
-  final VoidCallback onOpenCourses;
+  final VoidCallback onOpenKnowledge;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +33,8 @@ class DashboardScreen extends StatelessWidget {
           delay: const Duration(milliseconds: 160),
           child: SectionHeader(
             title: 'Continue learning',
-            action: 'All courses',
-            onAction: onOpenCourses,
+            action: 'My Knowledge',
+            onAction: onOpenKnowledge,
           ),
         ),
         const SizedBox(height: 12),
