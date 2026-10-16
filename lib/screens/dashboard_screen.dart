@@ -32,7 +32,7 @@ class DashboardScreen extends StatelessWidget {
           Stat(label: 'Documents in your library', value: '${learner.docs.length}', icon: Icons.folder_copy_outlined, color: AppColors.brand),
           Stat(label: 'Concepts mastered', value: '${learner.strong.length}/${concepts.length}', icon: Icons.workspace_premium_outlined, color: AppColors.brand),
           Stat(label: 'Gaps to fix', value: '${learner.gaps.length}', icon: Icons.track_changes, color: AppColors.brand),
-          const Stat(label: 'Day streak', value: '$streakDays', delta: '+3', icon: Icons.local_fire_department_outlined, color: AppColors.brand),
+          Stat(label: 'Day streak', value: '$streakDays', delta: '+3', icon: Icons.local_fire_department_outlined, color: AppColors.brand),
         ];
         return PageScaffold(
           builder: (context, width) => [
@@ -106,7 +106,7 @@ class _Pipeline extends StatelessWidget {
 
   final ValueChanged<AppSection> onNavigate;
 
-  static const _steps = <(IconData, String, String, AppSection, Color)>[
+  static List<(IconData, String, String, AppSection, Color)> get _steps => [
     (Icons.folder_copy_outlined, 'Your data', 'Books, notes, slides, papers and past exams in one private library', AppSection.library, AppColors.brand),
     (Icons.forum_outlined, 'Navigate', 'Ask, search and explore with sources for every answer', AppSection.ask, AppColors.brand),
     (Icons.lightbulb_outline, 'Understand', 'Explain at your level, connect and compare ideas', AppSection.explain, AppColors.brand),
@@ -206,7 +206,7 @@ class _StudyTimePanel extends StatelessWidget {
                   ],
                 ),
               ),
-              const Pill(label: '+18% vs last week', color: AppColors.brand),
+              Pill(label: '+18% vs last week', color: AppColors.brand),
             ],
           ),
           const SizedBox(height: 24),

@@ -39,7 +39,7 @@ class SessionScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Pill(label: 'Recommended now', color: AppColors.brand),
+                  Pill(label: 'Recommended now', color: AppColors.brand),
                   const SizedBox(height: 12),
                   Text(recommended.name, style: AppTheme.display(26)),
                   const SizedBox(height: 6),

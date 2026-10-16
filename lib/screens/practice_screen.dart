@@ -377,7 +377,7 @@ class _ReviewViewState extends State<_ReviewView> {
             children: [
               Text('${queue.length} to review', style: AppTheme.mono(12, color: p.subtle)),
               const Spacer(),
-              if (wasGap) const Pill(label: 'Weak spot', color: AppColors.brand),
+              if (wasGap) Pill(label: 'Weak spot', color: AppColors.brand),
             ],
           ),
           const SizedBox(height: 12),

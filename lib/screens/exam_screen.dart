@@ -236,7 +236,7 @@ class _PrepPlanView extends StatelessWidget {
               CircleAvatar(
                 radius: 16,
                 backgroundColor: tint(AppColors.brand, 0.2),
-                child: Text('${steps.length + 1}', style: const TextStyle(color: AppColors.brand, fontWeight: FontWeight.w700)),
+                child: Text('${steps.length + 1}', style: TextStyle(color: AppColors.brand, fontWeight: FontWeight.w700)),
               ),
               const SizedBox(width: 14),
               const Expanded(

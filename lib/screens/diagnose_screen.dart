@@ -203,7 +203,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           children: [
             Row(
               children: [
-                const Icon(Icons.insights, color: AppColors.brand),
+                Icon(Icons.insights, color: AppColors.brand),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -258,8 +258,8 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text('You chose: ${m.question.options[m.chosen]}', style: const TextStyle(color: AppColors.brand)),
-                Text('Correct: ${m.question.options[m.question.answer]}', style: const TextStyle(color: AppColors.brand)),
+                Text('You chose: ${m.question.options[m.chosen]}', style: TextStyle(color: AppColors.brand)),
+                Text('Correct: ${m.question.options[m.question.answer]}', style: TextStyle(color: AppColors.brand)),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,

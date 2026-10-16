@@ -14,15 +14,16 @@ abstract final class AppTheme {
 
   static ThemeData _build(Brightness brightness, AppPalette p) {
     final isLight = brightness == Brightness.light;
+    final accent = AppColors.accentFor(brightness);
     final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.brand,
+      seedColor: accent,
       brightness: brightness,
-      primary: AppColors.brand,
+      primary: accent,
       onPrimary: Colors.white,
       surface: p.card,
       onSurface: p.foreground,
       onSurfaceVariant: p.mutedForeground,
-      secondaryContainer: tint(AppColors.brand, 0.14),
+      secondaryContainer: tint(accent, 0.14),
       onSecondaryContainer: p.primaryText,
       outline: p.border,
       outlineVariant: p.border,
@@ -44,7 +45,7 @@ abstract final class AppTheme {
       iconTheme: IconThemeData(color: p.foreground),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: isLight ? AppColors.brand : AppColors.navyBorder,
+        backgroundColor: isLight ? accent : AppColors.navyBorder,
         contentTextStyle: const TextStyle(color: Colors.white),
       ),
     );

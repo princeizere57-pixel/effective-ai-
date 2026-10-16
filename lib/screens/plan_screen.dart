@@ -86,7 +86,7 @@ class PlanScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Row(
+                    Row(
                       children: [
                         Icon(Icons.autorenew, color: AppColors.brand, size: 20),
                         SizedBox(width: 8),

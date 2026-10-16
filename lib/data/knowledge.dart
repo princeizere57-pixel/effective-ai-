@@ -7,17 +7,18 @@ import '../theme/app_colors.dart';
 // When the AI backend is connected, uploads are parsed into the same shapes.
 
 enum DocType {
-  book('Book', Icons.menu_book_outlined, AppColors.brand),
-  notes('Notes', Icons.edit_note, AppColors.brand),
-  slides('Slides', Icons.slideshow_outlined, AppColors.brand),
-  paper('Paper', Icons.article_outlined, AppColors.brand),
-  pastExam('Past exam', Icons.assignment_outlined, AppColors.brand);
+  book('Book', Icons.menu_book_outlined),
+  notes('Notes', Icons.edit_note),
+  slides('Slides', Icons.slideshow_outlined),
+  paper('Paper', Icons.article_outlined),
+  pastExam('Past exam', Icons.assignment_outlined);
 
-  const DocType(this.label, this.icon, this.color);
+  const DocType(this.label, this.icon);
 
   final String label;
   final IconData icon;
-  final Color color;
+  /// Every document type uses the current accent colour.
+  Color get color => AppColors.brand;
 }
 
 class LibraryDoc {

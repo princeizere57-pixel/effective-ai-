@@ -154,7 +154,7 @@ Future<void> showSourceSheet(BuildContext context, Passage passage, {Set<String>
                 padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
                 decoration: BoxDecoration(
                   color: p.muted,
-                  border: const Border(left: BorderSide(color: AppColors.brand, width: 3)),
+                  border: Border(left: BorderSide(color: AppColors.brand, width: 3)),
                 ),
                 child: Text.rich(
                   TextSpan(children: highlightSpans(context, passage.text, highlight)),

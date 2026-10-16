@@ -245,7 +245,7 @@ class _StepBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (i < current) ...[
-                  const Icon(Icons.check, size: 14, color: AppColors.brand),
+                  Icon(Icons.check, size: 14, color: AppColors.brand),
                   const SizedBox(width: 4),
                 ],
                 Text(

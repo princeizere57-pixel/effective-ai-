@@ -49,31 +49,31 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final List<BoxShadow> cardShadow;
   final List<BoxShadow> cardHoverShadow;
 
-  /// Two colours: white surfaces and the logo violet for all text and icons.
-  /// Fills and borders are pale tints of that same violet.
+  /// Two colours: white surfaces and Windows blue (#0078D4) for all text and icons.
+  /// Fills and borders are pale tints of that same blue.
   static const light = AppPalette(
     background: Color(0xFFFFFFFF),
     card: Color(0xFFFFFFFF),
-    muted: Color(0xFFF5F2FF),
-    foreground: Color(0xFF7C5CFC),
-    mutedForeground: Color(0xFF7C5CFC),
-    subtle: Color(0xFF7C5CFC),
-    border: Color(0xFFEAE4FF),
-    primaryText: Color(0xFF7C5CFC),
+    muted: Color(0xFFF0F7FD),
+    foreground: Color(0xFF0078D4),
+    mutedForeground: Color(0xFF0078D4),
+    subtle: Color(0xFF0078D4),
+    border: Color(0xFFD9EAF8),
+    primaryText: Color(0xFF0078D4),
     sidebarBg: Color(0xFFFFFFFF),
-    sidebarHover: Color(0xFFF5F2FF),
-    sidebarActive: Color(0xFFEDE7FF),
-    sidebarText: Color(0xFF7C5CFC),
-    sidebarTextActive: Color(0xFF7C5CFC),
-    sidebarBorder: Color(0xFFEAE4FF),
-    shimmerBase: Color(0xFFF1EDFF),
+    sidebarHover: Color(0xFFF0F7FD),
+    sidebarActive: Color(0xFFE1EFFB),
+    sidebarText: Color(0xFF0078D4),
+    sidebarTextActive: Color(0xFF0078D4),
+    sidebarBorder: Color(0xFFD9EAF8),
+    shimmerBase: Color(0xFFE8F2FC),
     shimmerHighlight: Color(0xFFFFFFFF),
     cardShadow: [
-      BoxShadow(color: Color(0x147C5CFC), blurRadius: 3, offset: Offset(0, 1)),
-      BoxShadow(color: Color(0x0A7C5CFC), blurRadius: 12, offset: Offset(0, 4)),
+      BoxShadow(color: Color(0x140078D4), blurRadius: 3, offset: Offset(0, 1)),
+      BoxShadow(color: Color(0x0A0078D4), blurRadius: 12, offset: Offset(0, 4)),
     ],
     cardHoverShadow: [
-      BoxShadow(color: Color(0x267C5CFC), blurRadius: 16, offset: Offset(0, 6)),
+      BoxShadow(color: Color(0x260078D4), blurRadius: 16, offset: Offset(0, 6)),
     ],
   );
 

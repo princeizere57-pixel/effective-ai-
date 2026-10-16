@@ -23,7 +23,7 @@ List<Suggestion> suggestionsFor(LearnerState s) {
   final gaps = s.gaps;
   final out = <Suggestion>[
     if (!s.diagnosticDone)
-      const Suggestion(Icons.track_changes, 'Take the 4-minute diagnostic',
+      Suggestion(Icons.track_changes, 'Take the 4-minute diagnostic',
           'Eight questions from your materials show exactly where you stand.', AppSection.diagnose, AppColors.brand),
     if (gaps.isNotEmpty)
       Suggestion(Icons.school_outlined, 'Fix your weakest concept: ${gaps.first.name}',
@@ -35,18 +35,18 @@ List<Suggestion> suggestionsFor(LearnerState s) {
       Suggestion(Icons.forum_outlined, 'Ask a question across all ${s.indexedDocs.length} documents',
           'Every answer shows the page it came from.', AppSection.ask, AppColors.brand),
     if (!tried(AppSection.connections))
-      const Suggestion(Icons.compare_arrows, 'Compare what your book and the paper say',
+      Suggestion(Icons.compare_arrows, 'Compare what your book and the paper say',
           'See agreements and contradictions about regularisation.', AppSection.connections, AppColors.brand),
     if (!tried(AppSection.practice))
-      const Suggestion(Icons.psychology_outlined, 'Try Socratic mode',
+      Suggestion(Icons.psychology_outlined, 'Try Socratic mode',
           'Reason your way to the answer with guiding questions.', AppSection.practice, AppColors.brand),
     if (!tried(AppSection.plan))
-      const Suggestion(Icons.calendar_month_outlined, 'Get your 7-day study plan',
+      Suggestion(Icons.calendar_month_outlined, 'Get your 7-day study plan',
           'Built from your gaps, past papers and daily goal.', AppSection.plan, AppColors.brand),
     if (!tried(AppSection.explain))
-      const Suggestion(Icons.lightbulb_outline, 'Read a concept at your level',
+      Suggestion(Icons.lightbulb_outline, 'Read a concept at your level',
           'Simplify or go deeper with one tap.', AppSection.explain, AppColors.brand),
-    const Suggestion(Icons.insights, 'Read your personal learning report',
+    Suggestion(Icons.insights, 'Read your personal learning report',
         'What you know, what you don\'t, and what to do next.', AppSection.progress, AppColors.brand),
   ];
   return out.take(4).toList();

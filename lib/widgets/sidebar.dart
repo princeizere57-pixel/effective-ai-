@@ -101,7 +101,7 @@ class BrandMark extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [AppColors.brand, AppColors.brand]),
+            gradient: LinearGradient(colors: [AppColors.brand, AppColors.brand]),
             borderRadius: BorderRadius.circular(10),
             boxShadow: AppShadows.brand,
           ),
@@ -126,7 +126,7 @@ class StreakPill extends StatelessWidget {
         border: Border.all(color: AppColors.brand.withValues(alpha: 0.45)),
         borderRadius: BorderRadius.circular(999),
       ),
-      child: const Row(
+      child: Row(
         children: [
           Icon(Icons.local_fire_department_outlined, color: AppColors.brand, size: 18),
           SizedBox(width: 8),
@@ -190,7 +190,7 @@ class _SidebarTile extends StatelessWidget {
                     ),
                     child: Text(
                       '$badge',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: AppColors.brand,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -220,7 +220,7 @@ class _UserTile extends StatelessWidget {
             width: 40,
             height: 40,
             alignment: Alignment.center,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(colors: [AppColors.brand, AppColors.brand]),
             ),

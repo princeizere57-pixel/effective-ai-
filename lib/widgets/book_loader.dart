@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 
-const _lineColors = [AppColors.brand, AppColors.brand, AppColors.brand, AppColors.brand];
+List<Color> get _lineColors => [AppColors.brand, AppColors.brand, AppColors.brand, AppColors.brand];
 
 /// Loading indicator: an open book whose right page fills with colored lines
 /// while a page turns over the spine, on repeat.

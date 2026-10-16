@@ -56,7 +56,7 @@ class _HelpScreenState extends State<HelpScreen> {
         Panel(
           child: Row(
             children: [
-              const Icon(Icons.favorite_border, color: AppColors.brand),
+              Icon(Icons.favorite_border, color: AppColors.brand),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

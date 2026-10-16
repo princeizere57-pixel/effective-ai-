@@ -171,7 +171,7 @@ class _LearningReport extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.description_outlined, color: AppColors.brand),
+              Icon(Icons.description_outlined, color: AppColors.brand),
               const SizedBox(width: 10),
               Expanded(child: Text('Your learning report', style: AppTheme.display(22))),
             ],

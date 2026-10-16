@@ -73,7 +73,7 @@ class WeeklyHoursChart extends StatelessWidget {
                   toY: data[i].$2,
                   width: 20,
                   borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-                  gradient: const LinearGradient(
+                  gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [AppColors.brand, AppColors.brand],

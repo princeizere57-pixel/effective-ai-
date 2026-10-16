@@ -110,7 +110,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.link, size: 18, color: AppColors.brand),
+                        Icon(Icons.link, size: 18, color: AppColors.brand),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text.rich(

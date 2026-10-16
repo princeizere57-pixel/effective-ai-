@@ -162,7 +162,7 @@ class _DocCard extends StatelessWidget {
               const Spacer(),
               doc.indexed
                   ? NeutralPill(doc.type.label)
-                  : const Pill(label: 'Waiting to be indexed', color: AppColors.brand),
+                  : Pill(label: 'Waiting to be indexed', color: AppColors.brand),
             ],
           ),
           const SizedBox(height: 14),

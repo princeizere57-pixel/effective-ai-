@@ -148,7 +148,7 @@ class _AnswerCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.forum_outlined, color: AppColors.brand, size: 20),
+              Icon(Icons.forum_outlined, color: AppColors.brand, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(question, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),

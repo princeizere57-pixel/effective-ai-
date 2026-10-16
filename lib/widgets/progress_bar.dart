@@ -8,12 +8,13 @@ class ProgressBar extends StatelessWidget {
   const ProgressBar({
     super.key,
     required this.value,
-    this.color = AppColors.brand,
+    this.color,
     this.height = 6,
   });
 
   final double value;
-  final Color color;
+  /// Defaults to the current accent colour.
+  final Color? color;
   final double height;
 
   @override
@@ -25,7 +26,7 @@ class ProgressBar extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            ColoredBox(color: color.withValues(alpha: 0.12)),
+            ColoredBox(color: (color ?? AppColors.brand).withValues(alpha: 0.12)),
             TweenAnimationBuilder<double>(
               tween: Tween(begin: 0, end: value.clamp(0.0, 1.0)),
               duration: const Duration(milliseconds: 1200),
@@ -35,7 +36,7 @@ class ProgressBar extends StatelessWidget {
                 widthFactor: v,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
-                    color: color,
+                    color: color ?? AppColors.brand,
                     borderRadius: BorderRadius.circular(height),
                   ),
                 ),
