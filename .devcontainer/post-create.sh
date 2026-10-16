@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Generate the web platform folder on first start (lib/ and pubspec.yaml are kept).
 if [ ! -d web ]; then
-  flutter create . --project-name learnspace --platforms web
+  flutter create . --project-name effective_ai --platforms web
 fi
 
 flutter pub get

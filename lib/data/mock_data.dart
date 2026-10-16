@@ -68,7 +68,7 @@ class Skill {
 
 const userFirstName = 'Alex';
 const userFullName = 'Alex Morgan';
-const userEmail = 'alex@learnspace.app';
+const userEmail = 'alex@effective-ai.app';
 const streakDays = 12;
 
 const categories = ['All', 'AI & ML', 'Programming', 'Design', 'Math'];

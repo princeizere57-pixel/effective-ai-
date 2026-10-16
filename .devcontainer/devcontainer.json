@@ -1,5 +1,5 @@
 {
-  "name": "LearnSpace (Flutter)",
+  "name": "Effective AI (Flutter)",
   "build": {
     "dockerfile": "Dockerfile"
   },
@@ -7,7 +7,7 @@
   "forwardPorts": [4028],
   "portsAttributes": {
     "4028": {
-      "label": "LearnSpace web app",
+      "label": "Effective AI web app",
       "onAutoForward": "openPreview"
     }
   },

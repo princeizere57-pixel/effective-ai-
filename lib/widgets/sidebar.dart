@@ -77,7 +77,7 @@ class BrandMark extends StatelessWidget {
           child: const Icon(Icons.auto_awesome, color: Colors.white, size: 18),
         ),
         const SizedBox(width: 10),
-        Text('LearnSpace', style: AppTheme.display(20, color: Colors.white)),
+        Text('Effective AI', style: AppTheme.display(20, color: Colors.white)),
       ],
     );
   }

@@ -19,7 +19,7 @@ jobs:
       - name: Generate web platform folder
         run: |
           if [ ! -d web ]; then
-            flutter create . --project-name learnspace --platforms web
+            flutter create . --project-name effective_ai --platforms web
           fi
 
       - run: flutter pub get
@@ -28,5 +28,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: learnspace-web
+          name: effective-ai-web
           path: build/web

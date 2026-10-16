@@ -1,5 +1,5 @@
-name: learnspace
-description: LearnSpace learning dashboard, ported from the Next.js + Tailwind app.
+name: effective_ai
+description: Effective AI learning dashboard, ported from the Next.js + Tailwind app.
 publish_to: 'none'
 version: 0.1.0+1
 

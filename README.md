@@ -1,6 +1,6 @@
-# LearnSpace (Flutter)
+# Effective AI (Flutter)
 
-Flutter port of the LearnSpace Next.js 15 + Tailwind app.
+Flutter port of the Effective AI Next.js 15 + Tailwind app.
 
 ## GitHub Codespaces (no local install)
 
@@ -19,7 +19,7 @@ Press `r` in the terminal to hot-reload after editing, `R` to restart, `q` to qu
 1. Install Flutter 3.27 or newer: https://docs.flutter.dev/get-started/install
 2. Generate the platform folders (web, android, ios, windows…) in this directory:
    ```bash
-   flutter create . --project-name learnspace
+   flutter create . --project-name effective_ai
    ```
    This keeps the existing `lib/` and `pubspec.yaml`.
 3. Install dependencies and run:
