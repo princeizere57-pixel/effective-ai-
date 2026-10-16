@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
 import 'progress_bar.dart';
@@ -20,6 +21,7 @@ class _CourseCardState extends State<CourseCard> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final course = widget.course;
     final started = course.lessonsDone > 0;
 
@@ -37,9 +39,9 @@ class _CourseCardState extends State<CourseCard> {
           transform: Matrix4.translationValues(0, _hover ? -2 : 0, 0),
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: p.card,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            boxShadow: _hover ? AppShadows.cardHover : AppShadows.card,
+            boxShadow: _hover ? p.cardHoverShadow : p.cardShadow,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -50,25 +52,17 @@ class _CourseCardState extends State<CourseCard> {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: course.accent.withValues(alpha: 0.12),
-                      borderRadius: BorderRadius.circular(12),
+                      color: tint(course.accent),
+                      borderRadius: BorderRadius.circular(AppRadius.base),
                     ),
                     child: Icon(course.icon, color: course.accent, size: 22),
                   ),
                   const Spacer(),
                   if (course.isNew) ...[
-                    const Pill(
-                      label: 'New',
-                      color: AppColors.violetDark,
-                      background: AppColors.violetPale,
-                    ),
+                    Pill(label: 'New', color: p.primaryText, background: tint(AppColors.violet)),
                     const SizedBox(width: 6),
                   ],
-                  Pill(
-                    label: course.category,
-                    color: AppColors.textSecondary,
-                    background: AppColors.workspace,
-                  ),
+                  NeutralPill(course.category),
                 ],
               ),
               const SizedBox(height: 16),
@@ -79,22 +73,19 @@ class _CourseCardState extends State<CourseCard> {
                 style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, height: 1.3),
               ),
               const SizedBox(height: 4),
-              Text(
-                course.instructor,
-                style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
-              ),
+              Text(course.instructor, style: TextStyle(color: p.mutedForeground, fontSize: 13)),
               const SizedBox(height: 16),
               Row(
                 children: [
                   Text(
                     '${course.lessonsDone}/${course.lessonsTotal} lessons',
-                    style: AppTheme.mono(11, color: AppColors.textMuted),
+                    style: AppTheme.mono(11, color: p.subtle),
                   ),
                   const Spacer(),
                   Text(
                     started ? '${(course.progress * 100).round()}%' : 'Not started',
                     style: TextStyle(
-                      color: started ? course.accent : AppColors.textMuted,
+                      color: started ? course.accent : p.subtle,
                       fontSize: 13,
                       fontWeight: FontWeight.w700,
                     ),

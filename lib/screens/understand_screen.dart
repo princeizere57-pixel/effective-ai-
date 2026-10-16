@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../widgets/common.dart';
 import '../widgets/fade_slide_in.dart';
 import 'page_scaffold.dart';
@@ -53,10 +54,7 @@ class _UnderstandScreenState extends State<UnderstandScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OutlineInputBorder border(Color c) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: c),
-        );
+    final p = context.palette;
 
     return PageScaffold(
       builder: (context, width) => [
@@ -77,32 +75,20 @@ class _UnderstandScreenState extends State<UnderstandScreen> {
                 maxLines: 4,
                 textInputAction: TextInputAction.send,
                 onSubmitted: (_) => _ask(),
-                decoration: InputDecoration(
-                  hintText: 'What do you want to understand?',
-                  hintStyle: const TextStyle(color: AppColors.textMuted),
-                  filled: true,
-                  fillColor: AppColors.workspace,
-                  border: border(AppColors.divider),
-                  enabledBorder: border(AppColors.divider),
-                  focusedBorder: border(AppColors.violet),
-                ),
+                decoration: fieldDecoration(context, hint: 'What do you want to understand?'),
               ),
               const SizedBox(height: 12),
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   for (final t in suggestedTopics)
                     ActionChip(
                       label: Text(t),
                       onPressed: () => _ask(t),
-                      backgroundColor: AppColors.violetPale,
+                      backgroundColor: tint(AppColors.violet),
                       side: BorderSide.none,
-                      labelStyle: const TextStyle(
-                        color: AppColors.violetDark,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      labelStyle: TextStyle(color: p.primaryText, fontWeight: FontWeight.w600),
                     ),
                 ],
               ),
@@ -139,10 +125,7 @@ class _UnderstandScreenState extends State<UnderstandScreen> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    answer,
-                    style: const TextStyle(color: AppColors.textSecondary, height: 1.55),
-                  ),
+                  Text(answer, style: TextStyle(color: p.mutedForeground, height: 1.55)),
                 ],
               ),
             ),

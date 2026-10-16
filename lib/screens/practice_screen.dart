@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import '../widgets/fade_slide_in.dart';
@@ -65,18 +66,18 @@ class _PracticeTile extends StatelessWidget {
   final bool? result;
   final VoidCallback onStart;
 
-  (Color, Color) get _difficultyColors => switch (set.difficulty) {
-        'Easy' => (AppColors.green, AppColors.greenPale),
-        'Hard' => (AppColors.red, AppColors.redPale),
-        _ => (AppColors.amber, AppColors.amberPale),
+  Color get _difficultyColor => switch (set.difficulty) {
+        'Easy' => AppColors.green,
+        'Hard' => AppColors.red,
+        _ => AppColors.amber,
       };
 
   @override
   Widget build(BuildContext context) {
-    final (fg, bg) = _difficultyColors;
+    final p = context.palette;
     final Widget action = switch (result) {
       null => FilledButton(onPressed: onStart, child: const Text('Start')),
-      true => const Pill(label: 'Correct', color: AppColors.green, background: AppColors.greenPale),
+      true => const Pill(label: 'Correct', color: AppColors.green),
       false => OutlinedButton(onPressed: onStart, child: const Text('Try again')),
     };
 
@@ -97,8 +98,8 @@ class _PracticeTile extends StatelessWidget {
                   width: 44,
                   height: 44,
                   decoration: BoxDecoration(
-                    color: set.accent.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(12),
+                    color: tint(set.accent),
+                    borderRadius: BorderRadius.circular(AppRadius.base),
                   ),
                   child: Icon(Icons.fitness_center, color: set.accent, size: 22),
                 ),
@@ -112,14 +113,11 @@ class _PracticeTile extends StatelessWidget {
                         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
                       ),
                       const SizedBox(height: 2),
-                      Text(
-                        set.course,
-                        style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                      ),
+                      Text(set.course, style: TextStyle(color: p.mutedForeground, fontSize: 13)),
                       const SizedBox(height: 6),
                       Text(
                         '${set.questions} questions · ${set.minutes} min',
-                        style: AppTheme.mono(11, color: AppColors.textMuted),
+                        style: AppTheme.mono(11, color: p.subtle),
                       ),
                     ],
                   ),
@@ -130,7 +128,7 @@ class _PracticeTile extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Pill(label: set.difficulty, color: fg, background: bg),
+              Pill(label: set.difficulty, color: _difficultyColor),
               const SizedBox(width: 12),
               action,
             ],
@@ -155,6 +153,7 @@ class _QuestionDialogState extends State<_QuestionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final set = widget.set;
     return AlertDialog(
       title: Text(set.title),
@@ -172,13 +171,11 @@ class _QuestionDialogState extends State<_QuestionDialog> {
                 child: ListTile(
                   onTap: () => setState(() => _picked = i),
                   selected: _picked == i,
-                  selectedColor: AppColors.violetDark,
-                  selectedTileColor: AppColors.violetPale,
+                  selectedColor: p.primaryText,
+                  selectedTileColor: tint(AppColors.violet),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    side: BorderSide(
-                      color: _picked == i ? AppColors.violet : AppColors.divider,
-                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.base),
+                    side: BorderSide(color: _picked == i ? AppColors.violet : p.border),
                   ),
                   leading: Icon(
                     _picked == i ? Icons.radio_button_checked : Icons.radio_button_unchecked,

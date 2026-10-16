@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import '../widgets/charts.dart';
 import '../widgets/common.dart';
@@ -9,18 +9,23 @@ import '../widgets/fade_slide_in.dart';
 import '../widgets/progress_bar.dart';
 import 'page_scaffold.dart';
 
+/// "My Progress": quiz trend, hours per day and skill mastery.
 class AnalyticsScreen extends StatelessWidget {
   const AnalyticsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
+    const title = TextStyle(fontSize: 16, fontWeight: FontWeight.w700);
+    final sub = TextStyle(color: p.mutedForeground, fontSize: 13);
+
     return PageScaffold(
       builder: (context, width) => [
-        FadeSlideIn(child: Text('Analytics', style: AppTheme.display(width >= 600 ? 34 : 28))),
-        const SizedBox(height: 6),
-        const Text(
-          'How your study habits and scores are trending.',
-          style: TextStyle(color: AppColors.textSecondary, fontSize: 15),
+        const FadeSlideIn(
+          child: PageHeader(
+            title: 'My Progress',
+            subtitle: 'How your study habits and scores are trending.',
+          ),
         ),
         const SizedBox(height: 24),
         FadeSlideIn(
@@ -32,35 +37,26 @@ class AnalyticsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Quiz score trend',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
+                    const Text('Quiz score trend', style: title),
                     const SizedBox(height: 2),
                     Text(
                       'Up ${(quizScores.last - quizScores.first).toInt()} points in 8 weeks',
-                      style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                      style: sub,
                     ),
                     const SizedBox(height: 24),
                     const SizedBox(height: 220, child: QuizTrendChart(scores: quizScores)),
                   ],
                 ),
               ),
-              const Panel(
+              Panel(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Hours per day',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                    ),
-                    SizedBox(height: 2),
-                    Text(
-                      'Wednesday is your strongest day',
-                      style: TextStyle(color: AppColors.textSecondary, fontSize: 13),
-                    ),
-                    SizedBox(height: 24),
-                    SizedBox(height: 220, child: WeeklyHoursChart(data: weeklyHours)),
+                    const Text('Hours per day', style: title),
+                    const SizedBox(height: 2),
+                    Text('Wednesday is your strongest day', style: sub),
+                    const SizedBox(height: 24),
+                    const SizedBox(height: 220, child: WeeklyHoursChart(data: weeklyHours)),
                   ],
                 ),
               ),
@@ -74,10 +70,7 @@ class AnalyticsScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Skill mastery',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-                ),
+                const Text('Skill mastery', style: title),
                 const SizedBox(height: 16),
                 for (final s in skills)
                   Padding(
@@ -94,7 +87,7 @@ class AnalyticsScreen extends StatelessWidget {
                             const Spacer(),
                             Text(
                               '${(s.mastery * 100).round()}%',
-                              style: AppTheme.mono(12, color: AppColors.textSecondary),
+                              style: AppTheme.mono(12, color: p.mutedForeground),
                             ),
                           ],
                         ),

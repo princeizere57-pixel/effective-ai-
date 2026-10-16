@@ -3,9 +3,10 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 
-/// White card surface (`bg-surface rounded-2xl shadow-card`).
+/// Card surface (`bg-card rounded-lg shadow-card`).
 class Panel extends StatelessWidget {
   const Panel({super.key, required this.child, this.padding = const EdgeInsets.all(24)});
 
@@ -14,36 +15,53 @@ class Panel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: p.card,
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        boxShadow: AppShadows.card,
+        boxShadow: p.cardShadow,
       ),
       child: child,
     );
   }
 }
 
-/// Small rounded label, e.g. a status or category.
+/// Small rounded label, e.g. a status or category. Background defaults to a tint of [color].
 class Pill extends StatelessWidget {
-  const Pill({super.key, required this.label, required this.color, required this.background});
+  const Pill({super.key, required this.label, required this.color, this.background});
 
   final String label;
   final Color color;
-  final Color background;
+  final Color? background;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: background, borderRadius: BorderRadius.circular(999)),
+      decoration: BoxDecoration(
+        color: background ?? tint(color),
+        borderRadius: BorderRadius.circular(999),
+      ),
       child: Text(
         label,
         style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
       ),
     );
+  }
+}
+
+/// Grey pill for neutral facts such as a category or duration.
+class NeutralPill extends StatelessWidget {
+  const NeutralPill(this.label, {super.key});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    return Pill(label: label, color: p.mutedForeground, background: p.muted);
   }
 }
 
@@ -69,7 +87,7 @@ class SectionHeader extends StatelessWidget {
             iconAlignment: IconAlignment.end,
             icon: const Icon(Icons.arrow_forward, size: 16),
             label: Text(action!),
-            style: TextButton.styleFrom(foregroundColor: AppColors.violet),
+            style: TextButton.styleFrom(foregroundColor: context.palette.primaryText),
           ),
       ],
     );
@@ -121,10 +139,34 @@ class PageHeader extends StatelessWidget {
       children: [
         Text(title, style: AppTheme.display(wide ? 34 : 28)),
         const SizedBox(height: 6),
-        Text(subtitle, style: const TextStyle(color: AppColors.textSecondary, fontSize: 15)),
+        Text(subtitle, style: TextStyle(color: context.palette.mutedForeground, fontSize: 15)),
       ],
     );
   }
+}
+
+/// Shared look for text fields. [fill] defaults to the muted surface used inside cards.
+InputDecoration fieldDecoration(
+  BuildContext context, {
+  required String hint,
+  Widget? prefixIcon,
+  Color? fill,
+}) {
+  final p = context.palette;
+  OutlineInputBorder border(Color c) => OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppRadius.base),
+        borderSide: BorderSide(color: c),
+      );
+  return InputDecoration(
+    hintText: hint,
+    hintStyle: TextStyle(color: p.subtle, fontSize: 14),
+    prefixIcon: prefixIcon,
+    filled: true,
+    fillColor: fill ?? p.muted,
+    border: border(p.border),
+    enabledBorder: border(p.border),
+    focusedBorder: border(AppColors.violet),
+  );
 }
 
 void showToast(BuildContext context, String message) {

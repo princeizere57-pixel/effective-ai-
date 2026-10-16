@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import '../widgets/charts.dart';
 import '../widgets/common.dart';
@@ -73,15 +74,16 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final greeting = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         Text('Good morning, $userFirstName', style: AppTheme.display(wide ? 34 : 28)),
         const SizedBox(height: 6),
-        const Text(
+        Text(
           "You're on a $streakDays-day streak. One lesson today keeps it going.",
-          style: TextStyle(color: AppColors.textSecondary, fontSize: 15),
+          style: TextStyle(color: p.mutedForeground, fontSize: 15),
         ),
       ],
     );
@@ -91,20 +93,30 @@ class _Header extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: greeting),
-        const SizedBox(width: 280, child: _SearchField()),
+        SizedBox(
+          width: 280,
+          child: TextField(
+            decoration: fieldDecoration(
+              context,
+              hint: 'Search courses and notes',
+              prefixIcon: Icon(Icons.search, size: 20, color: p.subtle),
+              fill: p.card,
+            ),
+          ),
+        ),
         const SizedBox(width: 12),
         Container(
           decoration: BoxDecoration(
-            color: AppColors.surface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.divider),
+            color: p.card,
+            borderRadius: BorderRadius.circular(AppRadius.base),
+            border: Border.all(color: p.border),
           ),
           child: IconButton(
             onPressed: () => showToast(context, 'No new notifications'),
-            icon: const Badge(
+            icon: Badge(
               smallSize: 8,
               backgroundColor: AppColors.red,
-              child: Icon(Icons.notifications_none, color: AppColors.textSecondary),
+              child: Icon(Icons.notifications_none, color: p.mutedForeground),
             ),
             tooltip: 'Notifications',
           ),
@@ -114,38 +126,12 @@ class _Header extends StatelessWidget {
   }
 }
 
-class _SearchField extends StatelessWidget {
-  const _SearchField();
-
-  @override
-  Widget build(BuildContext context) {
-    OutlineInputBorder border(Color c) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: c),
-        );
-
-    return TextField(
-      decoration: InputDecoration(
-        hintText: 'Search courses and notes',
-        hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 14),
-        prefixIcon: const Icon(Icons.search, size: 20, color: AppColors.textMuted),
-        filled: true,
-        fillColor: AppColors.surface,
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(vertical: 14),
-        border: border(AppColors.divider),
-        enabledBorder: border(AppColors.divider),
-        focusedBorder: border(AppColors.violet),
-      ),
-    );
-  }
-}
-
 class _StudyTimePanel extends StatelessWidget {
   const _StudyTimePanel();
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final total = weeklyHours.fold<double>(0, (sum, d) => sum + d.$2);
     return Panel(
       child: Column(
@@ -164,16 +150,12 @@ class _StudyTimePanel extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       '${total.toStringAsFixed(1)} hours this week',
-                      style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+                      style: TextStyle(color: p.mutedForeground, fontSize: 13),
                     ),
                   ],
                 ),
               ),
-              const Pill(
-                label: '+18% vs last week',
-                color: AppColors.green,
-                background: AppColors.greenPale,
-              ),
+              const Pill(label: '+18% vs last week', color: AppColors.green),
             ],
           ),
           const SizedBox(height: 24),
@@ -207,16 +189,16 @@ class _DeadlineTile extends StatelessWidget {
 
   final Deadline deadline;
 
-  (Color, Color) get _colors => switch (deadline.status) {
-        DeadlineStatus.overdue => (AppColors.red, AppColors.redPale),
-        DeadlineStatus.soon => (AppColors.amber, AppColors.amberPale),
-        DeadlineStatus.upcoming => (AppColors.blue, AppColors.bluePale),
-        DeadlineStatus.done => (AppColors.green, AppColors.greenPale),
+  Color get _color => switch (deadline.status) {
+        DeadlineStatus.overdue => AppColors.red,
+        DeadlineStatus.soon => AppColors.amber,
+        DeadlineStatus.upcoming => AppColors.blue,
+        DeadlineStatus.done => AppColors.green,
       };
 
   @override
   Widget build(BuildContext context) {
-    final (fg, bg) = _colors;
+    final p = context.palette;
     final done = deadline.status == DeadlineStatus.done;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -225,7 +207,7 @@ class _DeadlineTile extends StatelessWidget {
           Container(
             width: 10,
             height: 10,
-            decoration: BoxDecoration(color: fg, shape: BoxShape.circle),
+            decoration: BoxDecoration(color: _color, shape: BoxShape.circle),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -237,20 +219,17 @@ class _DeadlineTile extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: done ? AppColors.textMuted : AppColors.textPrimary,
+                    color: done ? p.subtle : null,
                     decoration: done ? TextDecoration.lineThrough : null,
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
-                  deadline.course,
-                  style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
-                ),
+                Text(deadline.course, style: TextStyle(color: p.mutedForeground, fontSize: 12)),
               ],
             ),
           ),
           const SizedBox(width: 8),
-          Pill(label: deadline.due, color: fg, background: bg),
+          Pill(label: deadline.due, color: _color),
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 
 /// Daily study hours as bars (replaces the recharts BarChart).
@@ -14,6 +15,7 @@ class WeeklyHoursChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final maxY = data.map((e) => e.$2).reduce(math.max).ceilToDouble() + 1;
 
     return BarChart(
@@ -24,7 +26,7 @@ class WeeklyHoursChart extends StatelessWidget {
         gridData: FlGridData(
           drawVerticalLine: false,
           horizontalInterval: 1,
-          getDrawingHorizontalLine: (_) => FlLine(color: AppColors.divider, strokeWidth: 1),
+          getDrawingHorizontalLine: (_) => FlLine(color: p.border, strokeWidth: 1),
         ),
         titlesData: FlTitlesData(
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -35,7 +37,7 @@ class WeeklyHoursChart extends StatelessWidget {
               reservedSize: 32,
               interval: 1,
               getTitlesWidget: (value, meta) =>
-                  Text('${value.toInt()}h', style: AppTheme.mono(10, color: AppColors.textMuted)),
+                  Text('${value.toInt()}h', style: AppTheme.mono(10, color: p.subtle)),
             ),
           ),
           bottomTitles: AxisTitles(
@@ -47,10 +49,7 @@ class WeeklyHoursChart extends StatelessWidget {
                 if (i < 0 || i >= data.length) return const SizedBox.shrink();
                 return Padding(
                   padding: const EdgeInsets.only(top: 8),
-                  child: Text(
-                    data[i].$1,
-                    style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
-                  ),
+                  child: Text(data[i].$1, style: TextStyle(color: p.subtle, fontSize: 12)),
                 );
               },
             ),
@@ -96,6 +95,7 @@ class QuizTrendChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return LineChart(
       LineChartData(
         minY: 60,
@@ -104,7 +104,7 @@ class QuizTrendChart extends StatelessWidget {
         gridData: FlGridData(
           drawVerticalLine: false,
           horizontalInterval: 10,
-          getDrawingHorizontalLine: (_) => FlLine(color: AppColors.divider, strokeWidth: 1),
+          getDrawingHorizontalLine: (_) => FlLine(color: p.border, strokeWidth: 1),
         ),
         titlesData: FlTitlesData(
           topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
@@ -115,7 +115,7 @@ class QuizTrendChart extends StatelessWidget {
               reservedSize: 32,
               interval: 10,
               getTitlesWidget: (value, meta) =>
-                  Text('${value.toInt()}', style: AppTheme.mono(10, color: AppColors.textMuted)),
+                  Text('${value.toInt()}', style: AppTheme.mono(10, color: p.subtle)),
             ),
           ),
           bottomTitles: AxisTitles(
@@ -127,7 +127,7 @@ class QuizTrendChart extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   'W${value.toInt() + 1}',
-                  style: const TextStyle(color: AppColors.textMuted, fontSize: 12),
+                  style: TextStyle(color: p.subtle, fontSize: 12),
                 ),
               ),
             ),
@@ -145,10 +145,7 @@ class QuizTrendChart extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  AppColors.violet.withValues(alpha: 0.25),
-                  AppColors.violet.withValues(alpha: 0),
-                ],
+                colors: [tint(AppColors.violet, 0.25), tint(AppColors.violet, 0)],
               ),
             ),
           ),

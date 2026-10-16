@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../widgets/common.dart';
 import '../widgets/fade_slide_in.dart';
 import 'page_scaffold.dart';
@@ -34,10 +35,7 @@ class _HelpScreenState extends State<HelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    OutlineInputBorder border(Color c) => OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: BorderSide(color: c),
-        );
+    final p = context.palette;
 
     return PageScaffold(
       builder: (context, width) => [
@@ -58,13 +56,11 @@ class _HelpScreenState extends State<HelpScreen> {
                   ExpansionTile(
                     title: Text(question, style: const TextStyle(fontWeight: FontWeight.w600)),
                     iconColor: AppColors.violet,
+                    collapsedIconColor: p.mutedForeground,
                     childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     expandedAlignment: Alignment.centerLeft,
                     children: [
-                      Text(
-                        answer,
-                        style: const TextStyle(color: AppColors.textSecondary, height: 1.5),
-                      ),
+                      Text(answer, style: TextStyle(color: p.mutedForeground, height: 1.5)),
                     ],
                   ),
               ],
@@ -85,14 +81,9 @@ class _HelpScreenState extends State<HelpScreen> {
                 controller: _controller,
                 minLines: 3,
                 maxLines: 6,
-                decoration: InputDecoration(
-                  hintText: 'What would make Effective AI more useful for you?',
-                  hintStyle: const TextStyle(color: AppColors.textMuted),
-                  filled: true,
-                  fillColor: AppColors.workspace,
-                  border: border(AppColors.divider),
-                  enabledBorder: border(AppColors.divider),
-                  focusedBorder: border(AppColors.violet),
+                decoration: fieldDecoration(
+                  context,
+                  hint: 'What would make Effective AI more useful for you?',
                 ),
               ),
               const SizedBox(height: 12),

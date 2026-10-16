@@ -48,7 +48,6 @@ class Stat {
     required this.value,
     required this.icon,
     required this.color,
-    required this.paleColor,
     this.delta,
   });
 
@@ -57,7 +56,6 @@ class Stat {
   final String? delta;
   final IconData icon;
   final Color color;
-  final Color paleColor;
 }
 
 class Skill {
@@ -249,7 +247,6 @@ const stats = <Stat>[
     delta: '+3',
     icon: Icons.local_fire_department_outlined,
     color: AppColors.amber,
-    paleColor: AppColors.amberPale,
   ),
   Stat(
     label: 'Hours this week',
@@ -257,14 +254,12 @@ const stats = <Stat>[
     delta: '+18%',
     icon: Icons.schedule,
     color: AppColors.violet,
-    paleColor: AppColors.violetPale,
   ),
   Stat(
     label: 'Courses completed',
     value: '7',
     icon: Icons.workspace_premium_outlined,
     color: AppColors.green,
-    paleColor: AppColors.greenPale,
   ),
   Stat(
     label: 'Avg. quiz score',
@@ -272,7 +267,6 @@ const stats = <Stat>[
     delta: '+4',
     icon: Icons.task_alt,
     color: AppColors.blue,
-    paleColor: AppColors.bluePale,
   ),
 ];
 

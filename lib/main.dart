@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/app_shell.dart';
 import 'theme/app_theme.dart';
+import 'theme/theme_controller.dart';
 
 void main() {
   runApp(const EffectiveAiApp());
@@ -12,11 +13,16 @@ class EffectiveAiApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Effective AI',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light(),
-      home: const AppShell(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeMode,
+      builder: (context, mode, _) => MaterialApp(
+        title: 'Effective AI',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: mode,
+        home: const AppShell(),
+      ),
     );
   }
 }

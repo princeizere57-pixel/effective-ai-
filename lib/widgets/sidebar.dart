@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import '../data/mock_data.dart';
 import '../navigation.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
 
-/// Navy sidebar: logo, streak, main sections, help/settings and the signed-in user.
+/// Sidebar: logo, streak, main sections, help/settings and the signed-in user.
 /// Used as a fixed column on wide screens and inside a Drawer on phones.
 class Sidebar extends StatelessWidget {
   const Sidebar({
@@ -22,6 +23,7 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     Widget tile(AppSection s) => _SidebarTile(
           section: s,
           selected: s == selected,
@@ -30,10 +32,7 @@ class Sidebar extends StatelessWidget {
 
     return Container(
       width: width,
-      decoration: const BoxDecoration(
-        color: AppTokens.sidebarBg,
-        boxShadow: AppShadows.sidebar,
-      ),
+      decoration: BoxDecoration(color: p.sidebarBg, boxShadow: AppShadows.sidebar),
       child: SafeArea(
         right: false,
         child: Column(
@@ -53,7 +52,7 @@ class Sidebar extends StatelessWidget {
                 children: [for (final s in mainSections) tile(s)],
               ),
             ),
-            const Divider(color: AppTokens.sidebarBorder, height: 1, thickness: 1),
+            Divider(color: p.sidebarBorder, height: 1, thickness: 1),
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
               child: Column(
@@ -104,7 +103,7 @@ class StreakPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.amber.withValues(alpha: 0.08),
+        color: tint(AppColors.amber, 0.08),
         border: Border.all(color: AppColors.amber.withValues(alpha: 0.45)),
         borderRadius: BorderRadius.circular(999),
       ),
@@ -131,7 +130,8 @@ class _SidebarTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppTokens.sidebarTextActive : AppTokens.sidebarText;
+    final p = context.palette;
+    final color = selected ? p.sidebarTextActive : p.sidebarText;
     final badge = section.badge;
 
     return Padding(
@@ -140,13 +140,13 @@ class _SidebarTile extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          hoverColor: AppTokens.sidebarHover,
+          hoverColor: p.sidebarHover,
           borderRadius: BorderRadius.circular(14),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: selected ? AppTokens.sidebarActive : Colors.transparent,
+              color: selected ? p.sidebarActive : Colors.transparent,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
@@ -166,7 +166,7 @@ class _SidebarTile extends StatelessWidget {
                     height: 26,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: AppColors.violet.withValues(alpha: 0.35),
+                      color: tint(AppColors.violet, 0.35),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
@@ -192,6 +192,7 @@ class _UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
@@ -210,25 +211,29 @@ class _UserTile extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   userFullName,
-                  style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    color: p.sidebarTextActive,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
                 Text(
                   userEmail,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: AppColors.navyText, fontSize: 12),
+                  style: TextStyle(color: p.sidebarText, fontSize: 12),
                 ),
               ],
             ),
           ),
           IconButton(
             onPressed: () => showToast(context, 'Signed out'),
-            icon: const Icon(Icons.logout, size: 20, color: AppColors.navyText),
+            icon: Icon(Icons.logout, size: 20, color: p.sidebarText),
             tooltip: 'Sign out',
           ),
         ],

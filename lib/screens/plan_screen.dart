@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
 import '../widgets/fade_slide_in.dart';
@@ -21,6 +22,7 @@ class _PlanScreenState extends State<PlanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final days = <String>[];
     for (final s in planSessions) {
       if (!days.contains(s.day)) days.add(s.day);
@@ -47,7 +49,7 @@ class _PlanScreenState extends State<PlanScreen> {
                   const Spacer(),
                   Text(
                     '${_done.length} of ${planSessions.length} done',
-                    style: AppTheme.mono(12),
+                    style: AppTheme.mono(12, color: p.mutedForeground),
                   ),
                 ],
               ),
@@ -62,7 +64,7 @@ class _PlanScreenState extends State<PlanScreen> {
             padding: const EdgeInsets.fromLTRB(4, 12, 0, 8),
             child: Text(
               day.toUpperCase(),
-              style: AppTheme.mono(11, color: AppColors.textMuted).copyWith(letterSpacing: 1.2),
+              style: AppTheme.mono(11, color: p.subtle).copyWith(letterSpacing: 1.2),
             ),
           ),
           Panel(
@@ -80,19 +82,15 @@ class _PlanScreenState extends State<PlanScreen> {
                         planSessions[i].title,
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: _done.contains(i) ? AppColors.textMuted : AppColors.textPrimary,
+                          color: _done.contains(i) ? p.subtle : null,
                           decoration: _done.contains(i) ? TextDecoration.lineThrough : null,
                         ),
                       ),
                       subtitle: Text(
                         '${planSessions[i].time} · ${planSessions[i].course}',
-                        style: const TextStyle(color: AppColors.textSecondary, fontSize: 12),
+                        style: TextStyle(color: p.mutedForeground, fontSize: 12),
                       ),
-                      secondary: Pill(
-                        label: '${planSessions[i].minutes} min',
-                        color: AppColors.textSecondary,
-                        background: AppColors.workspace,
-                      ),
+                      secondary: NeutralPill('${planSessions[i].minutes} min'),
                     ),
               ],
             ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
-import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../widgets/common.dart';
 import '../widgets/course_card.dart';
 import '../widgets/fade_slide_in.dart';
@@ -20,6 +20,7 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     final visible = _category == 'All'
         ? courses
         : courses.where((c) => c.category == _category).toList();
@@ -44,11 +45,11 @@ class _KnowledgeScreenState extends State<KnowledgeScreen> {
                 selected: c == _category,
                 onSelected: (_) => setState(() => _category = c),
                 showCheckmark: false,
-                selectedColor: AppColors.navy,
-                backgroundColor: AppColors.surface,
-                side: BorderSide(color: c == _category ? AppColors.navy : AppColors.divider),
+                selectedColor: p.foreground,
+                backgroundColor: p.card,
+                side: BorderSide(color: c == _category ? p.foreground : p.border),
                 labelStyle: TextStyle(
-                  color: c == _category ? Colors.white : AppColors.textSecondary,
+                  color: c == _category ? p.background : p.mutedForeground,
                   fontWeight: FontWeight.w600,
                 ),
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),

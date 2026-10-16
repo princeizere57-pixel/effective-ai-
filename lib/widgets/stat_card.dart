@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
 
@@ -23,8 +24,8 @@ class StatCard extends StatelessWidget {
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: stat.paleColor,
-                  borderRadius: BorderRadius.circular(12),
+                  color: tint(stat.color),
+                  borderRadius: BorderRadius.circular(AppRadius.base),
                 ),
                 child: Icon(stat.icon, color: stat.color, size: 20),
               ),
@@ -38,7 +39,7 @@ class StatCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             stat.label,
-            style: const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+            style: TextStyle(color: context.palette.mutedForeground, fontSize: 13),
           ),
         ],
       ),
