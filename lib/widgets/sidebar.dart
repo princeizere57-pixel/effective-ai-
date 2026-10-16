@@ -30,7 +30,10 @@ class Sidebar extends StatelessWidget {
 
     return Container(
       width: width,
-      color: AppColors.navy,
+      decoration: const BoxDecoration(
+        color: AppTokens.sidebarBg,
+        boxShadow: AppShadows.sidebar,
+      ),
       child: SafeArea(
         right: false,
         child: Column(
@@ -50,7 +53,7 @@ class Sidebar extends StatelessWidget {
                 children: [for (final s in mainSections) tile(s)],
               ),
             ),
-            const Divider(color: AppColors.navyBorder, height: 1, thickness: 1),
+            const Divider(color: AppTokens.sidebarBorder, height: 1, thickness: 1),
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
               child: Column(
@@ -128,7 +131,7 @@ class _SidebarTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? Colors.white : AppColors.navyText;
+    final color = selected ? AppTokens.sidebarTextActive : AppTokens.sidebarText;
     final badge = section.badge;
 
     return Padding(
@@ -137,12 +140,13 @@ class _SidebarTile extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
+          hoverColor: AppTokens.sidebarHover,
           borderRadius: BorderRadius.circular(14),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
-              color: selected ? AppColors.navyMuted : Colors.transparent,
+              color: selected ? AppTokens.sidebarActive : Colors.transparent,
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(

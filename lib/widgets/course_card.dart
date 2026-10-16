@@ -38,7 +38,7 @@ class _CourseCardState extends State<CourseCard> {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(AppRadius.xl2),
+            borderRadius: BorderRadius.circular(AppRadius.lg),
             boxShadow: _hover ? AppShadows.cardHover : AppShadows.card,
           ),
           child: Column(
