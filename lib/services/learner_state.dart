@@ -230,10 +230,10 @@ final learner = LearnerState();
 
 /// Label and color for a mastery level.
 (String, Color) masteryStyle(double? m) {
-  if (m == null) return ('Not tested', const Color(0xFF8A93A8));
-  if (m >= 0.8) return ('Strong', AppColors.green);
-  if (m >= 0.6) return ('Getting there', AppColors.blue);
-  return ('Gap', AppColors.red);
+  if (m == null) return ('Not tested', AppColors.brand);
+  if (m >= 0.8) return ('Strong', AppColors.brand);
+  if (m >= 0.6) return ('Getting there', AppColors.brand);
+  return ('Gap', AppColors.brand);
 }
 
 String percent(double? m) => m == null ? '—' : '${(m * 100).round()}%';

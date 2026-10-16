@@ -165,7 +165,7 @@ InputDecoration fieldDecoration(
     fillColor: fill ?? p.muted,
     border: border(p.border),
     enabledBorder: border(p.border),
-    focusedBorder: border(AppColors.violet),
+    focusedBorder: border(AppColors.brand),
   );
 }
 

@@ -4,4 +4,4 @@ import 'package:flutter/material.dart';
 ///
 /// Kept in memory; persist it (for example with shared_preferences) to remember
 /// the choice between launches.
-final themeMode = ValueNotifier<ThemeMode>(ThemeMode.system);
+final themeMode = ValueNotifier<ThemeMode>(ThemeMode.light);

@@ -88,7 +88,7 @@ class PlanScreen extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.autorenew, color: AppColors.violet, size: 20),
+                        Icon(Icons.autorenew, color: AppColors.brand, size: 20),
                         SizedBox(width: 8),
                         Text('How your plan adapted', style: TextStyle(fontWeight: FontWeight.w700)),
                       ],
@@ -148,14 +148,14 @@ class _PlanTile extends StatelessWidget {
     final p = context.palette;
     final done = learner.planDone.contains(item.key);
     final (icon, color) = switch (item.kind) {
-      PlanItemKind.study => (Icons.school_outlined, AppColors.violet),
-      PlanItemKind.review => (Icons.replay, AppColors.green),
-      PlanItemKind.mock => (Icons.timer_outlined, AppColors.amber),
+      PlanItemKind.study => (Icons.school_outlined, AppColors.brand),
+      PlanItemKind.review => (Icons.replay, AppColors.brand),
+      PlanItemKind.mock => (Icons.timer_outlined, AppColors.brand),
     };
     return ListTile(
       leading: Checkbox(
         value: done,
-        activeColor: AppColors.violet,
+        activeColor: AppColors.brand,
         onChanged: (_) => learner.togglePlanItem(item.key),
       ),
       title: Row(

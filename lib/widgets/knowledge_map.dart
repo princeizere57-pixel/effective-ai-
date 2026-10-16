@@ -41,7 +41,7 @@ class KnowledgeMap extends StatelessWidget {
                   positions: positions,
                   selected: selected,
                   base: p.border,
-                  highlight: AppColors.violet,
+                  highlight: AppColors.brand,
                 ),
               ),
             ),
@@ -76,7 +76,7 @@ class _Node extends StatelessWidget {
     final p = context.palette;
     final (_, color) = masteryStyle(learner.mastery(concept.id));
     return Material(
-      color: selected ? AppColors.violet : p.card,
+      color: selected ? AppColors.brand : p.card,
       shape: StadiumBorder(side: BorderSide(color: color, width: 2)),
       elevation: selected ? 4 : 1,
       child: InkWell(

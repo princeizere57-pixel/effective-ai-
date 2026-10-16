@@ -117,7 +117,7 @@ class _PastPapersView extends StatelessWidget {
                           const SizedBox(height: 6),
                           ProgressBar(
                             value: t.papers / report.paperCount,
-                            color: t.papers == report.paperCount ? AppColors.red : AppColors.amber,
+                            color: t.papers == report.paperCount ? AppColors.brand : AppColors.brand,
                             height: 6,
                           ),
                         ],
@@ -144,7 +144,7 @@ class _PastPapersView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 6),
-                ProgressBar(value: e.value / report.questionCount, color: AppColors.blue, height: 6),
+                ProgressBar(value: e.value / report.questionCount, color: AppColors.brand, height: 6),
                 const SizedBox(height: 12),
               ],
               if (topWord != null)
@@ -193,7 +193,7 @@ class _PrepPlanView extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 16,
-                    backgroundColor: tint(AppColors.violet, 0.2),
+                    backgroundColor: tint(AppColors.brand, 0.2),
                     child: Text('${i + 1}', style: TextStyle(color: p.primaryText, fontWeight: FontWeight.w700)),
                   ),
                   const SizedBox(width: 14),
@@ -235,8 +235,8 @@ class _PrepPlanView extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundColor: tint(AppColors.green, 0.2),
-                child: Text('${steps.length + 1}', style: const TextStyle(color: AppColors.green, fontWeight: FontWeight.w700)),
+                backgroundColor: tint(AppColors.brand, 0.2),
+                child: Text('${steps.length + 1}', style: const TextStyle(color: AppColors.brand, fontWeight: FontWeight.w700)),
               ),
               const SizedBox(width: 14),
               const Expanded(
@@ -384,9 +384,9 @@ class _MockTestViewState extends State<_MockTestView> {
           children: [
             Text('Question ${_index + 1} of ${test.length}', style: const TextStyle(fontWeight: FontWeight.w700)),
             const Spacer(),
-            Icon(Icons.timer_outlined, size: 18, color: low ? AppColors.red : p.mutedForeground),
+            Icon(Icons.timer_outlined, size: 18, color: low ? AppColors.brand : p.mutedForeground),
             const SizedBox(width: 6),
-            Text(_clock(_secondsLeft), style: AppTheme.mono(14, color: low ? AppColors.red : p.foreground)),
+            Text(_clock(_secondsLeft), style: AppTheme.mono(14, color: low ? AppColors.brand : p.foreground)),
           ],
         ),
         const SizedBox(height: 10),
@@ -457,7 +457,7 @@ class _MockTestViewState extends State<_MockTestView> {
               const SizedBox(height: 12),
               ProgressBar(
                 value: score,
-                color: score >= 0.75 ? AppColors.green : score >= 0.5 ? AppColors.amber : AppColors.red,
+                color: score >= 0.75 ? AppColors.brand : score >= 0.5 ? AppColors.brand : AppColors.brand,
                 height: 8,
               ),
             ],
@@ -509,7 +509,7 @@ class _MockTestViewState extends State<_MockTestView> {
                     children: [
                       Icon(
                         _answers[i] == test[i].answer ? Icons.check_circle : Icons.cancel,
-                        color: _answers[i] == test[i].answer ? AppColors.green : AppColors.red,
+                        color: _answers[i] == test[i].answer ? AppColors.brand : AppColors.brand,
                         size: 20,
                       ),
                       const SizedBox(width: 10),

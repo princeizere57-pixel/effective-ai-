@@ -97,7 +97,7 @@ class CitationMarker extends StatelessWidget {
       width: 20,
       height: 20,
       alignment: Alignment.center,
-      decoration: BoxDecoration(color: tint(AppColors.violet, 0.2), shape: BoxShape.circle),
+      decoration: BoxDecoration(color: tint(AppColors.brand, 0.2), shape: BoxShape.circle),
       child: Text(
         '$number',
         style: TextStyle(
@@ -154,7 +154,7 @@ Future<void> showSourceSheet(BuildContext context, Passage passage, {Set<String>
                 padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
                 decoration: BoxDecoration(
                   color: p.muted,
-                  border: const Border(left: BorderSide(color: AppColors.violet, width: 3)),
+                  border: const Border(left: BorderSide(color: AppColors.brand, width: 3)),
                 ),
                 child: Text.rich(
                   TextSpan(children: highlightSpans(context, passage.text, highlight)),
@@ -179,7 +179,7 @@ List<TextSpan> highlightSpans(BuildContext context, String text, Set<String> ter
   if (terms.isEmpty) return [TextSpan(text: text)];
   final mark = TextStyle(
     fontWeight: FontWeight.w700,
-    backgroundColor: tint(AppColors.amber, 0.3),
+    backgroundColor: tint(AppColors.brand, 0.3),
   );
   return [
     for (final m in RegExp(r'[A-Za-zλ]+|[^A-Za-zλ]+').allMatches(text))
@@ -233,7 +233,7 @@ class MaterialSelector extends StatelessWidget {
           selected: selected.isEmpty,
           onSelected: (_) => onChanged({}),
           showCheckmark: false,
-          selectedColor: tint(AppColors.violet, 0.2),
+          selectedColor: tint(AppColors.brand, 0.2),
           labelStyle: TextStyle(color: selected.isEmpty ? p.primaryText : p.mutedForeground),
         ),
         for (final d in learner.indexedDocs)
@@ -242,7 +242,7 @@ class MaterialSelector extends StatelessWidget {
             label: Text(d.title),
             selected: selected.contains(d.id),
             showCheckmark: false,
-            selectedColor: tint(AppColors.violet, 0.2),
+            selectedColor: tint(AppColors.brand, 0.2),
             labelStyle: TextStyle(color: selected.contains(d.id) ? p.primaryText : p.mutedForeground),
             onSelected: (on) {
               final next = {...selected};

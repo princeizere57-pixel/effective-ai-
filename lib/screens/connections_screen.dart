@@ -110,7 +110,7 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.link, size: 18, color: AppColors.violet),
+                        const Icon(Icons.link, size: 18, color: AppColors.brand),
                         const SizedBox(width: 10),
                         Expanded(
                           child: Text.rich(
@@ -178,14 +178,14 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
       const SizedBox(height: 16),
       _Verdict(
         icon: Icons.check_circle_outline,
-        color: AppColors.green,
+        color: AppColors.brand,
         title: 'Where they agree',
         text: comparison.agreement,
       ),
       const SizedBox(height: 12),
       _Verdict(
         icon: Icons.compare_arrows,
-        color: AppColors.amber,
+        color: AppColors.brand,
         title: 'Where they differ',
         text: comparison.difference,
       ),

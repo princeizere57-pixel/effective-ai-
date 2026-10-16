@@ -269,10 +269,10 @@ class _AnswerCheckViewState extends State<_AnswerCheckView> {
                     Pill(
                       label: result.fraction >= 0.75 ? 'Strong answer' : result.fraction >= 0.5 ? 'Partly there' : 'Needs work',
                       color: result.fraction >= 0.75
-                          ? AppColors.green
+                          ? AppColors.brand
                           : result.fraction >= 0.5
-                              ? AppColors.amber
-                              : AppColors.red,
+                              ? AppColors.brand
+                              : AppColors.brand,
                     ),
                   ],
                 ),
@@ -285,7 +285,7 @@ class _AnswerCheckViewState extends State<_AnswerCheckView> {
                     children: [
                       Icon(
                         result.covered[i] ? Icons.check_circle : Icons.radio_button_unchecked,
-                        color: result.covered[i] ? AppColors.green : AppColors.red,
+                        color: result.covered[i] ? AppColors.brand : AppColors.brand,
                         size: 20,
                       ),
                       const SizedBox(width: 10),
@@ -377,7 +377,7 @@ class _ReviewViewState extends State<_ReviewView> {
             children: [
               Text('${queue.length} to review', style: AppTheme.mono(12, color: p.subtle)),
               const Spacer(),
-              if (wasGap) const Pill(label: 'Weak spot', color: AppColors.red),
+              if (wasGap) const Pill(label: 'Weak spot', color: AppColors.brand),
             ],
           ),
           const SizedBox(height: 12),
@@ -408,7 +408,7 @@ class _ReviewViewState extends State<_ReviewView> {
                 Container(
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: tint(AppColors.violet, 0.1),
+                    color: tint(AppColors.brand, 0.1),
                     borderRadius: BorderRadius.circular(AppRadius.base),
                   ),
                   child: Text(c.standard, style: const TextStyle(height: 1.6)),
@@ -525,7 +525,7 @@ class _SocraticViewState extends State<_SocraticView> {
                       margin: const EdgeInsets.only(bottom: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
-                        color: fromTutor ? p.muted : tint(AppColors.violet, 0.18),
+                        color: fromTutor ? p.muted : tint(AppColors.brand, 0.18),
                         borderRadius: BorderRadius.circular(14),
                       ),
                       child: Text(text, style: const TextStyle(height: 1.5)),

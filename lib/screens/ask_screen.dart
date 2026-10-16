@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../services/knowledge_engine.dart';
 import '../services/learner_state.dart';
+import '../services/session.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../widgets/common.dart';
@@ -29,6 +30,20 @@ class _AskScreenState extends State<AskScreen> {
   Set<String> _selected = {};
   String? _question;
   GroundedAnswer? _answer;
+
+  @override
+  void initState() {
+    super.initState();
+    // A question typed on the welcome page is answered as soon as the screen opens.
+    final q = pendingQuestion;
+    if (q != null) {
+      pendingQuestion = null;
+      _controller.text = q;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _ask(q);
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -87,7 +102,7 @@ class _AskScreenState extends State<AskScreen> {
                     ActionChip(
                       label: Text(s),
                       onPressed: () => _ask(s),
-                      backgroundColor: tint(AppColors.violet),
+                      backgroundColor: tint(AppColors.brand),
                       side: BorderSide.none,
                       labelStyle: TextStyle(color: p.primaryText, fontWeight: FontWeight.w600),
                     ),
@@ -133,7 +148,7 @@ class _AnswerCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.forum_outlined, color: AppColors.violet, size: 20),
+              const Icon(Icons.forum_outlined, color: AppColors.brand, size: 20),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(question, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
@@ -151,7 +166,7 @@ class _AnswerCard extends StatelessWidget {
             if (answer.documentCount > 1) ...[
               Pill(
                 label: 'Combined from ${answer.documentCount} documents',
-                color: AppColors.blue,
+                color: AppColors.brand,
               ),
               const SizedBox(height: 12),
             ],

@@ -15,10 +15,17 @@ abstract final class AppTheme {
   static ThemeData _build(Brightness brightness, AppPalette p) {
     final isLight = brightness == Brightness.light;
     final scheme = ColorScheme.fromSeed(
-      seedColor: AppColors.violet,
+      seedColor: AppColors.brand,
       brightness: brightness,
-      primary: isLight ? AppColors.violet : AppColors.violetLight,
+      primary: AppColors.brand,
+      onPrimary: Colors.white,
       surface: p.card,
+      onSurface: p.foreground,
+      onSurfaceVariant: p.mutedForeground,
+      secondaryContainer: tint(AppColors.brand, 0.14),
+      onSecondaryContainer: p.primaryText,
+      outline: p.border,
+      outlineVariant: p.border,
     );
     final base = ThemeData(
       useMaterial3: true,
@@ -34,9 +41,10 @@ abstract final class AppTheme {
         bodyColor: p.foreground,
         displayColor: p.foreground,
       ),
+      iconTheme: IconThemeData(color: p.foreground),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: isLight ? AppColors.navy : AppColors.navyBorder,
+        backgroundColor: isLight ? AppColors.brand : AppColors.navyBorder,
         contentTextStyle: const TextStyle(color: Colors.white),
       ),
     );

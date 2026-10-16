@@ -4,6 +4,7 @@ import '../data/knowledge.dart';
 import '../data/mock_data.dart';
 import '../navigation.dart';
 import '../services/learner_state.dart';
+import '../services/session.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
@@ -28,10 +29,10 @@ class DashboardScreen extends StatelessWidget {
       listenable: learner,
       builder: (context, _) {
         final stats = [
-          Stat(label: 'Documents in your library', value: '${learner.docs.length}', icon: Icons.folder_copy_outlined, color: AppColors.violet),
-          Stat(label: 'Concepts mastered', value: '${learner.strong.length}/${concepts.length}', icon: Icons.workspace_premium_outlined, color: AppColors.green),
-          Stat(label: 'Gaps to fix', value: '${learner.gaps.length}', icon: Icons.track_changes, color: AppColors.red),
-          const Stat(label: 'Day streak', value: '$streakDays', delta: '+3', icon: Icons.local_fire_department_outlined, color: AppColors.amber),
+          Stat(label: 'Documents in your library', value: '${learner.docs.length}', icon: Icons.folder_copy_outlined, color: AppColors.brand),
+          Stat(label: 'Concepts mastered', value: '${learner.strong.length}/${concepts.length}', icon: Icons.workspace_premium_outlined, color: AppColors.brand),
+          Stat(label: 'Gaps to fix', value: '${learner.gaps.length}', icon: Icons.track_changes, color: AppColors.brand),
+          const Stat(label: 'Day streak', value: '$streakDays', delta: '+3', icon: Icons.local_fire_department_outlined, color: AppColors.brand),
         ];
         return PageScaffold(
           builder: (context, width) => [
@@ -89,7 +90,7 @@ class _Header extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Good morning, $userFirstName', style: AppTheme.display(wide ? 34 : 28)),
+        Text(homeGreeting.isEmpty ? 'Welcome, $userFirstName' : homeGreeting, style: AppTheme.display(wide ? 34 : 28)),
         const SizedBox(height: 6),
         Text(
           'Your exam is in $daysToExam days. You have ${learner.gaps.length} gaps to close and a $streakDays-day streak to keep.',
@@ -106,12 +107,12 @@ class _Pipeline extends StatelessWidget {
   final ValueChanged<AppSection> onNavigate;
 
   static const _steps = <(IconData, String, String, AppSection, Color)>[
-    (Icons.folder_copy_outlined, 'Your data', 'Books, notes, slides, papers and past exams in one private library', AppSection.library, AppColors.violet),
-    (Icons.forum_outlined, 'Navigate', 'Ask, search and explore with sources for every answer', AppSection.ask, AppColors.blue),
-    (Icons.lightbulb_outline, 'Understand', 'Explain at your level, connect and compare ideas', AppSection.explain, AppColors.amber),
-    (Icons.track_changes, 'Improve', 'Find gaps and mistakes, then practise exactly those', AppSection.diagnose, AppColors.red),
-    (Icons.assignment_outlined, 'Apply', 'Past papers, mock tests and study sessions', AppSection.exam, AppColors.green),
-    (Icons.insights, 'Measure', 'Your plan adapts and your report shows progress', AppSection.progress, AppColors.violetLight),
+    (Icons.folder_copy_outlined, 'Your data', 'Books, notes, slides, papers and past exams in one private library', AppSection.library, AppColors.brand),
+    (Icons.forum_outlined, 'Navigate', 'Ask, search and explore with sources for every answer', AppSection.ask, AppColors.brand),
+    (Icons.lightbulb_outline, 'Understand', 'Explain at your level, connect and compare ideas', AppSection.explain, AppColors.brand),
+    (Icons.track_changes, 'Improve', 'Find gaps and mistakes, then practise exactly those', AppSection.diagnose, AppColors.brand),
+    (Icons.assignment_outlined, 'Apply', 'Past papers, mock tests and study sessions', AppSection.exam, AppColors.brand),
+    (Icons.insights, 'Measure', 'Your plan adapts and your report shows progress', AppSection.progress, AppColors.brand),
   ];
 
   @override
@@ -205,7 +206,7 @@ class _StudyTimePanel extends StatelessWidget {
                   ],
                 ),
               ),
-              const Pill(label: '+18% vs last week', color: AppColors.green),
+              const Pill(label: '+18% vs last week', color: AppColors.brand),
             ],
           ),
           const SizedBox(height: 24),
@@ -266,9 +267,9 @@ class _DeadlinesPanel extends StatelessWidget {
   }
 
   static Color _color(DeadlineStatus s) => switch (s) {
-        DeadlineStatus.overdue => AppColors.red,
-        DeadlineStatus.soon => AppColors.amber,
-        DeadlineStatus.upcoming => AppColors.blue,
-        DeadlineStatus.done => AppColors.green,
+        DeadlineStatus.overdue => AppColors.brand,
+        DeadlineStatus.soon => AppColors.brand,
+        DeadlineStatus.upcoming => AppColors.brand,
+        DeadlineStatus.done => AppColors.brand,
       };
 }

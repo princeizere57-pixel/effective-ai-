@@ -57,7 +57,7 @@ class WeeklyHoursChart extends StatelessWidget {
         ),
         barTouchData: BarTouchData(
           touchTooltipData: BarTouchTooltipData(
-            getTooltipColor: (_) => AppColors.navy,
+            getTooltipColor: (_) => AppColors.brand,
             getTooltipItem: (group, groupIndex, rod, rodIndex) => BarTooltipItem(
               '${rod.toY}h',
               const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),
@@ -76,7 +76,7 @@ class WeeklyHoursChart extends StatelessWidget {
                   gradient: const LinearGradient(
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
-                    colors: [AppColors.violetDark, AppColors.violetLight],
+                    colors: [AppColors.brand, AppColors.brand],
                   ),
                 ),
               ],
@@ -137,7 +137,7 @@ class QuizTrendChart extends StatelessWidget {
           LineChartBarData(
             spots: [for (var i = 0; i < scores.length; i++) FlSpot(i.toDouble(), scores[i])],
             isCurved: true,
-            color: AppColors.violet,
+            color: AppColors.brand,
             barWidth: 3,
             dotData: const FlDotData(show: true),
             belowBarData: BarAreaData(
@@ -145,7 +145,7 @@ class QuizTrendChart extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [tint(AppColors.violet, 0.25), tint(AppColors.violet, 0)],
+                colors: [tint(AppColors.brand, 0.25), tint(AppColors.brand, 0)],
               ),
             ),
           ),

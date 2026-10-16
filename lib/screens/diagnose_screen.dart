@@ -203,7 +203,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           children: [
             Row(
               children: [
-                const Icon(Icons.insights, color: AppColors.amber),
+                const Icon(Icons.insights, color: AppColors.brand),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
@@ -227,7 +227,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                 ],
               ),
               const SizedBox(height: 6),
-              ProgressBar(value: e.value / mistakes.length, color: AppColors.amber, height: 6),
+              ProgressBar(value: e.value / mistakes.length, color: AppColors.brand, height: 6),
               const SizedBox(height: 12),
             ],
             const SizedBox(height: 4),
@@ -258,8 +258,8 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text('You chose: ${m.question.options[m.chosen]}', style: const TextStyle(color: AppColors.red)),
-                Text('Correct: ${m.question.options[m.question.answer]}', style: const TextStyle(color: AppColors.green)),
+                Text('You chose: ${m.question.options[m.chosen]}', style: const TextStyle(color: AppColors.brand)),
+                Text('Correct: ${m.question.options[m.question.answer]}', style: const TextStyle(color: AppColors.brand)),
                 const SizedBox(height: 10),
                 Wrap(
                   spacing: 8,
@@ -267,7 +267,7 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
                     NeutralPill(conceptById(m.question.conceptId).name),
-                    Pill(label: m.question.kind.label, color: AppColors.amber),
+                    Pill(label: m.question.kind.label, color: AppColors.brand),
                     TextButton.icon(
                       onPressed: () => StudySessionScreen.open(context, m.question.conceptId, mistake: m),
                       icon: const Icon(Icons.build_outlined, size: 16),

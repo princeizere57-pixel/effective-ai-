@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../services/learner_state.dart';
+import '../services/session.dart';
 import '../theme/app_palette.dart';
 import '../theme/theme_controller.dart';
 import '../widgets/common.dart';
@@ -136,7 +137,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
               OutlinedButton.icon(
-                onPressed: () => showToast(context, 'Signed out'),
+                onPressed: signOut,
                 icon: const Icon(Icons.logout, size: 18),
                 label: const Text('Sign out'),
               ),

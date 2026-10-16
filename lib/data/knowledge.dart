@@ -7,11 +7,11 @@ import '../theme/app_colors.dart';
 // When the AI backend is connected, uploads are parsed into the same shapes.
 
 enum DocType {
-  book('Book', Icons.menu_book_outlined, AppColors.violet),
-  notes('Notes', Icons.edit_note, AppColors.green),
-  slides('Slides', Icons.slideshow_outlined, AppColors.blue),
-  paper('Paper', Icons.article_outlined, AppColors.amber),
-  pastExam('Past exam', Icons.assignment_outlined, AppColors.red);
+  book('Book', Icons.menu_book_outlined, AppColors.brand),
+  notes('Notes', Icons.edit_note, AppColors.brand),
+  slides('Slides', Icons.slideshow_outlined, AppColors.brand),
+  paper('Paper', Icons.article_outlined, AppColors.brand),
+  pastExam('Past exam', Icons.assignment_outlined, AppColors.brand);
 
   const DocType(this.label, this.icon, this.color);
 

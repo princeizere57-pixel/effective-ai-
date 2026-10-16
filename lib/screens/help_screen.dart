@@ -56,7 +56,7 @@ class _HelpScreenState extends State<HelpScreen> {
         Panel(
           child: Row(
             children: [
-              const Icon(Icons.favorite_border, color: AppColors.red),
+              const Icon(Icons.favorite_border, color: AppColors.brand),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -93,7 +93,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   ListTile(
                     leading: CircleAvatar(
                       radius: 15,
-                      backgroundColor: tint(AppColors.violet, 0.16),
+                      backgroundColor: tint(AppColors.brand, 0.16),
                       child: Text('$number', style: TextStyle(fontSize: 12, color: p.primaryText, fontWeight: FontWeight.w700)),
                     ),
                     title: Text(name, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -120,7 +120,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 for (final (question, answer) in faqs)
                   ExpansionTile(
                     title: Text(question, style: const TextStyle(fontWeight: FontWeight.w600)),
-                    iconColor: AppColors.violet,
+                    iconColor: AppColors.brand,
                     collapsedIconColor: p.mutedForeground,
                     childrenPadding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                     expandedAlignment: Alignment.centerLeft,

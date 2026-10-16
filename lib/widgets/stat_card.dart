@@ -31,7 +31,7 @@ class StatCard extends StatelessWidget {
               ),
               const Spacer(),
               if (stat.delta != null)
-                Text(stat.delta!, style: AppTheme.mono(12, color: AppColors.green)),
+                Text(stat.delta!, style: AppTheme.mono(12, color: AppColors.brand)),
             ],
           ),
           const SizedBox(height: 16),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../navigation.dart';
 import '../services/learner_state.dart';
+import '../services/session.dart';
 import '../theme/app_palette.dart';
 import '../widgets/common.dart';
 import '../widgets/page_turn.dart';
@@ -41,7 +42,7 @@ class _AppShellState extends State<AppShell> {
   static const _turnTime = Duration(milliseconds: 550);
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  AppSection _section = AppSection.home;
+  AppSection _section = startSection ?? AppSection.home;
   bool _loading = true;
   Timer? _timer;
 
@@ -129,7 +130,9 @@ class _AppShellState extends State<AppShell> {
           key: _scaffoldKey,
           appBar: AppBar(
             backgroundColor: p.sidebarBg,
-            foregroundColor: Colors.white,
+            foregroundColor: p.sidebarTextActive,
+            surfaceTintColor: Colors.transparent,
+            shape: Border(bottom: BorderSide(color: p.sidebarBorder)),
             title: const BrandMark(),
             actions: [
               IconButton(

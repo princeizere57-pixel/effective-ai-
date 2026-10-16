@@ -171,7 +171,7 @@ class _LearningReport extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Icon(Icons.description_outlined, color: AppColors.violet),
+              const Icon(Icons.description_outlined, color: AppColors.brand),
               const SizedBox(width: 10),
               Expanded(child: Text('Your learning report', style: AppTheme.display(22))),
             ],
@@ -186,9 +186,9 @@ class _LearningReport extends StatelessWidget {
           ResponsiveGrid(
             minItemWidth: 200,
             children: [
-              column('Know well', AppColors.green, learner.strong, 'Nothing yet'),
-              column('Still learning', AppColors.blue, learner.learning, 'Nothing here'),
-              column("Don't know yet", AppColors.red, gaps, 'No gaps'),
+              column('Know well', AppColors.brand, learner.strong, 'Nothing yet'),
+              column('Still learning', AppColors.brand, learner.learning, 'Nothing here'),
+              column("Don't know yet", AppColors.brand, gaps, 'No gaps'),
             ],
           ),
           const SizedBox(height: 16),

@@ -137,7 +137,7 @@ class _StudySessionScreenState extends State<StudySessionScreen> {
           OptionTile(label: 'You chose: ${q.options[m.chosen]}', selected: true, state: OptionState.wrong),
           OptionTile(label: 'Correct: ${q.options[q.answer]}', selected: false, state: OptionState.correct),
           const SizedBox(height: 8),
-          Pill(label: 'Type of mistake: ${q.kind.label}', color: AppColors.amber),
+          Pill(label: 'Type of mistake: ${q.kind.label}', color: AppColors.brand),
           const SizedBox(height: 12),
           Text(q.explanation, style: TextStyle(color: p.mutedForeground, height: 1.5)),
           const SizedBox(height: 8),
@@ -157,7 +157,7 @@ class _StudySessionScreenState extends State<StudySessionScreen> {
           const SizedBox(height: 12),
           Container(
             padding: const EdgeInsets.all(14),
-            decoration: BoxDecoration(color: tint(AppColors.violet, 0.1), borderRadius: BorderRadius.circular(AppRadius.base)),
+            decoration: BoxDecoration(color: tint(AppColors.brand, 0.1), borderRadius: BorderRadius.circular(AppRadius.base)),
             child: Text('In one line: ${_concept.simple}', style: TextStyle(color: p.primaryText, height: 1.5)),
           ),
           const SizedBox(height: 14),
@@ -238,14 +238,14 @@ class _StepBar extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: i == current ? AppColors.violet : (i < current ? tint(AppColors.green) : p.muted),
+              color: i == current ? AppColors.brand : (i < current ? tint(AppColors.brand) : p.muted),
               borderRadius: BorderRadius.circular(999),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (i < current) ...[
-                  const Icon(Icons.check, size: 14, color: AppColors.green),
+                  const Icon(Icons.check, size: 14, color: AppColors.brand),
                   const SizedBox(width: 4),
                 ],
                 Text(
@@ -253,7 +253,7 @@ class _StepBar extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: i == current ? Colors.white : (i < current ? AppColors.green : p.mutedForeground),
+                    color: i == current ? Colors.white : (i < current ? AppColors.brand : p.mutedForeground),
                   ),
                 ),
               ],

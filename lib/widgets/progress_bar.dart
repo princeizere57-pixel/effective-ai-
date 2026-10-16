@@ -8,7 +8,7 @@ class ProgressBar extends StatelessWidget {
   const ProgressBar({
     super.key,
     required this.value,
-    this.color = AppColors.violet,
+    this.color = AppColors.brand,
     this.height = 6,
   });
 

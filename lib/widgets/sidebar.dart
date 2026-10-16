@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/mock_data.dart';
 import '../navigation.dart';
 import '../services/learner_state.dart';
+import '../services/session.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
@@ -100,14 +101,14 @@ class BrandMark extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [AppColors.violet, AppColors.blue]),
+            gradient: const LinearGradient(colors: [AppColors.brand, AppColors.brand]),
             borderRadius: BorderRadius.circular(10),
-            boxShadow: AppShadows.violet,
+            boxShadow: AppShadows.brand,
           ),
           child: const Icon(Icons.auto_stories, color: Colors.white, size: 20),
         ),
         const SizedBox(width: 10),
-        Text('Effective AI', style: AppTheme.display(20, color: Colors.white)),
+        Text('Effective AI', style: AppTheme.display(20, color: context.palette.sidebarTextActive)),
       ],
     );
   }
@@ -121,17 +122,17 @@ class StreakPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: tint(AppColors.amber, 0.08),
-        border: Border.all(color: AppColors.amber.withValues(alpha: 0.45)),
+        color: tint(AppColors.brand, 0.08),
+        border: Border.all(color: AppColors.brand.withValues(alpha: 0.45)),
         borderRadius: BorderRadius.circular(999),
       ),
       child: const Row(
         children: [
-          Icon(Icons.local_fire_department_outlined, color: AppColors.amber, size: 18),
+          Icon(Icons.local_fire_department_outlined, color: AppColors.brand, size: 18),
           SizedBox(width: 8),
           Text(
             '$streakDays-day streak',
-            style: TextStyle(color: AppColors.amber, fontWeight: FontWeight.w600),
+            style: TextStyle(color: AppColors.brand, fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -169,7 +170,7 @@ class _SidebarTile extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(section.icon, size: 21, color: selected ? AppColors.violetMuted : color),
+                Icon(section.icon, size: 21, color: selected ? AppColors.brand : color),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Text(
@@ -184,13 +185,13 @@ class _SidebarTile extends StatelessWidget {
                     height: 26,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: tint(AppColors.violet, 0.35),
+                      color: tint(AppColors.brand, 0.14),
                       shape: BoxShape.circle,
                     ),
                     child: Text(
                       '$badge',
                       style: const TextStyle(
-                        color: AppColors.violetMuted,
+                        color: AppColors.brand,
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
                       ),
@@ -221,7 +222,7 @@ class _UserTile extends StatelessWidget {
             alignment: Alignment.center,
             decoration: const BoxDecoration(
               shape: BoxShape.circle,
-              gradient: LinearGradient(colors: [AppColors.violet, AppColors.blue]),
+              gradient: LinearGradient(colors: [AppColors.brand, AppColors.brand]),
             ),
             child: Text(
               userFullName[0],
@@ -250,7 +251,7 @@ class _UserTile extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => showToast(context, 'Signed out'),
+            onPressed: signOut,
             icon: Icon(Icons.logout, size: 20, color: p.sidebarText),
             tooltip: 'Sign out',
           ),

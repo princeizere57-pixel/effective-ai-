@@ -74,7 +74,7 @@ class _QuestionCardState extends State<QuestionCard> {
               children: [
                 Icon(
                   correct ? Icons.check_circle : Icons.cancel,
-                  color: correct ? AppColors.green : AppColors.red,
+                  color: correct ? AppColors.brand : AppColors.brand,
                   size: 20,
                 ),
                 const SizedBox(width: 8),
@@ -82,7 +82,7 @@ class _QuestionCardState extends State<QuestionCard> {
                   correct ? 'Correct' : 'Not quite',
                   style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: correct ? AppColors.green : AppColors.red,
+                    color: correct ? AppColors.brand : AppColors.brand,
                   ),
                 ),
               ],
@@ -128,14 +128,14 @@ class OptionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final p = context.palette;
     final Color border = switch (state) {
-      OptionState.correct => AppColors.green,
-      OptionState.wrong => AppColors.red,
-      _ => selected ? AppColors.violet : p.border,
+      OptionState.correct => AppColors.brand,
+      OptionState.wrong => AppColors.brand,
+      _ => selected ? AppColors.brand : p.border,
     };
     final Color? fill = switch (state) {
-      OptionState.correct => tint(AppColors.green),
-      OptionState.wrong => tint(AppColors.red),
-      _ => selected ? tint(AppColors.violet) : null,
+      OptionState.correct => tint(AppColors.brand),
+      OptionState.wrong => tint(AppColors.brand),
+      _ => selected ? tint(AppColors.brand) : null,
     };
     final IconData icon = switch (state) {
       OptionState.correct => Icons.check_circle,

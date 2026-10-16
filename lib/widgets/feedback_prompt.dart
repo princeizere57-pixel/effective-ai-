@@ -77,7 +77,7 @@ class _FeedbackDialogState extends State<_FeedbackDialog> {
                       tooltip: '$i of 5',
                       icon: Icon(
                         i <= _rating ? Icons.star_rounded : Icons.star_outline_rounded,
-                        color: AppColors.amber,
+                        color: AppColors.brand,
                         size: 32,
                       ),
                     ),
