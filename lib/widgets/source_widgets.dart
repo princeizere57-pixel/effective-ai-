@@ -6,6 +6,7 @@ import '../services/learner_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
+import 'hop.dart';
 import 'progress_bar.dart';
 
 /// Colored icon for a document type.
@@ -24,7 +25,7 @@ class DocTypeBadge extends StatelessWidget {
         color: tint(type.color),
         borderRadius: BorderRadius.circular(AppRadius.base),
       ),
-      child: Icon(type.icon, color: type.color, size: size * 0.5),
+      child: HopIcon(height: 6, child: Icon(type.icon, color: type.color, size: size * 0.5)),
     );
   }
 }

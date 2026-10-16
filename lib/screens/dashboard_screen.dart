@@ -8,6 +8,7 @@ import '../services/session.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
+import '../widgets/hop.dart';
 import '../widgets/charts.dart';
 import '../widgets/common.dart';
 import '../widgets/fade_slide_in.dart';
@@ -127,7 +128,7 @@ class _Pipeline extends StatelessWidget {
       minItemWidth: 180,
       children: [
         for (final (icon, title, text, section, color) in _steps)
-          Material(
+          HopRegion(child: Material(
             color: p.card,
             borderRadius: BorderRadius.circular(AppRadius.lg),
             child: InkWell(
@@ -142,7 +143,7 @@ class _Pipeline extends StatelessWidget {
                       width: 36,
                       height: 36,
                       decoration: BoxDecoration(color: tint(color), borderRadius: BorderRadius.circular(AppRadius.base)),
-                      child: Icon(icon, color: color, size: 20),
+                      child: HopIcon(child: Icon(icon, color: color, size: 20)),
                     ),
                     const SizedBox(height: 12),
                     Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
@@ -152,7 +153,7 @@ class _Pipeline extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )),
       ],
     );
   }

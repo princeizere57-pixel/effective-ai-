@@ -5,6 +5,7 @@ import '../services/session.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
+import '../widgets/hop.dart';
 import '../theme/breakpoints.dart';
 import '../widgets/sidebar.dart';
 
@@ -184,19 +185,19 @@ class _Hero extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               for (final (icon, text) in _outcomes)
-                Row(
+                HopRegion(child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       width: 30,
                       height: 30,
                       decoration: BoxDecoration(color: tint(AppColors.brand), borderRadius: BorderRadius.circular(9)),
-                      child: Icon(icon, size: 16, color: AppColors.brand),
+                      child: HopIcon(height: 6, child: Icon(icon, size: 16, color: AppColors.brand)),
                     ),
                     const SizedBox(width: 8),
                     Text(text, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                   ],
-                ),
+                )),
             ],
           ),
         ],
@@ -211,14 +212,14 @@ class _WelcomeSidebar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
-    Widget item(IconData icon, String label, VoidCallback onTap) => ListTile(
-          leading: Icon(icon, color: AppColors.brand),
+    Widget item(IconData icon, String label, VoidCallback onTap) => HopRegion(child: ListTile(
+          leading: HopIcon(child: Icon(icon, color: AppColors.brand)),
           title: Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
           dense: true,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.base)),
           hoverColor: p.sidebarHover,
           onTap: onTap,
-        );
+        ));
 
     return Container(
       width: 272,

@@ -8,6 +8,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
+import 'hop.dart';
 
 /// Sidebar: logo, streak, main sections, help/settings and the signed-in user.
 ///
@@ -122,7 +123,7 @@ class BrandMark extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             boxShadow: AppShadows.brand,
           ),
-          child: const Icon(Icons.auto_stories, color: Colors.white, size: 20),
+          child: const HopIcon(height: 5, child: Icon(Icons.auto_stories, color: Colors.white, size: 20)),
         ),
         if (showName) ...[
           const SizedBox(width: 10),
@@ -188,7 +189,7 @@ class _SidebarTile extends StatelessWidget {
             clipBehavior: Clip.none,
             alignment: Alignment.center,
             children: [
-              Icon(section.icon, size: 22, color: color),
+              HopIcon(child: Icon(section.icon, size: 22, color: color)),
               if (hasBadge)
                 Positioned(
                   top: -6,
@@ -206,7 +207,7 @@ class _SidebarTile extends StatelessWidget {
           )
         : Row(
             children: [
-              Icon(section.icon, size: 21, color: color),
+              HopIcon(child: Icon(section.icon, size: 21, color: color)),
               const SizedBox(width: 14),
               Expanded(
                 child: Text(
@@ -249,7 +250,8 @@ class _SidebarTile extends StatelessWidget {
         ),
       ),
     );
-    return compact ? Tooltip(message: section.label, preferBelow: false, child: tileBody) : tileBody;
+    final hopping = HopRegion(child: tileBody);
+    return compact ? Tooltip(message: section.label, preferBelow: false, child: hopping) : hopping;
   }
 }
 

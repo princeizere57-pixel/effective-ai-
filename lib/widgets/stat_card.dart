@@ -4,6 +4,7 @@ import '../data/mock_data.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
+import 'hop.dart';
 import 'common.dart';
 
 class StatCard extends StatelessWidget {
@@ -13,7 +14,8 @@ class StatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Panel(
+    return HopRegion(
+      child: Panel(
       padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +29,7 @@ class StatCard extends StatelessWidget {
                   color: tint(stat.color),
                   borderRadius: BorderRadius.circular(AppRadius.base),
                 ),
-                child: Icon(stat.icon, color: stat.color, size: 20),
+                child: HopIcon(child: Icon(stat.icon, color: stat.color, size: 20)),
               ),
               const Spacer(),
               if (stat.delta != null)
@@ -42,6 +44,7 @@ class StatCard extends StatelessWidget {
             style: TextStyle(color: context.palette.mutedForeground, fontSize: 13),
           ),
         ],
+      ),
       ),
     );
   }

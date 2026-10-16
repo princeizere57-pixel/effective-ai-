@@ -5,6 +5,7 @@ import '../services/learner_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import 'common.dart';
+import 'hop.dart';
 
 class Suggestion {
   const Suggestion(this.icon, this.title, this.detail, this.section, this.color);
@@ -64,7 +65,7 @@ class SuggestionsPanel extends StatelessWidget {
       minItemWidth: 240,
       children: [
         for (final s in suggestionsFor(learner))
-          Material(
+          HopRegion(child: Material(
             color: p.card,
             borderRadius: BorderRadius.circular(AppRadius.lg),
             child: InkWell(
@@ -86,7 +87,7 @@ class SuggestionsPanel extends StatelessWidget {
                         color: tint(s.color),
                         borderRadius: BorderRadius.circular(AppRadius.base),
                       ),
-                      child: Icon(s.icon, color: s.color, size: 20),
+                      child: HopIcon(child: Icon(s.icon, color: s.color, size: 20)),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -104,7 +105,7 @@ class SuggestionsPanel extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          )),
       ],
     );
   }
