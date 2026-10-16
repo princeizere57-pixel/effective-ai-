@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
 import '../navigation.dart';
+import '../services/learner_state.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
@@ -33,7 +34,10 @@ class Sidebar extends StatelessWidget {
     return Container(
       width: width,
       decoration: BoxDecoration(color: p.sidebarBg, boxShadow: AppShadows.sidebar),
-      child: SafeArea(
+      // Rebuild when gaps or reviews change so the badges stay current.
+      child: ListenableBuilder(
+        listenable: learner,
+        builder: (context, _) => SafeArea(
         right: false,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -49,7 +53,20 @@ class Sidebar extends StatelessWidget {
             Expanded(
               child: ListView(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
-                children: [for (final s in mainSections) tile(s)],
+                children: [
+                  for (final (label, sections) in sidebarGroups) ...[
+                    if (label != null)
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(14, 14, 0, 6),
+                        child: Text(
+                          label,
+                          style: AppTheme.mono(10, color: p.sidebarText.withValues(alpha: 0.7))
+                              .copyWith(letterSpacing: 1.4),
+                        ),
+                      ),
+                    for (final s in sections) tile(s),
+                  ],
+                ],
               ),
             ),
             Divider(color: p.sidebarBorder, height: 1, thickness: 1),
@@ -64,6 +81,7 @@ class Sidebar extends StatelessWidget {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

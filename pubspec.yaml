@@ -14,6 +14,8 @@ dependencies:
   google_fonts: ^6.2.1
   # Replaces recharts
   fl_chart: ^0.70.2
+  # Uploading books, notes, slides, papers and past exams to My Library
+  file_picker: ^8.1.2
 
 dev_dependencies:
   flutter_test:

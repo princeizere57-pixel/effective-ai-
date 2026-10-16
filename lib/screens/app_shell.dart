@@ -3,19 +3,26 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../navigation.dart';
+import '../services/learner_state.dart';
 import '../theme/app_palette.dart';
 import '../widgets/common.dart';
 import '../widgets/page_turn.dart';
 import '../widgets/sidebar.dart';
-import 'analytics_screen.dart';
+import 'ask_screen.dart';
+import 'connections_screen.dart';
 import 'dashboard_screen.dart';
+import 'diagnose_screen.dart';
+import 'exam_screen.dart';
+import 'explain_screen.dart';
 import 'help_screen.dart';
-import 'knowledge_screen.dart';
+import 'library_screen.dart';
 import 'loading_view.dart';
 import 'plan_screen.dart';
 import 'practice_screen.dart';
+import 'progress_screen.dart';
+import 'search_screen.dart';
+import 'session_screen.dart';
 import 'settings_screen.dart';
-import 'understand_screen.dart';
 
 /// Fixed sidebar on wide screens, slide-out drawer on phones.
 ///
@@ -41,6 +48,7 @@ class _AppShellState extends State<AppShell> {
   @override
   void initState() {
     super.initState();
+    learner.markVisited(AppSection.home.name);
     _timer = Timer(_loadTime, _finishLoading);
   }
 
@@ -57,6 +65,7 @@ class _AppShellState extends State<AppShell> {
   void _select(AppSection s) {
     _scaffoldKey.currentState?.closeDrawer();
     if (s == _section && !_loading) return;
+    learner.markVisited(s.name);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     _timer?.cancel();
     setState(() {
@@ -67,13 +76,19 @@ class _AppShellState extends State<AppShell> {
   }
 
   Widget _page() => switch (_section) {
-        AppSection.home => DashboardScreen(onOpenKnowledge: () => _select(AppSection.knowledge)),
-        AppSection.knowledge => const KnowledgeScreen(),
-        AppSection.understand => const UnderstandScreen(),
+        AppSection.home => DashboardScreen(onNavigate: _select),
+        AppSection.library => const LibraryScreen(),
+        AppSection.ask => const AskScreen(),
+        AppSection.search => const SearchScreen(),
+        AppSection.explain => const ExplainScreen(),
+        AppSection.connections => const ConnectionsScreen(),
+        AppSection.diagnose => const DiagnoseScreen(),
         AppSection.practice => const PracticeScreen(),
+        AppSection.exam => const ExamScreen(),
+        AppSection.session => const SessionScreen(),
         AppSection.plan => const PlanScreen(),
-        AppSection.progress => const AnalyticsScreen(),
-        AppSection.help => const HelpScreen(),
+        AppSection.progress => ProgressScreen(onNavigate: _select),
+        AppSection.help => HelpScreen(onNavigate: _select),
         AppSection.settings => const SettingsScreen(),
       };
 
@@ -85,8 +100,7 @@ class _AppShellState extends State<AppShell> {
     final body = ClipRect(
       child: AnimatedSwitcher(
         duration: reduceMotion ? Duration.zero : _turnTime,
-        transitionBuilder: (child, animation) =>
-            PageTurnTransition(animation: animation, child: child),
+        transitionBuilder: (child, animation) => PageTurnTransition(animation: animation, child: child),
         layoutBuilder: (current, previous) => Stack(
           fit: StackFit.expand,
           children: [...previous, if (current != null) current],

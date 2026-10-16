@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
+import '../services/learner_state.dart';
 import '../theme/app_palette.dart';
 import '../theme/theme_controller.dart';
 import '../widgets/common.dart';
@@ -20,7 +21,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _dailyReminder = true;
   bool _weeklyReport = true;
   bool _sounds = false;
-  int _dailyGoal = 30;
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               const Text('Daily goal', style: sectionTitle),
               const SizedBox(height: 4),
               Text(
-                'How long you want to study each day. Meeting it keeps your streak going.',
+                'How long you want to study each day. My Plan is rebuilt around it.',
                 style: sub,
               ),
               const SizedBox(height: 16),
@@ -79,9 +79,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ButtonSegment(value: 30, label: Text('30 min')),
                   ButtonSegment(value: 60, label: Text('60 min')),
                 ],
-                selected: {_dailyGoal},
+                selected: {learner.dailyGoal},
                 showSelectedIcon: false,
-                onSelectionChanged: (s) => setState(() => _dailyGoal = s.first),
+                onSelectionChanged: (s) => setState(() => learner.setDailyGoal(s.first)),
               ),
             ],
           ),
