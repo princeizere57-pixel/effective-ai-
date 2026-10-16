@@ -10,18 +10,26 @@ import '../theme/app_theme.dart';
 import 'common.dart';
 
 /// Sidebar: logo, streak, main sections, help/settings and the signed-in user.
-/// Used as a fixed column on wide screens and inside a Drawer on phones.
+///
+/// Desktop shows it full width with labels, tablet shows it as a slim icon
+/// rail ([compact]), and phones put the full version inside a Drawer.
 class Sidebar extends StatelessWidget {
   const Sidebar({
     super.key,
     required this.selected,
     required this.onSelect,
     this.width = 264,
+    this.compact = false,
   });
 
   final AppSection selected;
   final ValueChanged<AppSection> onSelect;
   final double width;
+
+  /// Icon-only rail for tablets; labels appear as tooltips.
+  final bool compact;
+
+  static const railWidth = 76.0;
 
   @override
   Widget build(BuildContext context) {
@@ -29,60 +37,66 @@ class Sidebar extends StatelessWidget {
     Widget tile(AppSection s) => _SidebarTile(
           section: s,
           selected: s == selected,
+          compact: compact,
           onTap: () => onSelect(s),
         );
 
     return Container(
-      width: width,
-      decoration: BoxDecoration(color: p.sidebarBg, boxShadow: AppShadows.sidebar),
+      width: compact ? railWidth : width,
+      decoration: BoxDecoration(
+        color: p.sidebarBg,
+        border: Border(right: BorderSide(color: p.sidebarBorder)),
+      ),
       // Rebuild when gaps or reviews change so the badges stay current.
       child: ListenableBuilder(
         listenable: learner,
         builder: (context, _) => SafeArea(
-        right: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Padding(
-              padding: EdgeInsets.fromLTRB(20, 24, 20, 0),
-              child: BrandMark(),
-            ),
-            const Padding(
-              padding: EdgeInsets.fromLTRB(12, 24, 12, 12),
-              child: StreakPill(),
-            ),
-            Expanded(
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                children: [
-                  for (final (label, sections) in sidebarGroups) ...[
-                    if (label != null)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(14, 14, 0, 6),
-                        child: Text(
-                          label,
-                          style: AppTheme.mono(10, color: p.sidebarText.withValues(alpha: 0.7))
-                              .copyWith(letterSpacing: 1.4),
-                        ),
-                      ),
-                    for (final s in sections) tile(s),
+          right: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: compact ? const EdgeInsets.only(top: 20) : const EdgeInsets.fromLTRB(20, 24, 20, 0),
+                child: compact ? const Center(child: BrandMark(showName: false)) : const BrandMark(),
+              ),
+              Padding(
+                padding: compact ? const EdgeInsets.fromLTRB(10, 16, 10, 8) : const EdgeInsets.fromLTRB(12, 24, 12, 12),
+                child: StreakPill(compact: compact),
+              ),
+              Expanded(
+                child: ListView(
+                  padding: EdgeInsets.symmetric(horizontal: compact ? 10 : 12),
+                  children: [
+                    for (final (label, sections) in sidebarGroups) ...[
+                      if (label != null)
+                        compact
+                            ? Divider(height: 18, color: p.sidebarBorder)
+                            : Padding(
+                                padding: const EdgeInsets.fromLTRB(14, 14, 0, 6),
+                                child: Text(
+                                  label,
+                                  style: AppTheme.mono(10, color: p.sidebarText.withValues(alpha: 0.7))
+                                      .copyWith(letterSpacing: 1.4),
+                                ),
+                              ),
+                      for (final s in sections) tile(s),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-            Divider(color: p.sidebarBorder, height: 1, thickness: 1),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(12, 12, 12, 16),
-              child: Column(
-                children: [
-                  for (final s in footerSections) tile(s),
-                  const SizedBox(height: 12),
-                  const _UserTile(),
-                ],
+              Divider(color: p.sidebarBorder, height: 1, thickness: 1),
+              Padding(
+                padding: compact ? const EdgeInsets.fromLTRB(10, 10, 10, 12) : const EdgeInsets.fromLTRB(12, 12, 12, 16),
+                child: Column(
+                  children: [
+                    for (final s in footerSections) tile(s),
+                    const SizedBox(height: 8),
+                    _UserTile(compact: compact),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
         ),
       ),
     );
@@ -90,7 +104,10 @@ class Sidebar extends StatelessWidget {
 }
 
 class BrandMark extends StatelessWidget {
-  const BrandMark({super.key});
+  const BrandMark({super.key, this.showName = true});
+
+  /// Phones and the tablet rail show only the logo.
+  final bool showName;
 
   @override
   Widget build(BuildContext context) {
@@ -101,50 +118,62 @@ class BrandMark extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            gradient: LinearGradient(colors: [AppColors.brand, AppColors.brand]),
+            color: AppColors.brand,
             borderRadius: BorderRadius.circular(10),
             boxShadow: AppShadows.brand,
           ),
           child: const Icon(Icons.auto_stories, color: Colors.white, size: 20),
         ),
-        const SizedBox(width: 10),
-        Text('Effective AI', style: AppTheme.display(20, color: context.palette.sidebarTextActive)),
+        if (showName) ...[
+          const SizedBox(width: 10),
+          Text('Effective AI', style: AppTheme.display(20, color: context.palette.sidebarTextActive)),
+        ],
       ],
     );
   }
 }
 
 class StreakPill extends StatelessWidget {
-  const StreakPill({super.key});
+  const StreakPill({super.key, this.compact = false});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    final pill = Container(
+      padding: EdgeInsets.symmetric(horizontal: compact ? 0 : 16, vertical: compact ? 8 : 10),
       decoration: BoxDecoration(
         color: tint(AppColors.brand, 0.08),
         border: Border.all(color: AppColors.brand.withValues(alpha: 0.45)),
         borderRadius: BorderRadius.circular(999),
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(Icons.local_fire_department_outlined, color: AppColors.brand, size: 18),
-          SizedBox(width: 8),
+          SizedBox(width: compact ? 2 : 8),
           Text(
-            '$streakDays-day streak',
+            compact ? '$streakDays' : '$streakDays-day streak',
             style: TextStyle(color: AppColors.brand, fontWeight: FontWeight.w600),
           ),
         ],
       ),
     );
+    return compact ? Tooltip(message: '$streakDays-day streak', child: pill) : pill;
   }
 }
 
 class _SidebarTile extends StatelessWidget {
-  const _SidebarTile({required this.section, required this.selected, required this.onTap});
+  const _SidebarTile({
+    required this.section,
+    required this.selected,
+    required this.compact,
+    required this.onTap,
+  });
 
   final AppSection section;
   final bool selected;
+  final bool compact;
   final VoidCallback onTap;
 
   @override
@@ -152,8 +181,55 @@ class _SidebarTile extends StatelessWidget {
     final p = context.palette;
     final color = selected ? p.sidebarTextActive : p.sidebarText;
     final badge = section.badge;
+    final hasBadge = badge != null && badge > 0;
 
-    return Padding(
+    final Widget content = compact
+        ? Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              Icon(section.icon, size: 22, color: color),
+              if (hasBadge)
+                Positioned(
+                  top: -6,
+                  right: -10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                    decoration: BoxDecoration(color: AppColors.brand, borderRadius: BorderRadius.circular(999)),
+                    child: Text(
+                      '$badge',
+                      style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+            ],
+          )
+        : Row(
+            children: [
+              Icon(section.icon, size: 21, color: color),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Text(
+                  section.label,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: color, fontSize: 15, fontWeight: FontWeight.w600),
+                ),
+              ),
+              if (hasBadge)
+                Container(
+                  width: 26,
+                  height: 26,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: tint(AppColors.brand, 0.14), shape: BoxShape.circle),
+                  child: Text(
+                    '$badge',
+                    style: TextStyle(color: AppColors.brand, fontSize: 12, fontWeight: FontWeight.w700),
+                  ),
+                ),
+            ],
+          );
+
+    final tileBody = Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Material(
         color: Colors.transparent,
@@ -163,72 +239,54 @@ class _SidebarTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(14),
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            padding: compact ? const EdgeInsets.symmetric(vertical: 12) : const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             decoration: BoxDecoration(
               color: selected ? p.sidebarActive : Colors.transparent,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Row(
-              children: [
-                Icon(section.icon, size: 21, color: selected ? AppColors.brand : color),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Text(
-                    section.label,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: color, fontSize: 15, fontWeight: FontWeight.w600),
-                  ),
-                ),
-                if (badge != null && badge > 0)
-                  Container(
-                    width: 26,
-                    height: 26,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: tint(AppColors.brand, 0.14),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Text(
-                      '$badge',
-                      style: TextStyle(
-                        color: AppColors.brand,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-              ],
-            ),
+            child: content,
           ),
         ),
       ),
     );
+    return compact ? Tooltip(message: section.label, preferBelow: false, child: tileBody) : tileBody;
   }
 }
 
 class _UserTile extends StatelessWidget {
-  const _UserTile();
+  const _UserTile({required this.compact});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     final p = context.palette;
+    final avatar = Container(
+      width: 40,
+      height: 40,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.brand),
+      child: Text(
+        userFullName[0],
+        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
+      ),
+    );
+    final logout = IconButton(
+      onPressed: signOut,
+      icon: Icon(Icons.logout, size: 20, color: p.sidebarText),
+      tooltip: 'Sign out',
+    );
+
+    if (compact) {
+      return Column(
+        children: [Tooltip(message: '$userFullName\n$userEmail', child: avatar), logout],
+      );
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 8),
       child: Row(
         children: [
-          Container(
-            width: 40,
-            height: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: LinearGradient(colors: [AppColors.brand, AppColors.brand]),
-            ),
-            child: Text(
-              userFullName[0],
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),
-            ),
-          ),
+          avatar,
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -236,11 +294,7 @@ class _UserTile extends StatelessWidget {
               children: [
                 Text(
                   userFullName,
-                  style: TextStyle(
-                    color: p.sidebarTextActive,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: TextStyle(color: p.sidebarTextActive, fontSize: 14, fontWeight: FontWeight.w600),
                 ),
                 Text(
                   userEmail,
@@ -250,11 +304,7 @@ class _UserTile extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: signOut,
-            icon: Icon(Icons.logout, size: 20, color: p.sidebarText),
-            tooltip: 'Sign out',
-          ),
+          logout,
         ],
       ),
     );

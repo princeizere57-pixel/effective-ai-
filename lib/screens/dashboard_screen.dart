@@ -90,6 +90,11 @@ class _Header extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // A different welcome line each time the learner logs in.
+        if (homeWelcome.isNotEmpty) ...[
+          Text(homeWelcome, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 6),
+        ],
         Text(homeGreeting.isEmpty ? 'Welcome, $userFirstName' : homeGreeting, style: AppTheme.display(wide ? 34 : 28)),
         const SizedBox(height: 6),
         Text(

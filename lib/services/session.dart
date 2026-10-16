@@ -15,10 +15,11 @@ final signedIn = ValueNotifier<bool>(false);
 AppSection? startSection;
 String? pendingQuestion;
 
-/// Greeting shown on Home, chosen once each time the learner enters.
+/// Greeting and welcome line shown on Home, chosen once each time the learner enters.
 String homeGreeting = '';
+String homeWelcome = '';
 
-/// Welcome page headlines; one is picked at random on every visit.
+/// Welcome lines; one is shown on Home each time the learner logs in.
 const welcomeMessages = [
   'Where should we begin?',
   'What are you studying today?',
@@ -45,6 +46,7 @@ void enterApp({AppSection? section, String? question}) {
     "Let's keep your streak going, $userFirstName",
   ];
   homeGreeting = greetings[_random.nextInt(greetings.length)];
+  homeWelcome = pickWelcomeMessage();
   signedIn.value = true;
 }
 

@@ -6,6 +6,7 @@ import '../navigation.dart';
 import '../services/learner_state.dart';
 import '../services/session.dart';
 import '../theme/app_palette.dart';
+import '../theme/breakpoints.dart';
 import '../widgets/common.dart';
 import '../widgets/page_turn.dart';
 import '../widgets/sidebar.dart';
@@ -114,12 +115,14 @@ class _AppShellState extends State<AppShell> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth >= 900) {
+        // Desktop: full sidebar. Tablet: icon rail. Phone: top bar + slide-out menu.
+        final size = ScreenSize.of(constraints.maxWidth);
+        if (!size.isPhone) {
           return Scaffold(
             key: _scaffoldKey,
             body: Row(
               children: [
-                Sidebar(selected: _section, onSelect: _select),
+                Sidebar(selected: _section, onSelect: _select, compact: !size.isDesktop),
                 Expanded(child: body),
               ],
             ),
