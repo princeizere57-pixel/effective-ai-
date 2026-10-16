@@ -1,0 +1,13 @@
+include: package:flutter_lints/flutter.yaml
+
+# Mirrors the intent of the old .eslintrc.json / Prettier setup.
+linter:
+  rules:
+    prefer_single_quotes: true
+    require_trailing_commas: true
+    avoid_print: true
+    prefer_const_constructors: true
+    lines_longer_than_80_chars: false
+
+formatter:
+  page_width: 100
