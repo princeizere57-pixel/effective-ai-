@@ -96,14 +96,24 @@ class _Main extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(message, textAlign: TextAlign.center, style: AppTheme.display(wide ? 40 : 30)),
-          const SizedBox(height: 12),
+          // A different welcome on every visit, above the fixed headline.
+          Text(message, textAlign: TextAlign.center, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 10),
           Text(
-            'Your private study assistant. It learns from your books, notes and past exams, '
-            'shows you what you don\'t understand yet, and plans what to study next.',
+            'You’re closer to that A than you think.',
             textAlign: TextAlign.center,
-            style: TextStyle(color: p.foreground, fontSize: 16, height: 1.5),
+            style: AppTheme.display(wide ? 44 : 32),
           ),
+          const SizedBox(height: 14),
+          Text(
+            'Your private study assistant learns from your books, notes and past exams, shows you '
+            'exactly what’s holding you back, and guides you step by step to the grade '
+            'you’ve been working for.',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: p.foreground, fontSize: 17, height: 1.55),
+          ),
+          const SizedBox(height: 24),
+          const StartPathButton(large: true),
           const SizedBox(height: 28),
           Container(
             padding: const EdgeInsets.fromLTRB(8, 6, 6, 6),
@@ -126,7 +136,7 @@ class _Main extends StatelessWidget {
                     onSubmitted: (_) => onAsk(),
                     textInputAction: TextInputAction.send,
                     decoration: InputDecoration(
-                      hintText: 'Ask about your course materials',
+                      hintText: 'Or ask a question about your course materials',
                       hintStyle: TextStyle(color: p.foreground.withValues(alpha: 0.6)),
                       border: InputBorder.none,
                     ),
@@ -244,11 +254,31 @@ class _ValueCard extends StatelessWidget {
             style: TextStyle(height: 1.5),
           ),
           const SizedBox(height: 14),
-          FilledButton(
-            onPressed: () => showAccountDialog(context, signUp: true),
-            child: const Text('Sign up free'),
-          ),
+          const StartPathButton(),
         ],
+      ),
+    );
+  }
+}
+
+/// The main call to action: signing up, framed as the reward.
+class StartPathButton extends StatelessWidget {
+  const StartPathButton({super.key, this.large = false});
+
+  final bool large;
+
+  @override
+  Widget build(BuildContext context) {
+    return FilledButton.icon(
+      onPressed: () => showAccountDialog(context, signUp: true),
+      icon: Icon(Icons.bolt, size: large ? 24 : 20),
+      label: const Text('Start my path to an A'),
+      style: FilledButton.styleFrom(
+        shape: const StadiumBorder(),
+        padding: large
+            ? const EdgeInsets.symmetric(horizontal: 32, vertical: 20)
+            : const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        textStyle: TextStyle(fontSize: large ? 18 : 15, fontWeight: FontWeight.w600),
       ),
     );
   }
@@ -269,10 +299,14 @@ class _AccountButtons extends StatelessWidget {
           child: const Text('Log in'),
         ),
         const SizedBox(width: 8),
-        FilledButton(
-          onPressed: () => showAccountDialog(context, signUp: true),
-          child: Text(compact ? 'Sign up' : 'Sign up for free'),
-        ),
+        // Phones have little room in the top bar, so they get the short label.
+        if (compact)
+          FilledButton(
+            onPressed: () => showAccountDialog(context, signUp: true),
+            child: const Text('Sign up'),
+          )
+        else
+          const StartPathButton(),
       ],
     );
   }
@@ -283,7 +317,7 @@ Future<void> showAccountDialog(BuildContext context, {required bool signUp}) {
   return showDialog<void>(
     context: context,
     builder: (context) => AlertDialog(
-      title: Text(signUp ? 'Create your account' : 'Log in'),
+      title: Text(signUp ? 'Start your path to an A' : 'Log in'),
       content: const SizedBox(
         width: 420,
         child: Text(
