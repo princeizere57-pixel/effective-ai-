@@ -24,7 +24,7 @@ class EffectiveAiApp extends StatelessWidget {
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: mode,
-        // Keep the accent in step with the theme on screen (light: Windows blue,
+        // Keep the accent in step with the theme on screen (light: bright blue,
         // dark: violet). Every widget below reads it while rebuilding for the new theme.
         builder: (context, child) {
           AppColors.brand = AppColors.accentFor(Theme.of(context).brightness);

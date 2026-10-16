@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 
 /// Effective AI uses a two-colour identity: one accent colour and white.
-/// Light mode uses Windows blue for every line of text and every icon; dark mode
+/// Light mode uses bright blue (#335CFF) for every line of text and every icon; dark mode
 /// keeps the original violet accents. Surfaces and borders come from `context.palette`.
 abstract final class AppColors {
-  /// Light-mode accent, the blue of the Windows logo.
-  static const windowsBlue = Color(0xFF0078D4);
+  /// Light-mode accent: bright blue (#335CFF).
+  static const lightAccent = Color(0xFF335CFF);
 
   /// Dark-mode accent, the logo violet.
   static const violet = Color(0xFF7C5CFC);
 
   /// The accent for the theme currently on screen. Set by the app whenever the
   /// theme changes (see `EffectiveAiApp` in main.dart), so it is not a constant.
-  static Color brand = windowsBlue;
+  static Color brand = lightAccent;
 
   /// Dark-theme surfaces only.
   static const navy = Color(0xFF0F1629);
   static const navyBorder = Color(0xFF2A3558);
 
-  static Color accentFor(Brightness b) => b == Brightness.light ? windowsBlue : violet;
+  static Color accentFor(Brightness b) => b == Brightness.light ? lightAccent : violet;
 }
 
 /// Translucent fill behind an icon, pill or chip: the pale tile behind the
