@@ -15,16 +15,49 @@ import 'page_scaffold.dart';
 /// Get Started: a checklist of quests grouped by the Effective AI pipeline.
 /// Steps complete themselves as the learner uses each feature; later groups
 /// unlock as earlier ones progress.
-class GetStartedScreen extends StatefulWidget {
+class GetStartedScreen extends StatelessWidget {
   const GetStartedScreen({super.key, required this.onNavigate});
 
   final ValueChanged<AppSection> onNavigate;
 
   @override
-  State<GetStartedScreen> createState() => _GetStartedScreenState();
+  Widget build(BuildContext context) {
+    return ListenableBuilder(
+      listenable: learner,
+      builder: (context, _) => PageScaffold(
+        builder: (context, width) => [
+          Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 680),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FadeSlideIn(child: _Header(done: completedQuests(learner), total: totalQuests)),
+                  const SizedBox(height: 20),
+                  QuestGroupList(onOpen: onNavigate),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-class _GetStartedScreenState extends State<GetStartedScreen> {
+/// The quest groups and cards. Used by Get Started inside the app and by the
+/// welcome page, where [onOpen] enters the demo at that feature.
+class QuestGroupList extends StatefulWidget {
+  const QuestGroupList({super.key, required this.onOpen, this.openLabel = 'Open'});
+
+  final ValueChanged<AppSection> onOpen;
+  final String openLabel;
+
+  @override
+  State<QuestGroupList> createState() => _QuestGroupListState();
+}
+
+class _QuestGroupListState extends State<QuestGroupList> {
   /// Quests the learner opened or closed by hand; otherwise the current one is open.
   final _toggled = <String, bool>{};
 
@@ -35,8 +68,6 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
     return ListenableBuilder(
       listenable: learner,
       builder: (context, _) {
-        final done = completedQuests(learner);
-        final total = totalQuests;
         // The current quest is the first unfinished one in the first open group.
         Quest? current;
         for (var i = 0; i < questGroups.length && current == null; i++) {
@@ -48,37 +79,26 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             }
           }
         }
-
-        return PageScaffold(
-          builder: (context, width) => [
-            Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 680),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FadeSlideIn(child: _Header(done: done, total: total)),
-                    const SizedBox(height: 20),
-                    for (var i = 0; i < questGroups.length; i++)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 14),
-                        child: FadeSlideIn(
-                          delay: Duration(milliseconds: 60 * i),
-                          child: _GroupPanel(
-                            group: questGroups[i],
-                            unlocked: isGroupUnlocked(learner, i),
-                            previous: i == 0 ? null : questGroups[i - 1].title,
-                            current: current,
-                            isOpen: _isOpen,
-                            onToggle: (q, open) => setState(() => _toggled[q.title] = open),
-                            onNavigate: widget.onNavigate,
-                          ),
-                        ),
-                      ),
-                  ],
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            for (var i = 0; i < questGroups.length; i++)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 14),
+                child: FadeSlideIn(
+                  delay: Duration(milliseconds: 60 * i),
+                  child: _GroupPanel(
+                    group: questGroups[i],
+                    unlocked: isGroupUnlocked(learner, i),
+                    previous: i == 0 ? null : questGroups[i - 1].title,
+                    current: current,
+                    isOpen: _isOpen,
+                    onToggle: (q, open) => setState(() => _toggled[q.title] = open),
+                    onNavigate: widget.onOpen,
+                    openLabel: widget.openLabel,
+                  ),
                 ),
               ),
-            ),
           ],
         );
       },
@@ -141,6 +161,7 @@ class _GroupPanel extends StatelessWidget {
     required this.isOpen,
     required this.onToggle,
     required this.onNavigate,
+    this.openLabel = 'Open',
   });
 
   final QuestGroup group;
@@ -150,6 +171,7 @@ class _GroupPanel extends StatelessWidget {
   final bool Function(Quest q, bool isCurrent) isOpen;
   final void Function(Quest q, bool open) onToggle;
   final ValueChanged<AppSection> onNavigate;
+  final String openLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -187,11 +209,16 @@ class _GroupPanel extends StatelessWidget {
                   child: Padding(padding: const EdgeInsets.fromLTRB(6, 6, 6, 6), child: header),
                 ),
               ),
-            if (unlocked)
-              Padding(
-                padding: const EdgeInsets.fromLTRB(6, 0, 6, 10),
-                child: Text(group.summary, style: TextStyle(color: p.mutedForeground, fontSize: 13)),
+            // Locked groups still say what they will do, so the outcome is clear up front.
+            Padding(
+              padding: const EdgeInsets.fromLTRB(6, 0, 6, 10),
+              child: Text(
+                unlocked
+                    ? group.summary
+                    : '${group.summary}: ${group.quests.map((q) => q.title.toLowerCase()).join(' · ')}',
+                style: TextStyle(color: p.mutedForeground, fontSize: 13),
               ),
+            ),
             if (unlocked)
               for (final q in group.quests)
                 Padding(
@@ -201,6 +228,7 @@ class _GroupPanel extends StatelessWidget {
                     open: isOpen(q, q == current),
                     onToggle: (open) => onToggle(q, open),
                     onNavigate: onNavigate,
+                    openLabel: openLabel,
                   ),
                 ),
           ],
@@ -211,7 +239,15 @@ class _GroupPanel extends StatelessWidget {
 }
 
 class _QuestCard extends StatelessWidget {
-  const _QuestCard({required this.quest, required this.open, required this.onToggle, required this.onNavigate});
+  const _QuestCard({
+    required this.quest,
+    required this.open,
+    required this.onToggle,
+    required this.onNavigate,
+    this.openLabel = 'Open',
+  });
+
+  final String openLabel;
 
   final Quest quest;
   final bool open;
@@ -298,7 +334,7 @@ class _QuestCard extends StatelessWidget {
                     const SizedBox(height: 10),
                     for (final step in quest.steps)
                       if (step == next)
-                        _CurrentStep(step: step, onOpen: () => onNavigate(step.section))
+                        _CurrentStep(step: step, label: openLabel, onOpen: () => onNavigate(step.section))
                       else
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
@@ -334,7 +370,9 @@ class _QuestCard extends StatelessWidget {
 
 /// The next thing to do, highlighted, with a button that goes straight there.
 class _CurrentStep extends StatelessWidget {
-  const _CurrentStep({required this.step, required this.onOpen});
+  const _CurrentStep({required this.step, required this.onOpen, this.label = 'Open'});
+
+  final String label;
 
   final QuestStep step;
   final VoidCallback onOpen;
@@ -360,7 +398,7 @@ class _CurrentStep extends StatelessWidget {
               TextButton.icon(
                 onPressed: onOpen,
                 icon: const Icon(Icons.open_in_new, size: 16),
-                label: const Text('Open'),
+                label: Text(label),
               ),
             ],
           ),
