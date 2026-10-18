@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../data/knowledge.dart';
@@ -73,6 +75,12 @@ class LearnerState extends ChangeNotifier {
   final Set<String> visited = {};
 
   int dailyGoal = 30;
+
+  /// When this session began; activity before it is sample history.
+  final DateTime startedAt = DateTime.now();
+
+  /// Things the learner has done that the Get Started quests look for.
+  final Set<String> milestones = {};
   bool diagnosticDone = false;
 
   void _seed() {
@@ -208,6 +216,7 @@ class LearnerState extends ChangeNotifier {
   }
 
   void setDailyGoal(int minutes) {
+    milestones.add('goal');
     dailyGoal = minutes;
     planUpdates.insert(0, 'Daily goal changed to $minutes minutes, so the plan was rebuilt.');
     notifyListeners();
@@ -223,7 +232,21 @@ class LearnerState extends ChangeNotifier {
     log(ActivityKind.feedback, 'Shared feedback on ${entry.where} (${entry.rating}/5)');
   }
 
-  void markVisited(String section) => visited.add(section);
+  void markVisited(String section) {
+    if (visited.add(section)) _notifySoon();
+  }
+
+  void markMilestone(String name) {
+    if (milestones.add(name)) _notifySoon();
+  }
+
+  /// Whether the learner did this kind of activity in the current session.
+  bool didThisSession(ActivityKind kind) =>
+      history.any((a) => a.kind == kind && !a.when.isBefore(startedAt));
+
+  // Called from event handlers and initState; deferring avoids rebuilding
+  // listeners in the middle of a build.
+  void _notifySoon() => scheduleMicrotask(notifyListeners);
 }
 
 final learner = LearnerState();

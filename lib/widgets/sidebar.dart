@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/mock_data.dart';
+import '../data/quests.dart';
 import '../navigation.dart';
 import '../services/learner_state.dart';
 import '../services/session.dart';
@@ -9,6 +10,7 @@ import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import 'common.dart';
 import 'hop.dart';
+import 'progress_bar.dart';
 
 /// Sidebar: logo, streak, main sections, help/settings and the signed-in user.
 ///
@@ -85,6 +87,11 @@ class Sidebar extends StatelessWidget {
                   ],
                 ),
               ),
+              if (!allQuestsDone(learner))
+                Padding(
+                  padding: compact ? const EdgeInsets.fromLTRB(10, 8, 10, 10) : const EdgeInsets.fromLTRB(12, 8, 12, 12),
+                  child: _ChecklistCard(compact: compact, onOpen: () => onSelect(AppSection.getStarted)),
+                ),
               Divider(color: p.sidebarBorder, height: 1, thickness: 1),
               Padding(
                 padding: compact ? const EdgeInsets.fromLTRB(10, 10, 10, 12) : const EdgeInsets.fromLTRB(12, 12, 12, 16),
@@ -98,6 +105,97 @@ class Sidebar extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Bottom-of-sidebar nudge: how far through the Get Started checklist the learner is.
+class _ChecklistCard extends StatelessWidget {
+  const _ChecklistCard({required this.compact, required this.onOpen});
+
+  final bool compact;
+  final VoidCallback onOpen;
+
+  @override
+  Widget build(BuildContext context) {
+    final p = context.palette;
+    final done = completedQuests(learner);
+    final total = totalQuests;
+    final progress = total == 0 ? 0.0 : done / total;
+
+    if (compact) {
+      return Tooltip(
+        message: 'Get started: $done of $total quests',
+        child: InkWell(
+          onTap: onOpen,
+          customBorder: const CircleBorder(),
+          child: SizedBox(
+            width: 44,
+            height: 44,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                CircularProgressIndicator(
+                  value: progress,
+                  strokeWidth: 3,
+                  backgroundColor: tint(AppColors.brand, 0.15),
+                  color: AppColors.brand,
+                ),
+                HopIcon(child: Icon(Icons.rocket_launch_outlined, size: 18, color: AppColors.brand)),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return HopRegion(
+      child: Container(
+        decoration: BoxDecoration(
+          color: p.card,
+          borderRadius: BorderRadius.circular(AppRadius.base),
+          border: Border.all(color: p.sidebarBorder),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 12, 12, 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HopIcon(child: Icon(Icons.rocket_launch_outlined, size: 18, color: AppColors.brand)),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Complete the remaining steps in the checklist to get started',
+                    style: TextStyle(color: p.sidebarText, fontSize: 12, height: 1.4),
+                  ),
+                  const SizedBox(height: 10),
+                  ProgressBar(value: progress, height: 5),
+                ],
+              ),
+            ),
+            Material(
+              color: p.sidebarHover,
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(AppRadius.base)),
+              child: InkWell(
+                onTap: onOpen,
+                borderRadius: const BorderRadius.vertical(bottom: Radius.circular(AppRadius.base)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                  child: Row(
+                    children: [
+                      Text('Get started', style: TextStyle(color: p.sidebarTextActive, fontWeight: FontWeight.w700, fontSize: 13)),
+                      const Spacer(),
+                      Icon(Icons.arrow_forward, size: 16, color: p.sidebarTextActive),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import '../data/mock_data.dart';
+import '../data/quests.dart';
 import '../navigation.dart';
+import 'learner_state.dart';
 
 /// Whether the learner has entered the app from the welcome page.
 ///
@@ -34,7 +36,10 @@ final _random = Random();
 String pickWelcomeMessage() => welcomeMessages[_random.nextInt(welcomeMessages.length)];
 
 void enterApp({AppSection? section, String? question}) {
-  startSection = question != null ? AppSection.ask : section;
+  // Until the Get Started checklist is done, logging in opens it.
+  startSection = question != null
+      ? AppSection.ask
+      : (section ?? (allQuestsDone(learner) ? AppSection.home : AppSection.getStarted));
   pendingQuestion = question;
   final hour = DateTime.now().hour;
   final timeOfDay = hour < 12 ? 'Good morning' : (hour < 18 ? 'Good afternoon' : 'Good evening');

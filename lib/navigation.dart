@@ -4,6 +4,7 @@ import 'services/learner_state.dart';
 
 /// Every destination in the sidebar.
 enum AppSection {
+  getStarted('Get Started', Icons.rocket_launch_outlined),
   home('Home', Icons.home_outlined),
   library('My Library', Icons.folder_copy_outlined),
   ask('Ask My Knowledge', Icons.forum_outlined),
@@ -35,7 +36,7 @@ enum AppSection {
 /// Sidebar groups, following the platform's pipeline:
 /// your data → navigate → understand → improve → exams → study → track.
 const sidebarGroups = <(String?, List<AppSection>)>[
-  (null, [AppSection.home]),
+  (null, [AppSection.getStarted, AppSection.home]),
   ('LIBRARY', [AppSection.library]),
   ('NAVIGATE', [AppSection.ask, AppSection.search]),
   ('UNDERSTAND', [AppSection.explain, AppSection.connections]),

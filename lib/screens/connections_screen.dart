@@ -38,7 +38,10 @@ class _ConnectionsScreenState extends State<ConnectionsScreen> {
         TabSwitch(
           labels: const ['Knowledge map', 'Compare sources'],
           index: _tab,
-          onChanged: (i) => setState(() => _tab = i),
+          onChanged: (i) {
+            if (i == 1) learner.markMilestone('compare');
+            setState(() => _tab = i);
+          },
         ),
         const SizedBox(height: 20),
         if (_tab == 0) ..._map(context, width) else ..._compareView(context),

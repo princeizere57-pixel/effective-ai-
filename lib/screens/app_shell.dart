@@ -16,6 +16,7 @@ import 'dashboard_screen.dart';
 import 'diagnose_screen.dart';
 import 'exam_screen.dart';
 import 'explain_screen.dart';
+import 'get_started_screen.dart';
 import 'help_screen.dart';
 import 'library_screen.dart';
 import 'loading_view.dart';
@@ -78,6 +79,7 @@ class _AppShellState extends State<AppShell> {
   }
 
   Widget _page() => switch (_section) {
+        AppSection.getStarted => GetStartedScreen(onNavigate: _select),
         AppSection.home => DashboardScreen(onNavigate: _select),
         AppSection.library => const LibraryScreen(),
         AppSection.ask => const AskScreen(),

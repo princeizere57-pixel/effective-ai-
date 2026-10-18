@@ -476,6 +476,7 @@ class _SocraticViewState extends State<_SocraticView> {
     if (text.isEmpty) return;
     setState(() {
       _chat.add((false, text));
+      learner.markMilestone('socratic');
       _controller.clear();
       final hint = _script.steps[_step].hint;
       if (_step < _script.steps.length - 1) {

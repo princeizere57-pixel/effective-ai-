@@ -37,6 +37,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
     );
     if (result == null || result.files.isEmpty || !mounted) return;
     final stamp = DateTime.now().microsecondsSinceEpoch;
+    learner.markMilestone('uploaded');
     learner.addDocs([
       for (final f in result.files)
         LibraryDoc(

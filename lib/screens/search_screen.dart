@@ -52,7 +52,10 @@ class _SearchScreenState extends State<SearchScreen> {
     return [
       TextField(
         autofocus: true,
-        onChanged: (v) => setState(() => _query = v),
+        onChanged: (v) {
+          if (v.trim().isNotEmpty) learner.markMilestone('searched');
+          setState(() => _query = v);
+        },
         decoration: fieldDecoration(
           context,
           hint: 'Search concepts across every document',
@@ -93,7 +96,10 @@ class _SearchScreenState extends State<SearchScreen> {
             ChoiceChip(
               label: Text(c.name),
               selected: c.id == _topic,
-              onSelected: (_) => setState(() => _topic = c.id),
+              onSelected: (_) {
+                learner.markMilestone('topic');
+                setState(() => _topic = c.id);
+              },
             ),
         ],
       ),

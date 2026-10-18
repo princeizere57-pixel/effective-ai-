@@ -47,7 +47,10 @@ class _DiagnoseScreenState extends State<DiagnoseScreen> {
           TabSwitch(
             labels: ['Learning gaps (${learner.gaps.length})', 'Diagnostic test', 'Error analysis'],
             index: _tab,
-            onChanged: (i) => setState(() => _tab = i),
+            onChanged: (i) {
+              if (i == 2) learner.markMilestone('errors');
+              setState(() => _tab = i);
+            },
           ),
           const SizedBox(height: 20),
           ...(switch (_tab) {

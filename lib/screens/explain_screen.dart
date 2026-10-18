@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/knowledge.dart';
 import '../services/knowledge_engine.dart';
+import '../services/learner_state.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
 import '../widgets/common.dart';
@@ -117,12 +118,12 @@ class _ExplainScreenState extends State<ExplainScreen> {
                 runSpacing: 8,
                 children: [
                   OutlinedButton.icon(
-                    onPressed: _level > 0 ? () => setState(() => _level--) : null,
+                    onPressed: _level > 0 ? () { learner.markMilestone('level'); setState(() => _level--); } : null,
                     icon: const Icon(Icons.remove, size: 18),
                     label: const Text('Simplify'),
                   ),
                   FilledButton.icon(
-                    onPressed: _level < 2 ? () => setState(() => _level++) : null,
+                    onPressed: _level < 2 ? () { learner.markMilestone('level'); setState(() => _level++); } : null,
                     icon: const Icon(Icons.add, size: 18),
                     label: const Text('Go deeper'),
                   ),

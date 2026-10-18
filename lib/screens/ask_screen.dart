@@ -62,6 +62,7 @@ class _AskScreenState extends State<AskScreen> {
       _controller.text = question;
       _question = question;
       _answer = KnowledgeEngine.answer(question, ids);
+      learner.markMilestone('asked');
     });
   }
 

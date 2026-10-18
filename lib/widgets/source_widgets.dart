@@ -114,6 +114,7 @@ class CitationMarker extends StatelessWidget {
 
 /// Source verification: shows the exact passage an answer or question came from.
 Future<void> showSourceSheet(BuildContext context, Passage passage, {Set<String> highlight = const {}}) {
+  learner.markMilestone('source');
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
