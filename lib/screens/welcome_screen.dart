@@ -4,9 +4,12 @@ import '../navigation.dart';
 import '../services/session.dart';
 import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
+import '../theme/theme_controller.dart';
+import '../widgets/logo_mark.dart';
 
-/// Landing colours for the theme on screen. Light (the default) is bright blue
-/// (#335CFF) text on white; dark is light text over a near-black background.
+/// Landing colours for the theme on screen. Light (the default) is black
+/// (#000000) text, icons and buttons on white, with grey tints; dark is light text
+/// and bright blue (#335CFF) accents over a near-black background.
 ///
 /// [dark] is set by [WelcomeScreen] on every build; the page is rebuilt from
 /// scratch when the theme changes, so every colour below is re-read.
@@ -16,30 +19,31 @@ abstract final class _Lp {
   static Color _pick(int light, int darkValue) => Color(dark ? darkValue : light);
 
   static Color get bg => _pick(0xFFFFFFFF, 0xFF0A0D16);
-  static Color get panel => _pick(0xFFF5F7FF, 0xFF121726);
-  static Color get panel2 => _pick(0xFFF0F3FF, 0xFF171D2F);
-  static Color get deep => _pick(0xFFF8F9FF, 0xFF0E1220);
-  static Color get stage => _pick(0xFFEBEFFF, 0xFF161B2B);
-  static Color get line => _pick(0xFFDCE3FF, 0xFF232B44);
-  static Color get track => _pick(0xFFDCE4FF, 0xFF262E48);
-  static Color get dot => _pick(0xFFC9D4FF, 0xFF2A3350);
+  static Color get panel => _pick(0xFFF7F7F7, 0xFF121726);
+  static Color get panel2 => _pick(0xFFF2F2F2, 0xFF171D2F);
+  static Color get deep => _pick(0xFFFAFAFA, 0xFF0E1220);
+  static Color get stage => _pick(0xFFF0F0F0, 0xFF161B2B);
+  static Color get line => _pick(0xFFE2E2E2, 0xFF232B44);
+  static Color get track => _pick(0xFFE4E4E4, 0xFF262E48);
+  static Color get dot => _pick(0xFFCFCFCF, 0xFF2A3350);
 
   /// Headlines and strong text.
-  static Color get heading => _pick(0xFF335CFF, 0xFFFFFFFF);
-  static Color get text => _pick(0xFF335CFF, 0xFFE6E9F2);
-  static Color get soft => _pick(0xFF4A6CFF, 0xFFA9B0C7);
-  static const blue = Color(0xFF335CFF);
-  static Color get blue2 => _pick(0xFF335CFF, 0xFF5C7DFF);
-  static Color get paleBlue => _pick(0xFF335CFF, 0xFFA9BBFF);
+  static Color get heading => _pick(0xFF000000, 0xFFFFFFFF);
+  static Color get text => _pick(0xFF000000, 0xFFE6E9F2);
+  static Color get soft => _pick(0xFF000000, 0xFFA9B0C7);
+  /// The accent: black in light mode, bright blue in dark mode.
+  static Color get blue => _pick(0xFF000000, 0xFF335CFF);
+  static Color get blue2 => _pick(0xFF000000, 0xFF5C7DFF);
+  static Color get paleBlue => _pick(0xFF000000, 0xFFA9BBFF);
   static LinearGradient get gradient => LinearGradient(
       colors: dark
           ? [const Color(0xFF5C7DFF), const Color(0xFFA9BBFF)]
-          : [const Color(0xFF1F45E6), const Color(0xFF6F8BFF)]);
+          : [const Color(0xFF000000), const Color(0xFF000000)]);
   static Color get shadow => Colors.black.withValues(alpha: dark ? 0.55 : 0.08);
   static List<Color> get missionGradient => dark
       ? [const Color(0xFF1B2347), const Color(0xFF1F3170), const Color(0xFF1B2C52)]
-      : [const Color(0xFFEEF2FF), const Color(0xFFDCE4FF), const Color(0xFFE8EEFF)];
-  static Color get missionText => _pick(0xFF335CFF, 0xFFCDD2E4);
+      : [const Color(0xFFF5F5F5), const Color(0xFFEAEAEA), const Color(0xFFF2F2F2)];
+  static Color get missionText => _pick(0xFF000000, 0xFFCDD2E4);
   static Color get pill => dark ? Colors.white.withValues(alpha: 0.08) : blue.withValues(alpha: 0.1);
   static Color tint([double a = 0.16]) => blue.withValues(alpha: dark ? a : a * 0.6);
 }
@@ -167,7 +171,7 @@ class _LpButton extends StatelessWidget {
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: ghost ? _Lp.deep : _Lp.blue,
-        foregroundColor: Colors.white,
+        foregroundColor: ghost ? _Lp.heading : Colors.white,
         padding: small
             ? const EdgeInsets.symmetric(horizontal: 16, vertical: 14)
             : const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
@@ -202,18 +206,7 @@ class _Logo extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            width: size,
-            height: size,
-            decoration: BoxDecoration(
-              color: _Lp.blue,
-              borderRadius: BorderRadius.circular(size * 0.28),
-              boxShadow: [
-                BoxShadow(color: _Lp.blue.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 4))
-              ],
-            ),
-            child: Icon(Icons.auto_stories, color: Colors.white, size: size * 0.55),
-          ),
+          LogoMark(size: size),
           if (showName) ...[
             const SizedBox(width: 10),
             Text('Effective AI', style: AppTheme.display(size * 0.55, color: _Lp.heading)),
@@ -666,6 +659,11 @@ class _Nav extends StatelessWidget {
             link('Help', () => enterApp(section: AppSection.help)),
           ],
           const Spacer(),
+          IconButton(
+            onPressed: toggleThemeMode,
+            tooltip: _Lp.dark ? 'Switch to light' : 'Switch to dark',
+            icon: Icon(_Lp.dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined, color: _Lp.heading, size: 20),
+          ),
           TextButton(
             onPressed: () => showAccountDialog(context, signUp: false),
             style: TextButton.styleFrom(
@@ -677,7 +675,7 @@ class _Nav extends StatelessWidget {
           Flexible(
             flex: 8,
             child: _LpButton('Start your path to an A',
-                small: true, onPressed: () => showAccountDialog(context, signUp: true)),
+                small: true, ghost: true, onPressed: () => showAccountDialog(context, signUp: true)),
           ),
         ],
       ),
@@ -710,14 +708,9 @@ class _HeroState extends State<_Hero> {
     };
     final h1 = AppTheme.display(headline, color: _Lp.heading).copyWith(height: 1.05, letterSpacing: -1);
 
+    // Plain background, the same as the rest of the page (no glow behind the headline).
     return Container(
-      decoration: const BoxDecoration(
-        gradient: RadialGradient(
-          center: Alignment(0, -1.1),
-          radius: 1.1,
-          colors: [Color(0x38335CFF), Color(0x00335CFF)],
-        ),
-      ),
+      color: _Lp.bg,
       child: Column(
         children: [
           _contained(
@@ -1080,7 +1073,7 @@ class _Loop extends StatelessWidget {
     Widget arrow(IconData icon) => Container(
           width: 26,
           height: 26,
-          decoration: const BoxDecoration(color: _Lp.blue, shape: BoxShape.circle),
+          decoration: BoxDecoration(color: _Lp.blue, shape: BoxShape.circle),
           child: Icon(icon, size: 15, color: Colors.white),
         );
 
