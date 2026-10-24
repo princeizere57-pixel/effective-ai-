@@ -1,8 +1,11 @@
 name: Deploy to GitHub Pages
 
-# Builds the Flutter web app and publishes it at
-# https://princeizere57-pixel.github.io/effective-ai-/
-# One-time setup: repository Settings → Pages → Source: "GitHub Actions".
+# Publishes site/ at https://princeizere57-pixel.github.io/effective-ai-/
+#
+# site/index.html is the same page as the claude.ai preview
+# (https://claude.ai/artifact/BFAscA2o2VrsUk3C2W2SrE), with the standard page
+# header (doctype, charset, viewport) that claude.ai adds when serving it, so
+# the two look identical. The Flutter app is built and tested separately by CI.
 on:
   push:
     branches: [main]
@@ -18,30 +21,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - run: flutter pub get
-      # The site lives under /effective-ai-/, the repository name.
-      - run: flutter build web --release --base-href /effective-ai-/
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: build/web
-
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
       - id: deployment
         uses: actions/deploy-pages@v4
