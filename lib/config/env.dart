@@ -14,4 +14,17 @@ abstract final class Env {
     'SITE_URL',
     defaultValue: 'https://learnspace3105.builtwithrocket.new',
   );
+
+  /// Where Google sends the learner back after signing in on desktop and
+  /// mobile (the web app returns to the page it started from). Add it to the
+  /// Supabase project's Auth → URL configuration → Redirect URLs.
+  static const authRedirectUrl = String.fromEnvironment(
+    'AUTH_REDIRECT_URL',
+    defaultValue: 'io.effectiveai.app://login-callback',
+  );
+
+  /// True when real Supabase keys were supplied. Without them sign-in runs in
+  /// demo mode: it is simulated and nothing leaves the device.
+  static bool get hasSupabase =>
+      supabaseAnonKey.isNotEmpty && !supabaseUrl.contains('dummy') && !supabaseAnonKey.contains('dummy');
 }

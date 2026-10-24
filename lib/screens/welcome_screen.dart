@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
 import '../theme/theme_controller.dart';
 import '../widgets/logo_mark.dart';
+import 'auth_screen.dart';
 
 /// Landing colours for the theme on screen. No blue anywhere except the
 /// headline's "that A". Light (the default): black text, icons and buttons on
@@ -1498,30 +1499,7 @@ class _Footer extends StatelessWidget {
   }
 }
 
-/// Accounts need the backend; until then both buttons explain that and offer the demo.
-Future<void> showAccountDialog(BuildContext context, {required bool signUp}) {
-  return showDialog<void>(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text(signUp ? 'Create your account' : 'Log in'),
-      content: const SizedBox(
-        width: 420,
-        child: Text(
-          'Accounts open once the Effective AI backend is connected. Until then you can '
-          'explore every feature with a sample Machine Learning library.',
-          style: TextStyle(height: 1.5),
-        ),
-      ),
-      actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Not now')),
-        FilledButton(
-          onPressed: () {
-            Navigator.pop(context);
-            enterApp();
-          },
-          child: const Text('Explore the demo'),
-        ),
-      ],
-    ),
-  );
-}
+/// Log in, "Start your path to an A" and "Sign up free" all open the sign-in
+/// screen: Continue with Google, or email and password.
+Future<void> showAccountDialog(BuildContext context, {required bool signUp}) =>
+    showAuthDialog(context, signUp: signUp);

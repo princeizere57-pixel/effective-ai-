@@ -16,6 +16,7 @@ dependencies:
   fl_chart: ^0.70.2
   # Uploading books, notes, slides, papers and past exams to My Library
   file_picker: ^8.1.2
+  supabase_flutter: ^2.18.3
 
 dev_dependencies:
   flutter_test:
@@ -26,3 +27,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/logo.png
+    - assets/images/google_g.png

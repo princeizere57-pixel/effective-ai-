@@ -365,7 +365,8 @@ class _UserTile extends StatelessWidget {
       width: 40,
       height: 40,
       alignment: Alignment.center,
-      decoration: BoxDecoration(shape: BoxShape.circle, color: AppColors.brand),
+      // Black circle, white letter, in both themes.
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Theme.of(context).colorScheme.primary),
       child: Text(
         userFullName[0],
         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700),

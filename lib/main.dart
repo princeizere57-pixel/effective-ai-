@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'screens/app_shell.dart';
 import 'screens/welcome_screen.dart';
+import 'services/auth_service.dart';
 import 'services/session.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
@@ -10,7 +11,10 @@ import 'theme/theme_controller.dart';
 /// All text is drawn at this fraction of its designed size.
 const textScale = 0.9;
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Sign-in: Supabase when real keys are set in env.json, otherwise demo mode.
+  await AuthService.instance.init();
   runApp(const EffectiveAiApp());
 }
 

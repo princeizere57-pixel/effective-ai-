@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../services/current_user.dart';
+
 // Sample profile and activity data. The learning content itself lives in
 // knowledge.dart and the learner's results in services/learner_state.dart.
 
-const userFirstName = 'Alex';
-const userFullName = 'Alex Morgan';
-const userEmail = 'alex@effective-ai.app';
+// The signed-in learner (the sample learner until someone signs in).
+String get userFirstName => currentUser.value.firstName;
+String get userFullName => currentUser.value.fullName;
+String get userEmail => currentUser.value.email;
 const streakDays = 12;
 
 /// Days until the next exam, used in the plan and on Home.

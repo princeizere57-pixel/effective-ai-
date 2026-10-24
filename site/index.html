@@ -231,6 +231,28 @@ details.acc .body { padding: 0 4px 14px; }
 
 .modal { position: fixed; inset: 0; background: var(--scrim); display: grid; place-items: center; padding: 16px; z-index: 40; }
 .modal .panel { width: min(520px, 100%); max-height: calc(100% - 32px); overflow: auto; }
+/* Sign-in screen: Google or email */
+.modal .panel:has(.auth) { width: min(440px, 100%); padding: 28px; }
+.auth { display: flex; flex-direction: column; gap: 14px; }
+.auth-head { display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+.auth-head .muted { margin: 0; }
+.auth-google { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--divider); background: var(--surface); color: var(--text); font-weight: 600; font-size: 14.4px; }
+.auth-google:hover { background: var(--muted); }
+.auth-google:disabled { opacity: .7; cursor: progress; }
+.auth-or { display: flex; align-items: center; gap: 12px; color: var(--text-3); font-size: 12px; }
+.auth-or::before, .auth-or::after { content: ""; flex: 1; height: 1px; background: var(--divider); }
+.auth-form { display: flex; flex-direction: column; gap: 8px; }
+.auth-label { font-weight: 600; font-size: 12.6px; margin-top: 4px; }
+.auth-row { display: flex; justify-content: space-between; align-items: baseline; }
+.auth-pass { position: relative; }
+.auth-pass .field { padding-right: 64px; }
+.auth-peek { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--text); font-weight: 600; font-size: 12px; padding: 6px 8px; border-radius: 8px; }
+.auth-link { border: 0; background: transparent; padding: 0; color: var(--text); font-weight: 600; font-size: 12.6px; text-decoration: underline; text-underline-offset: 3px; }
+.auth-error { margin: 2px 0 0; padding: 8px 10px; border-radius: 8px; background: var(--violet-pale); color: var(--text); font-size: 12.6px; }
+.field[aria-invalid="true"] { border-color: var(--text); }
+.auth-submit { width: 100%; padding-block: 12px; margin-top: 8px; }
+.auth-switch { margin: 0; text-align: center; font-size: 13px; }
+.auth-note { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; color: var(--text-3); font-size: 11.7px; text-align: center; }
 .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 16px); background: var(--toast); color: #fff; padding: 12px 18px; border-radius: 12px; box-shadow: var(--shadow-hover); font-weight: 500; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100% - 32px); z-index: 50; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
@@ -521,8 +543,8 @@ button.qg-head:hover { background: var(--violet-pale); }
     <div class="side-foot">
       <div id="nav-foot" style="display:flex;flex-direction:column;gap:2px"></div>
       <div class="user">
-        <span class="avatar">A</span>
-        <div><div class="user-name">Alex Morgan</div><div class="user-mail">alex@effective-ai.app</div></div>
+        <span class="avatar" id="user-avatar">A</span>
+        <div><div class="user-name" id="user-name">Alex Morgan</div><div class="user-mail" id="user-mail">alex@effective-ai.app</div></div>
         <button class="ghost-icon" aria-label="Sign out" data-act="signOut"><span data-icon="logout"></span></button>
       </div>
     </div>
@@ -962,7 +984,7 @@ screens.home = () => {
   const g = gaps();
   const stats = [['folder', V.violet, L.docs.length, 'Documents in your library'], ['award', V.green, `${strong().length}/${CONCEPTS.length}`, 'Concepts mastered'], ['target', V.red, g.length, 'Gaps to fix'], ['flame', V.amber, 12, 'Day streak']];
   const pipeline = [['folder', 'Your data', 'Books, notes, slides, papers and past exams in one private library', 'library', V.violet], ['chat', 'Navigate', 'Ask, search and explore with sources for every answer', 'ask', V.blue], ['bulb', 'Understand', 'Explain at your level, connect and compare ideas', 'explain', V.amber], ['target', 'Improve', 'Find gaps and mistakes, then practise exactly those', 'diagnose', V.red], ['assignment', 'Apply', 'Past papers, mock tests and study sessions', 'exam', V.green], ['insights', 'Measure', 'Your plan adapts and your report shows progress', 'progress', V.violetLight]];
-  return `<div class="reveal">${S.welcome ? `<p style="margin:0 0 6px;font-weight:600;font-size:13.5px">${esc(S.welcome)}</p>` : ''}<h1>${esc(S.greeting || 'Welcome, Alex')}</h1><p class="lede">Your exam is in ${DAYS_TO_EXAM} days. You have ${g.length} gaps to close and a 12-day streak to keep.</p></div>
+  return `<div class="reveal">${S.welcome ? `<p style="margin:0 0 6px;font-weight:600;font-size:13.5px">${esc(S.welcome)}</p>` : ''}<h1>${esc(S.greeting || `Welcome, ${USER.first}`)}</h1><p class="lede">Your exam is in ${DAYS_TO_EXAM} days. You have ${g.length} gaps to close and a 12-day streak to keep.</p></div>
   <div class="grid stats reveal" style="--min:200px">${stats.map(([ic, col, v, l]) => `<div class="panel stat">${tile(ic, col, 40)}<div class="stat-value">${v}</div><div class="sub">${l}</div></div>`).join('')}</div>
   <h2>Suggested for you</h2>
   <div class="grid reveal" style="--min:240px">${suggestions().map(([ic, t, d, sec, col]) => `<button class="card-btn" data-act="go" data-arg="${sec}">${tile(ic, col)}<span class="grow"><strong>${esc(t)}</strong><br><span class="sub">${esc(d)}</span></span><span style="color:var(--text-3)">${icon('arrow', 18)}</span></button>`).join('')}</div>
@@ -1251,7 +1273,7 @@ screens.settings = () => {
   <div class="panel stack"><h3>Appearance</h3><p class="sub" style="margin-top:-8px">Light is the default. Switch to dark if you prefer.</p><div class="seg">${[['light', 'Light'], ['dark', 'Dark']].map(([v, l]) => `<button data-act="themeChoice" data-arg="${v}" aria-pressed="${S.theme === v}">${l}</button>`).join('')}</div></div>
   <div class="panel stack"><h3>Daily goal</h3><p class="sub" style="margin-top:-8px">How long you want to study each day. My Plan is rebuilt around it.</p><div class="seg">${[15, 30, 60].map(n => `<button data-act="goal" data-arg="${n}" aria-pressed="${L.dailyGoal === n}">${n} min</button>`).join('')}</div></div>
   <div class="panel" style="padding-block:10px"><h3 style="margin-top:8px">Notifications</h3>${sw('reminder', 'Daily study reminder', 'A nudge at 18:00 if you have not studied yet')}${sw('weekly', 'Weekly progress report', 'Every Sunday evening')}${sw('sounds', 'Sounds', 'Play a sound when you finish a lesson')}</div>
-  <div class="panel row-flex"><div class="grow"><h3>Account</h3><div style="margin-top:4px">Alex Morgan</div><div class="sub">alex@effective-ai.app</div></div><button class="btn outline" data-act="signOut">${icon('logout', 18)}Sign out</button></div>`;
+  <div class="panel row-flex"><div class="grow"><h3>Account</h3><div style="margin-top:4px">${esc(USER.full)}</div><div class="sub">${esc(USER.email)}</div></div><button class="btn outline" data-act="signOut">${icon('logout', 18)}Sign out</button></div>`;
 };
 
 /* Study session workflow: 14 targeted learning, 20 remediation, 25 study session */
@@ -1565,7 +1587,7 @@ function questGroupsHtml(openAct, openLabel) {
 screens.getStarted = () => {
   const done = questsDone();
   return `<div class="gs">
-    <div class="gs-head reveal"><div class="grow"><h1 style="font-size:23.4px;margin:0">${allQuestsDone() ? 'You&rsquo;re all set, Alex' : 'You&rsquo;re on your way, Alex'}</h1><p class="muted" style="margin:4px 0 0">${done} of ${totalQuests} completed</p></div>${ring(done / totalQuests)}</div>
+    <div class="gs-head reveal"><div class="grow"><h1 style="font-size:23.4px;margin:0">${allQuestsDone() ? `You&rsquo;re all set, ${esc(USER.first)}` : `You&rsquo;re on your way, ${esc(USER.first)}`}</h1><p class="muted" style="margin:4px 0 0">${done} of ${totalQuests} completed</p></div>${ring(done / totalQuests)}</div>
     ${questGroupsHtml('go', 'Open')}
   </div>`;
 };
@@ -1720,7 +1742,11 @@ function enterApp(section, question) {
   // Until the Get Started checklist is done, logging in opens it.
   section = section || (allQuestsDone() ? 'home' : 'getStarted');
   const h = new Date().getHours(), tod = h < 12 ? 'Good morning' : h < 18 ? 'Good afternoon' : 'Good evening';
-  const greetings = [`${tod}, Alex`, 'Welcome back, Alex', 'Good to see you again, Alex', 'Ready when you are, Alex', "Let's keep your streak going, Alex"];
+  const u = USER.first;
+  const greetings = [`${tod}, ${u}`, `Welcome back, ${u}`, `Good to see you again, ${u}`, `Ready when you are, ${u}`, `Let's keep your streak going, ${u}`];
+  document.getElementById('user-name').textContent = USER.full;
+  document.getElementById('user-mail').textContent = USER.email;
+  document.getElementById('user-avatar').textContent = USER.full.charAt(0).toUpperCase();
   S.greeting = greetings[Math.floor(Math.random() * greetings.length)];
   S.welcome = WELCOME[Math.floor(Math.random() * WELCOME.length)];
   welcomeEl.hidden = true; app.hidden = false;
@@ -1730,9 +1756,76 @@ function enterApp(section, question) {
 Object.assign(A, {
   wEnter: a => enterApp(a),
   wFocusAsk: () => { const i = document.getElementById('w-input'); i.focus(); i.scrollIntoView({ block: 'center', behavior: 'smooth' }); },
-  wAccount: a => openModal(`<p class="display" style="font-size:19.8px">${a === 'up' ? 'Create your account' : 'Log in'}</p><p class="muted" style="line-height:1.5">Accounts open once the Effective AI backend is connected. Until then you can explore every feature with a sample Machine Learning library.</p><div class="right"><button class="btn text" data-act="closeModal">Not now</button><button class="btn" data-act="wDemo">Explore the demo</button></div>`),
+  wAccount: a => openAuth(a === 'up' ? 'up' : 'in'),
   wDemo: () => { closeModal(); enterApp('home'); },
-  signOut: () => { showWelcome(); toast('Signed out'); },
+  signOut: () => { setUser(DEMO_USER.full, DEMO_USER.email); showWelcome(); toast('Signed out'); },
+  // Sign in with Google. The preview has no backend, so this signs in the sample Google account.
+  authGoogle: (a, el) => {
+    el.disabled = true; el.querySelector('.auth-g-label').textContent = 'Connecting to Google…';
+    setTimeout(() => { setUser(DEMO_USER.full, DEMO_USER.email); closeModal(); enterApp(); toast(`Signed in with Google as ${USER.email}`); }, 900);
+  },
+  authPeek: (a, el) => { const i = document.getElementById('auth-password'); const show = i.type === 'password'; i.type = show ? 'text' : 'password'; el.textContent = show ? 'Hide' : 'Show'; el.setAttribute('aria-pressed', show); },
+  authForgot: () => {
+    const email = document.getElementById('auth-email').value.trim();
+    if (!EMAIL_RE.test(email)) { authError('Enter your email address first, then choose “Forgot password?”.', 'auth-email'); return; }
+    authError(''); toast(`Password reset link sent to ${email}`);
+  },
+});
+
+/* ═══ Sign in: Google or email (mirrors lib/screens/auth_screen.dart) ═══
+   The preview has no backend: sign-in is simulated and nothing typed leaves the page.
+   The Flutter app signs in with Supabase Auth once real keys are set in env.json. */
+const DEMO_USER = { full: 'Alex Morgan', email: 'alex@effective-ai.app' };
+const USER = { first: 'Alex', full: DEMO_USER.full, email: DEMO_USER.email };
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function setUser(full, email) {
+  USER.full = full; USER.email = email; USER.first = full.split(/\s+/)[0];
+}
+// "jane.doe@uni.ac.uk" becomes "Jane Doe" when no name was given.
+const nameFromEmail = email => email.split('@')[0].split(/[._-]+/).filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(' ') || 'Student';
+const GOOGLE_G = '<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+function openAuth(mode) {
+  const up = mode === 'up';
+  openModal(`<div class="auth">
+    <div class="auth-head"><span class="brand-mark" style="width:44px;height:44px"></span>
+      <p class="display" style="font-size:22px">${up ? 'Create your account' : 'Welcome back'}</p>
+      <p class="muted">${up ? 'Start your path to an A. It&rsquo;s free.' : 'Log in to pick up where you left off.'}</p></div>
+    <button class="auth-google" type="button" data-act="authGoogle">${GOOGLE_G}<span class="auth-g-label">Continue with Google</span></button>
+    <div class="auth-or"><span>or ${up ? 'sign up' : 'log in'} with email</span></div>
+    <form class="auth-form" id="auth-form" data-mode="${up ? 'up' : 'in'}" novalidate>
+      ${up ? `<label class="auth-label" for="auth-name">Full name</label><input class="field" id="auth-name" name="name" autocomplete="name" placeholder="Jane Doe">` : ''}
+      <label class="auth-label" for="auth-email">Email</label>
+      <input class="field" id="auth-email" name="email" type="email" autocomplete="email" inputmode="email" placeholder="you@university.edu" required>
+      <div class="auth-row"><label class="auth-label" for="auth-password">Password</label>${up ? '' : '<button type="button" class="auth-link" data-act="authForgot">Forgot password?</button>'}</div>
+      <div class="auth-pass"><input class="field" id="auth-password" name="password" type="password" autocomplete="${up ? 'new-password' : 'current-password'}" placeholder="${up ? 'At least 8 characters' : 'Your password'}" required><button type="button" class="auth-peek" data-act="authPeek" aria-label="Show password" aria-pressed="false">Show</button></div>
+      <p class="auth-error" id="auth-error" role="alert" hidden></p>
+      <button class="btn auth-submit" type="submit">${up ? 'Create account' : 'Log in'}</button>
+    </form>
+    <p class="auth-switch">${up ? 'Already have an account?' : 'New to Effective AI?'} <button type="button" class="auth-link" data-act="wAccount" data-arg="${up ? 'in' : 'up'}">${up ? 'Log in' : 'Create an account'}</button></p>
+    <p class="auth-note">${icon('lock', 14)}Preview: sign-in is simulated and nothing you type leaves this page.</p>
+  </div>`);
+  document.getElementById(up ? 'auth-name' : 'auth-email').focus();
+}
+function authError(msg, focusId) {
+  const el = document.getElementById('auth-error'); if (!el) return;
+  el.textContent = msg; el.hidden = !msg;
+  document.querySelectorAll('.auth .field').forEach(f => f.removeAttribute('aria-invalid'));
+  if (focusId) { const f = document.getElementById(focusId); f.setAttribute('aria-invalid', 'true'); f.focus(); }
+}
+document.addEventListener('submit', e => {
+  if (e.target.id !== 'auth-form') return;
+  e.preventDefault();
+  const up = e.target.dataset.mode === 'up';
+  const name = up ? document.getElementById('auth-name').value.trim() : '';
+  const email = document.getElementById('auth-email').value.trim();
+  const password = document.getElementById('auth-password').value;
+  if (!EMAIL_RE.test(email)) { authError('Enter a valid email address, like you@university.edu.', 'auth-email'); return; }
+  if (up && password.length < 8) { authError('Use at least 8 characters for your password.', 'auth-password'); return; }
+  if (!up && !password) { authError('Enter your password.', 'auth-password'); return; }
+  authError('');
+  setUser(name || nameFromEmail(email), email);
+  closeModal(); enterApp();
+  toast(up ? `Welcome to Effective AI, ${USER.first}` : `Logged in as ${email}`);
 });
 document.addEventListener('submit', e => {
   if (e.target.id !== 'w-form') return;

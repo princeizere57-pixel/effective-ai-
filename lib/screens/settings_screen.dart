@@ -130,7 +130,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   children: [
                     const Text('Account', style: sectionTitle),
                     const SizedBox(height: 4),
-                    const Text(userFullName),
+                    Text(userFullName),
                     Text(userEmail, style: sub),
                   ],
                 ),

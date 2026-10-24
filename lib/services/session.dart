@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import '../data/mock_data.dart';
 import '../data/quests.dart';
 import '../navigation.dart';
+import 'auth_service.dart';
+import 'current_user.dart';
 import 'learner_state.dart';
 
 /// Whether the learner has entered the app from the welcome page.
@@ -59,4 +61,7 @@ void signOut() {
   startSection = null;
   pendingQuestion = null;
   signedIn.value = false;
+  // Also end the account session, and go back to the sample learner.
+  AuthService.instance.signOut();
+  currentUser.value = AppUser.demo;
 }
