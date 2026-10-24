@@ -284,9 +284,12 @@ class MasteryRow extends StatelessWidget {
                       child: Text(concept.name, style: const TextStyle(fontWeight: FontWeight.w600)),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      a == null ? label : '$label · ${a.$1}/${a.$2}',
-                      style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
+                    Flexible(
+                      child: Text(
+                        a == null ? label : '$label · ${a.$1}/${a.$2}',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: color, fontSize: 12, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),

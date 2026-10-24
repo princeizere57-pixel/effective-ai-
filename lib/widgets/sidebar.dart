@@ -8,8 +8,8 @@ import '../services/session.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_palette.dart';
 import '../theme/app_theme.dart';
-import 'common.dart';
 import 'hop.dart';
+import 'logo_mark.dart';
 import 'progress_bar.dart';
 
 /// Sidebar: logo, streak, main sections, help/settings and the signed-in user.
@@ -213,19 +213,16 @@ class BrandMark extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Container(
-          width: 36,
-          height: 36,
-          decoration: BoxDecoration(
-            color: AppColors.brand,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: AppShadows.brand,
-          ),
-          child: const HopIcon(height: 5, child: Icon(Icons.auto_stories, color: Colors.white, size: 20)),
-        ),
+        const LogoMark(),
         if (showName) ...[
           const SizedBox(width: 10),
-          Text('Effective AI', style: AppTheme.display(20, color: context.palette.sidebarTextActive)),
+          Flexible(
+            child: Text(
+              'Effective AI',
+              overflow: TextOverflow.ellipsis,
+              style: AppTheme.display(20, color: context.palette.sidebarTextActive),
+            ),
+          ),
         ],
       ],
     );
@@ -251,9 +248,12 @@ class StreakPill extends StatelessWidget {
         children: [
           Icon(Icons.local_fire_department_outlined, color: AppColors.brand, size: 18),
           SizedBox(width: compact ? 2 : 8),
-          Text(
-            compact ? '$streakDays' : '$streakDays-day streak',
-            style: TextStyle(color: AppColors.brand, fontWeight: FontWeight.w600),
+          Flexible(
+            child: Text(
+              compact ? '$streakDays' : '$streakDays-day streak',
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: AppColors.brand, fontWeight: FontWeight.w600),
+            ),
           ),
         ],
       ),

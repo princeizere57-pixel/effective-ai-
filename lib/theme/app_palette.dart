@@ -33,7 +33,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color subtle;
   final Color border;
 
-  /// Violet text on a tinted violet background.
+  /// Accent-coloured text on a tinted accent background.
   final Color primaryText;
 
   final Color sidebarBg;
@@ -85,7 +85,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     mutedForeground: Color(0xFF9AA5C4),
     subtle: Color(0xFF6B7694),
     border: Color(0xFF2A3558),
-    primaryText: Color(0xFFC4B5FD),
+    primaryText: Color(0xFFA9BBFF),
     sidebarBg: Color(0xFF080C18),
     sidebarHover: Color(0xFF141B30),
     sidebarActive: Color(0xFF2A3558),

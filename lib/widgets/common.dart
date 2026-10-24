@@ -23,7 +23,8 @@ class Panel extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.lg),
         boxShadow: p.cardShadow,
       ),
-      child: child,
+      // Its own Material so list tiles and ink ripples inside show on the card colour.
+      child: Material(type: MaterialType.transparency, child: child),
     );
   }
 }
@@ -76,11 +77,13 @@ class SectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          title,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+        Expanded(
+          child: Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+          ),
         ),
-        const Spacer(),
         if (action != null)
           TextButton.icon(
             onPressed: onAction,

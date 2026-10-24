@@ -180,10 +180,15 @@ class _GroupPanel extends StatelessWidget {
       children: [
         HopIcon(child: Icon(group.icon, size: 20, color: AppColors.brand)),
         const SizedBox(width: 10),
-        Text(group.title, style: AppTheme.display(20)),
+        Flexible(child: Text(group.title, overflow: TextOverflow.ellipsis, style: AppTheme.display(20))),
         const SizedBox(width: 10),
-        Text('${group.quests.length} quests', style: TextStyle(color: p.mutedForeground, fontSize: 12)),
-        const Spacer(),
+        Expanded(
+          child: Text(
+            '${group.quests.length} quests',
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(color: p.mutedForeground, fontSize: 12),
+          ),
+        ),
         if (unlocked)
           Text('${group.completedCount(learner)}/${group.quests.length}', style: AppTheme.mono(12, color: p.mutedForeground))
         else

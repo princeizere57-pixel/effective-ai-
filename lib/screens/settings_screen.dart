@@ -44,15 +44,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             children: [
               const Text('Appearance', style: sectionTitle),
               const SizedBox(height: 4),
-              Text('Light, dark, or match your device.', style: sub),
+              Text('Light is the default. Switch to dark if you prefer.', style: sub),
               const SizedBox(height: 16),
               ValueListenableBuilder<ThemeMode>(
                 valueListenable: themeMode,
                 builder: (context, mode, _) => SegmentedButton<ThemeMode>(
                   segments: const [
-                    ButtonSegment(value: ThemeMode.light, label: Text('Light')),
-                    ButtonSegment(value: ThemeMode.dark, label: Text('Dark')),
-                    ButtonSegment(value: ThemeMode.system, label: Text('System')),
+                    ButtonSegment(value: ThemeMode.light, icon: Icon(Icons.light_mode_outlined), label: Text('Light')),
+                    ButtonSegment(value: ThemeMode.dark, icon: Icon(Icons.dark_mode_outlined), label: Text('Dark')),
                   ],
                   selected: {mode},
                   showSelectedIcon: false,

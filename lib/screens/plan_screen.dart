@@ -89,8 +89,8 @@ class PlanScreen extends StatelessWidget {
                     Row(
                       children: [
                         Icon(Icons.autorenew, color: AppColors.brand, size: 20),
-                        SizedBox(width: 8),
-                        Text('How your plan adapted', style: TextStyle(fontWeight: FontWeight.w700)),
+                        const SizedBox(width: 8),
+                        const Text('How your plan adapted', style: TextStyle(fontWeight: FontWeight.w700)),
                       ],
                     ),
                     const SizedBox(height: 8),

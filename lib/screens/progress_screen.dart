@@ -144,7 +144,7 @@ class _LearningReport extends StatelessWidget {
               children: [
                 Container(width: 10, height: 10, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
                 const SizedBox(width: 8),
-                Text('$heading (${list.length})', style: const TextStyle(fontWeight: FontWeight.w700)),
+                Flexible(child: Text('$heading (${list.length})', style: const TextStyle(fontWeight: FontWeight.w700))),
               ],
             ),
             const SizedBox(height: 8),

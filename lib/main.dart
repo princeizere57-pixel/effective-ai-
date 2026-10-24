@@ -7,7 +7,12 @@ import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_controller.dart';
 
+/// All text is drawn at this fraction of its designed size.
+const textScale = 0.9;
+
 void main() {
+  // Bright blue accent in both themes.
+  AppColors.brand = AppColors.blue;
   runApp(const EffectiveAiApp());
 }
 
@@ -21,14 +26,16 @@ class EffectiveAiApp extends StatelessWidget {
       builder: (context, mode, _) => MaterialApp(
         title: 'Effective AI',
         debugShowCheckedModeBanner: false,
+        // White by default; dark only when the learner chooses it.
         theme: AppTheme.light(),
         darkTheme: AppTheme.dark(),
         themeMode: mode,
-        // Keep the accent in step with the theme on screen (light: bright blue,
-        // dark: violet). Every widget below reads it while rebuilding for the new theme.
         builder: (context, child) {
-          AppColors.brand = AppColors.accentFor(Theme.of(context).brightness);
-          return child!;
+          final media = MediaQuery.of(context);
+          return MediaQuery(
+            data: media.copyWith(textScaler: TextScaler.linear(media.textScaler.scale(1) * textScale)),
+            child: child!,
+          );
         },
         home: ValueListenableBuilder<bool>(
           valueListenable: signedIn,
