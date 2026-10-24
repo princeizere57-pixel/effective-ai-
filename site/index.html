@@ -14,22 +14,22 @@
 /* Layout: navy sidebar grouped by pipeline + workspace column (wide); app bar + drawer (phone).
    Mirrors the Flutter app in princeizere57-pixel/effective-ai- (lib/screens, lib/theme/app_palette.dart). */
 :root {
-  /* Light: white, and bright blue (#335CFF) for every line of text and every icon. Dark uses the same blue. */
-  --navy-text: #335CFF;
-  --sidebar-bg: #FFFFFF; --sidebar-hover: #F0F3FF; --sidebar-active: #E3E9FF; --sidebar-border: #DCE3FF;
-  --sidebar-text: #335CFF; --sidebar-text-active: #335CFF;
-  --violet: #335CFF; --violet-dark: #335CFF; --violet-light: #335CFF; --violet-pale: #EBEFFF; --violet-pale-hover: #DCE4FF; --violet-muted: #335CFF;
-  --blue: #335CFF; --blue-pale: #EBEFFF;
-  --green: #335CFF; --green-ink: #335CFF; --green-pale: #EBEFFF;
-  --amber: #335CFF; --amber-ink: #335CFF; --amber-pale: #EBEFFF;
-  --red: #335CFF; --red-ink: #335CFF; --red-pale: #EBEFFF;
-  --canvas: #F4F6FF; --workspace: #FFFFFF; --surface: #FFFFFF; --muted: #F0F3FF;
-  --text: #335CFF; --text-2: #335CFF; --text-3: #335CFF; --divider: #DCE3FF;
-  --shimmer-base: #EBEFFF; --shimmer-hi: #FFFFFF; --toast: #335CFF; --mark: rgba(51,92,255,0.18);
-  --scrim: rgba(20,30,90,0.35);
-  --shadow-card: 0 1px 3px rgba(51,92,255,0.08), 0 4px 12px rgba(51,92,255,0.04);
-  --shadow-hover: 0 6px 16px rgba(51,92,255,0.15);
-  --shadow-violet: 0 4px 20px rgba(51,92,255,0.25);
+  /* Light: white, with black (#000000) for every line of text, every icon and every accent. Dark keeps the bright blue. */
+  --navy-text: #000000;
+  --sidebar-bg: #FFFFFF; --sidebar-hover: #F2F2F2; --sidebar-active: #E6E6E6; --sidebar-border: #E2E2E2;
+  --sidebar-text: #000000; --sidebar-text-active: #000000;
+  --violet: #000000; --violet-dark: #000000; --violet-light: #000000; --violet-pale: #F0F0F0; --violet-pale-hover: #E4E4E4; --violet-muted: #000000;
+  --blue: #000000; --blue-pale: #F0F0F0;
+  --green: #000000; --green-ink: #000000; --green-pale: #F0F0F0;
+  --amber: #000000; --amber-ink: #000000; --amber-pale: #F0F0F0;
+  --red: #000000; --red-ink: #000000; --red-pale: #F0F0F0;
+  --canvas: #F5F5F5; --workspace: #FFFFFF; --surface: #FFFFFF; --muted: #F2F2F2;
+  --text: #000000; --text-2: #000000; --text-3: #000000; --divider: #E2E2E2;
+  --shimmer-base: #F0F0F0; --shimmer-hi: #FFFFFF; --toast: #000000; --mark: rgba(0,0,0,0.18);
+  --scrim: rgba(0,0,0,0.35);
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-hover: 0 6px 16px rgba(0,0,0,0.15);
+  --shadow-violet: 0 4px 20px rgba(0,0,0,0.25);
   --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-body: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
@@ -256,19 +256,21 @@ details.acc .body { padding: 0 4px 14px; }
 .turning .bpage.front i::after { transform: scaleX(0); }
 @keyframes pageTurn { from { transform: rotateY(0deg); } to { transform: rotateY(-180deg); } }
 
-/* Landing page before sign-up (mirrors lib/screens/welcome_screen.dart). Light by default: bright blue
-   (#335CFF) text on white. Dark when the visitor chooses it: light text over a near-black background. */
+/* Landing page before sign-up (mirrors lib/screens/welcome_screen.dart). Light by default: black
+   (#000000) text, icons and accents on white. Dark when the visitor chooses it: light text over a near-black background. */
 .welcome {
-  --lp-bg: #FFFFFF; --lp-panel: #F5F7FF; --lp-panel-2: #F0F3FF; --lp-deep: #F8F9FF; --lp-line: #DCE3FF;
-  --lp-text: #335CFF; --lp-soft: #4A6CFF; --lp-heading: #335CFF; --lp-violet: #335CFF; --lp-violet-2: #335CFF; --lp-lilac: #335CFF;
-  --lp-dot: #C9D4FF; --lp-track: #DCE4FF; --lp-stage: #EBEFFF; --lp-nav: rgba(255,255,255,0.9);
-  --lp-mission: linear-gradient(135deg, #EEF2FF 0%, #DCE4FF 55%, #E8EEFF 100%); --lp-mission-text: #335CFF;
-  --lp-pill: rgba(51,92,255,0.1); --lp-shadow: 0 24px 60px rgba(51,92,255,0.12);
-  --lp-grad: linear-gradient(90deg, #1F45E6, #6F8BFF);
-  --violet: #335CFF; --shadow-violet: 0 4px 20px rgba(51,92,255,0.3);
+  --lp-bg: #FFFFFF; --lp-panel: #F7F7F7; --lp-panel-2: #F2F2F2; --lp-deep: #FAFAFA; --lp-line: #E2E2E2;
+  --lp-text: #000000; --lp-soft: #000000; --lp-heading: #000000; --lp-violet: #000000; --lp-violet-2: #000000; --lp-lilac: #000000;
+  --lp-dot: #CFCFCF; --lp-track: #E4E4E4; --lp-stage: #F0F0F0; --lp-nav: rgba(255,255,255,0.9);
+  --lp-mission: linear-gradient(135deg, #F5F5F5 0%, #EAEAEA 55%, #F2F2F2 100%); --lp-mission-text: #000000;
+  --lp-pill: rgba(0,0,0,0.1); --lp-shadow: 0 24px 60px rgba(0,0,0,0.12);
+  --lp-grad: linear-gradient(90deg, #000000, #000000);
+  --violet: #000000; --shadow-violet: 0 4px 20px rgba(0,0,0,0.3);
+  --lp-tint-rgb: 0 0 0; /* tints are grey in light mode, blue in dark */
   min-height: 100%; background: var(--lp-bg); color: var(--lp-text); color-scheme: light; overflow-x: clip;
 }
 :root[data-theme="dark"] .welcome {
+  --lp-tint-rgb: 51 92 255;
   --lp-bg: #0A0D16; --lp-panel: #121726; --lp-panel-2: #171D2F; --lp-deep: #0E1220; --lp-line: #232B44;
   --lp-text: #E6E9F2; --lp-soft: #A9B0C7; --lp-heading: #FFFFFF; --lp-violet: #335CFF; --lp-violet-2: #5C7DFF; --lp-lilac: #A9BBFF;
   --lp-dot: #2A3350; --lp-track: #262E48; --lp-stage: #161B2B; --lp-nav: rgba(10,13,22,0.86);
@@ -288,16 +290,16 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-links button:hover { color: var(--lp-heading); }
 .lp-actions { display: flex; align-items: center; gap: 10px; }
 .lp-login { color: var(--lp-heading); font-weight: 600; padding-inline: 10px; }
-.lp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 12px; padding: 16px 28px; font-size: 15.3px; font-weight: 600; background: var(--lp-violet); color: #fff; box-shadow: 0 10px 40px rgba(51,92,255,0.35); transition: filter .2s, transform .2s; white-space: nowrap; }
+.lp-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 12px; padding: 16px 28px; font-size: 15.3px; font-weight: 600; background: var(--lp-violet); color: #fff; box-shadow: 0 10px 40px rgb(var(--lp-tint-rgb) / 0.35); transition: filter .2s, transform .2s; white-space: nowrap; }
 .lp-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
 .lp-btn.ghost { background: var(--lp-deep); color: var(--lp-heading); border: 1px solid var(--lp-line); box-shadow: none; }
 .lp-btn.small { padding: 10px 16px; font-size: 12.6px; border-radius: 10px; box-shadow: none; }
 .lp-top { background: var(--lp-bg); }
 .lp-hero { text-align: center; max-width: 1100px; margin: 0 auto; padding: 64px 24px 8px; }
-.lp-pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px; border-radius: 999px; border: 1px solid rgba(92,125,255,0.35); background: rgba(51,92,255,0.1); color: var(--lp-lilac); font-weight: 600; font-size: 12.6px; }
+.lp-pill { display: inline-flex; align-items: center; gap: 10px; padding: 8px 18px; border-radius: 999px; border: 1px solid rgb(var(--lp-tint-rgb) / 0.35); background: rgb(var(--lp-tint-rgb) / 0.1); color: var(--lp-lilac); font-weight: 600; font-size: 12.6px; }
 .lp-pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--lp-violet-2); }
 .lp-h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(28.8px, 4.3vw, 52.2px); line-height: 1.04; letter-spacing: -0.02em; margin: 26px auto 0 !important; max-width: 15ch; color: var(--lp-heading); text-wrap: balance; }
-.grad { background: var(--lp-grad, linear-gradient(90deg, #5C7DFF, #A9BBFF)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grad { background: var(--lp-grad, linear-gradient(90deg, var(--violet), var(--violet))); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lp-sub { font-size: clamp(14.4px, 1.4vw, 18px); color: var(--lp-soft); line-height: 1.6; max-width: 62ch; margin: 22px auto 0 !important; }
 .lp-facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 24px; margin-top: 22px; color: var(--lp-soft); font-size: 13.5px; }
 .lp-facts span { display: inline-flex; align-items: center; gap: 8px; }
@@ -313,7 +315,7 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-app-side .brand { padding: 0 6px 10px; } .lp-app-side .brand-mark { width: 28px; height: 28px; border-radius: 8px; } .lp-app-side .brand-name { font-size: 14.4px; }
 .lp-lbl { font-size: 9.9px; color: var(--lp-soft); margin: 12px 8px 4px; }
 .lp-ni { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 8px; color: var(--lp-text); }
-.lp-ni.on { background: rgba(51,92,255,0.2); }
+.lp-ni.on { background: rgb(var(--lp-tint-rgb) / 0.2); }
 .lp-app-main { padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
 .lp-app-chat { border-left: 1px solid var(--lp-line); padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .lp-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
@@ -323,10 +325,10 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-bub.me { align-self: flex-end; background: var(--lp-violet); color: #fff; }
 .lp-card { background: var(--lp-panel-2); border: 1px solid var(--lp-line); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
 .lp-opt { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--lp-line); border-radius: 10px; }
-.lp-opt.ok { border-color: var(--lp-violet-2); background: rgba(51,92,255,0.14); }
+.lp-opt.ok { border-color: var(--lp-violet-2); background: rgb(var(--lp-tint-rgb) / 0.14); }
 .lp-radio { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--lp-violet-2); flex: none; display: grid; place-items: center; color: var(--lp-bg); }
 .lp-opt.ok .lp-radio { background: var(--lp-violet-2); }
-.lp-tag, .lp-cite { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 999px; background: rgba(51,92,255,0.18); color: var(--lp-lilac); font-size: 9.9px; font-weight: 600; white-space: nowrap; }
+.lp-tag, .lp-cite { display: inline-flex; align-items: center; gap: 4px; padding: 2px 9px; border-radius: 999px; background: rgb(var(--lp-tint-rgb) / 0.18); color: var(--lp-lilac); font-size: 9.9px; font-weight: 600; white-space: nowrap; }
 .lp-chipbtn { padding: 5px 12px; border-radius: 999px; border: 1px solid var(--lp-line); color: var(--lp-text); font-size: 10.8px; }
 .lp-bar { height: 8px; border-radius: 4px; background: var(--lp-track); overflow: hidden; }
 .lp-bar i { display: block; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--lp-violet), var(--lp-violet-2)); }
@@ -341,7 +343,7 @@ details.acc .body { padding: 0 4px 14px; }
 /* Feature sections, alternating copy and picture */
 .lp-feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
 .lp-feature.flip .lp-copy { order: 2; }
-.lp-badge { display: inline-block; padding: 6px 16px; border-radius: 999px; background: rgba(51,92,255,0.16); color: var(--lp-lilac); font-weight: 700; font-size: 12.6px; letter-spacing: .06em; text-transform: uppercase; }
+.lp-badge { display: inline-block; padding: 6px 16px; border-radius: 999px; background: rgb(var(--lp-tint-rgb) / 0.16); color: var(--lp-lilac); font-weight: 700; font-size: 12.6px; letter-spacing: .06em; text-transform: uppercase; }
 .lp-h2 { font-family: var(--font-display); font-weight: 600; font-size: clamp(23.4px, 2.9vw, 37.8px); line-height: 1.08; letter-spacing: -0.015em; margin-top: 20px !important; color: var(--lp-heading); text-wrap: balance; }
 .lp-copy > p { color: var(--lp-soft); font-size: clamp(14.4px, 1.4vw, 18px); line-height: 1.6; margin: 20px 0 30px !important; max-width: 46ch; }
 .lp-note { display: flex; align-items: center; gap: 8px; color: var(--lp-soft); margin-top: 24px; font-size: 13.5px; }
@@ -377,9 +379,9 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-answer { padding: 12px 14px; border-radius: 10px; background: var(--lp-deep); border: 1px dashed var(--lp-line); line-height: 1.55; font-family: Georgia, serif; font-size: 11.7px; color: var(--lp-text); }
 .lp-mark { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 10px; border: 1px solid var(--lp-line); }
 .lp-mark svg { color: var(--lp-violet-2); flex: none; }
-.lp-mark.miss { border-color: var(--lp-violet-2); background: rgba(51,92,255,0.14); }
+.lp-mark.miss { border-color: var(--lp-violet-2); background: rgb(var(--lp-tint-rgb) / 0.14); }
 .lp-mark.miss svg { color: var(--lp-heading); }
-.lp-hero-card { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgba(51,92,255,0.22), rgba(51,92,255,0.08)); border: 1px solid rgba(92,125,255,0.45); }
+.lp-hero-card { display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 14px; background: linear-gradient(135deg, rgb(var(--lp-tint-rgb) / 0.22), rgb(var(--lp-tint-rgb) / 0.08)); border: 1px solid rgb(var(--lp-tint-rgb) / 0.45); }
 .lp-hero-card > .lp-row svg { color: var(--lp-lilac); }
 .lp-quote { font-family: var(--font-display); font-size: 16.2px; line-height: 1.3; color: var(--lp-heading); }
 .lp-quote.big { font-size: 19.8px; }
@@ -387,7 +389,7 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-table { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); font-size: 11.7px; border: 1px solid var(--lp-line); border-radius: 12px; overflow: hidden; }
 .lp-table > span { padding: 9px 10px; border-top: 1px solid var(--lp-line); display: flex; align-items: center; min-width: 0; }
 .lp-table > .lp-th { border-top: 0; color: var(--lp-soft); font-size: 9.9px; text-transform: uppercase; letter-spacing: .06em; background: var(--lp-deep); }
-.lp-table > .top { background: rgba(51,92,255,0.14); font-weight: 600; color: var(--lp-heading); }
+.lp-table > .top { background: rgb(var(--lp-tint-rgb) / 0.14); font-weight: 600; color: var(--lp-heading); }
 .lp-bar.two { position: relative; }
 .lp-bar.two b { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: rgba(255,255,255,0.28); }
 @media (max-width: 1023px) {

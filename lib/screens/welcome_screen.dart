@@ -4,8 +4,6 @@ import '../navigation.dart';
 import '../services/session.dart';
 import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
-import '../theme/theme_controller.dart';
-import '../widgets/logo_mark.dart';
 
 /// Landing colours for the theme on screen. Light (the default) is bright blue
 /// (#335CFF) text on white; dark is light text over a near-black background.
@@ -169,7 +167,7 @@ class _LpButton extends StatelessWidget {
       onPressed: onPressed,
       style: FilledButton.styleFrom(
         backgroundColor: ghost ? _Lp.deep : _Lp.blue,
-        foregroundColor: ghost ? _Lp.heading : Colors.white,
+        foregroundColor: Colors.white,
         padding: small
             ? const EdgeInsets.symmetric(horizontal: 16, vertical: 14)
             : const EdgeInsets.symmetric(horizontal: 28, vertical: 22),
@@ -204,7 +202,18 @@ class _Logo extends StatelessWidget {
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LogoMark(size: size),
+          Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: _Lp.blue,
+              borderRadius: BorderRadius.circular(size * 0.28),
+              boxShadow: [
+                BoxShadow(color: _Lp.blue.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 4))
+              ],
+            ),
+            child: Icon(Icons.auto_stories, color: Colors.white, size: size * 0.55),
+          ),
           if (showName) ...[
             const SizedBox(width: 10),
             Text('Effective AI', style: AppTheme.display(size * 0.55, color: _Lp.heading)),
@@ -657,11 +666,6 @@ class _Nav extends StatelessWidget {
             link('Help', () => enterApp(section: AppSection.help)),
           ],
           const Spacer(),
-          IconButton(
-            onPressed: toggleThemeMode,
-            tooltip: _Lp.dark ? 'Switch to light' : 'Switch to dark',
-            icon: Icon(_Lp.dark ? Icons.light_mode_outlined : Icons.dark_mode_outlined, color: _Lp.heading, size: 20),
-          ),
           TextButton(
             onPressed: () => showAccountDialog(context, signUp: false),
             style: TextButton.styleFrom(
@@ -673,7 +677,7 @@ class _Nav extends StatelessWidget {
           Flexible(
             flex: 8,
             child: _LpButton('Start your path to an A',
-                small: true, ghost: true, onPressed: () => showAccountDialog(context, signUp: true)),
+                small: true, onPressed: () => showAccountDialog(context, signUp: true)),
           ),
         ],
       ),
@@ -706,9 +710,14 @@ class _HeroState extends State<_Hero> {
     };
     final h1 = AppTheme.display(headline, color: _Lp.heading).copyWith(height: 1.05, letterSpacing: -1);
 
-    // Plain background, the same as the rest of the page (no glow behind the headline).
     return Container(
-      color: _Lp.bg,
+      decoration: const BoxDecoration(
+        gradient: RadialGradient(
+          center: Alignment(0, -1.1),
+          radius: 1.1,
+          colors: [Color(0x38335CFF), Color(0x00335CFF)],
+        ),
+      ),
       child: Column(
         children: [
           _contained(

@@ -49,31 +49,31 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final List<BoxShadow> cardShadow;
   final List<BoxShadow> cardHoverShadow;
 
-  /// Two colours: white surfaces and bright blue (#335CFF) for all text and icons.
-  /// Fills and borders are pale tints of that same blue.
+  /// Light: white surfaces with black (#000000) for all text, icons and accents.
+  /// Fills and borders are neutral greys, so no blue appears in light mode.
   static const light = AppPalette(
     background: Color(0xFFFFFFFF),
     card: Color(0xFFFFFFFF),
-    muted: Color(0xFFF0F3FF),
-    foreground: Color(0xFF335CFF),
-    mutedForeground: Color(0xFF335CFF),
-    subtle: Color(0xFF335CFF),
-    border: Color(0xFFDCE3FF),
-    primaryText: Color(0xFF335CFF),
+    muted: Color(0xFFF2F2F2),
+    foreground: Color(0xFF000000),
+    mutedForeground: Color(0xFF000000),
+    subtle: Color(0xFF000000),
+    border: Color(0xFFE2E2E2),
+    primaryText: Color(0xFF000000),
     sidebarBg: Color(0xFFFFFFFF),
-    sidebarHover: Color(0xFFF0F3FF),
-    sidebarActive: Color(0xFFE3E9FF),
-    sidebarText: Color(0xFF335CFF),
-    sidebarTextActive: Color(0xFF335CFF),
-    sidebarBorder: Color(0xFFDCE3FF),
-    shimmerBase: Color(0xFFE9EEFF),
+    sidebarHover: Color(0xFFF2F2F2),
+    sidebarActive: Color(0xFFE6E6E6),
+    sidebarText: Color(0xFF000000),
+    sidebarTextActive: Color(0xFF000000),
+    sidebarBorder: Color(0xFFE2E2E2),
+    shimmerBase: Color(0xFFF0F0F0),
     shimmerHighlight: Color(0xFFFFFFFF),
     cardShadow: [
-      BoxShadow(color: Color(0x14335CFF), blurRadius: 3, offset: Offset(0, 1)),
-      BoxShadow(color: Color(0x0A335CFF), blurRadius: 12, offset: Offset(0, 4)),
+      BoxShadow(color: Color(0x14000000), blurRadius: 3, offset: Offset(0, 1)),
+      BoxShadow(color: Color(0x0A000000), blurRadius: 12, offset: Offset(0, 4)),
     ],
     cardHoverShadow: [
-      BoxShadow(color: Color(0x26335CFF), blurRadius: 16, offset: Offset(0, 6)),
+      BoxShadow(color: Color(0x26000000), blurRadius: 16, offset: Offset(0, 6)),
     ],
   );
 

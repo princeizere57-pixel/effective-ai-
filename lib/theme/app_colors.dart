@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 
-/// Effective AI uses one accent colour: bright blue (#335CFF), on a dark
-/// background. Surfaces and borders come from `context.palette`.
+/// Effective AI's accent colour depends on the theme: black (#000000) in light
+/// mode, bright blue (#335CFF) in dark mode. Surfaces and borders come from
+/// `context.palette`.
 abstract final class AppColors {
-  /// The accent: bright blue (#335CFF).
+  /// Dark-mode accent: bright blue (#335CFF).
   static const blue = Color(0xFF335CFF);
 
-  /// Kept for the light palette; the same blue.
-  static const lightAccent = blue;
+  /// Light-mode accent: black.
+  static const lightAccent = Color(0xFF000000);
 
-  /// The accent for the theme on screen. The app is always dark and always blue,
-  /// but widgets read it from here so it can change in one place.
-  static Color brand = blue;
+  /// The accent for the theme on screen. Set by the app whenever the theme
+  /// changes (see `EffectiveAiApp` in main.dart), so it is not a constant.
+  static Color brand = lightAccent;
 
   /// Dark-theme surfaces only.
   static const navy = Color(0xFF0F1629);
   static const navyBorder = Color(0xFF2A3558);
 
-  static Color accentFor(Brightness b) => blue;
+  static Color accentFor(Brightness b) => b == Brightness.light ? lightAccent : blue;
 }
 /// Translucent fill behind an icon, pill or chip: the pale tile behind the
 /// folder icon on Home, for example.

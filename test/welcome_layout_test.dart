@@ -1,4 +1,5 @@
 import 'package:effective_ai/main.dart';
+import 'package:effective_ai/theme/app_colors.dart';
 import 'package:effective_ai/theme/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -47,11 +48,13 @@ void main() {
     Color background() => tester.widget<Scaffold>(find.byType(Scaffold).first).backgroundColor!;
     expect(themeMode.value, ThemeMode.light);
     expect(background(), Colors.white);
+    expect(AppColors.brand, AppColors.lightAccent, reason: 'light mode accent is black');
 
     await tester.tap(find.byTooltip('Switch to dark'));
     await tester.pumpAndSettle();
     expect(themeMode.value, ThemeMode.dark);
     expect(background(), isNot(Colors.white));
+    expect(AppColors.brand, AppColors.blue, reason: 'dark mode accent is blue');
 
     await tester.tap(find.byTooltip('Switch to light'));
     await tester.pumpAndSettle();

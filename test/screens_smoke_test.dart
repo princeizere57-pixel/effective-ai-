@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 void main() {
   setUpAll(() {
     GoogleFonts.config.allowRuntimeFetching = false;
-    AppColors.brand = AppColors.blue;
+    AppColors.brand = AppColors.lightAccent;
   });
 
   const sizes = {'phone': Size(375, 812), 'tablet': Size(800, 1100), 'desktop': Size(1440, 900)};
@@ -26,6 +26,7 @@ void main() {
           addTearDown(tester.view.reset);
 
           startSection = section;
+          AppColors.brand = themeName == 'dark' ? AppColors.blue : AppColors.lightAccent;
           await tester.pumpWidget(MaterialApp(theme: theme(), home: const AppShell()));
           // Past the loading shimmer and the page-turn animation.
           await tester.pump(const Duration(seconds: 1));
