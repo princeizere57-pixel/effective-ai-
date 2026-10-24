@@ -15,10 +15,8 @@ abstract final class AppTheme {
   static ThemeData _build(Brightness brightness, AppPalette p) {
     final isLight = brightness == Brightness.light;
     final accent = AppColors.accentFor(brightness);
-    // Buttons and selected fills: black in light mode, deep navy in dark mode.
+    // Buttons and selected fills: black in both themes.
     final fill = AppColors.fillFor(brightness);
-    // Dark mode: icons and filled buttons get a soft navy glow.
-    final glow = isLight ? null : const [Shadow(color: AppColors.glow, blurRadius: 10)];
     final scheme = ColorScheme.fromSeed(
       seedColor: accent,
       brightness: brightness,
@@ -46,11 +44,12 @@ abstract final class AppTheme {
         bodyColor: p.foreground,
         displayColor: p.foreground,
       ),
-      iconTheme: IconThemeData(color: p.foreground, shadows: glow),
+      iconTheme: IconThemeData(color: p.foreground),
+      // Dark mode: black buttons get a thin grey outline so they stand out on near-black cards.
       filledButtonTheme: isLight
           ? null
           : FilledButtonThemeData(
-              style: FilledButton.styleFrom(elevation: 6, shadowColor: AppColors.glow).copyWith(
+              style: FilledButton.styleFrom(side: const BorderSide(color: Color(0xFF3A3A3A))).copyWith(
                 iconColor: const WidgetStatePropertyAll(Colors.white),
               ),
             ),

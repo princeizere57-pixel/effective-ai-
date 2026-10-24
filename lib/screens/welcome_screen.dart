@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 
 import '../navigation.dart';
 import '../services/session.dart';
-import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
 import '../theme/theme_controller.dart';
 import '../widgets/logo_mark.dart';
 
-/// Landing colours for the theme on screen. Light (the default) is black
-/// (#000000) text, icons and buttons on white, with grey tints; dark is light text
-/// and bright blue (#335CFF) accents over a near-black background.
+/// Landing colours for the theme on screen. No blue anywhere except the
+/// headline's "that A". Light (the default): black text, icons and buttons on
+/// white, with grey tints. Dark: a neutral dark-grey page (#161616) with
+/// near-black panels, black buttons, and white text and icons.
 ///
 /// [dark] is set by [WelcomeScreen] on every build; the page is rebuilt from
 /// scratch when the theme changes, so every colour below is re-read.
@@ -19,35 +19,42 @@ abstract final class _Lp {
 
   static Color _pick(int light, int darkValue) => Color(dark ? darkValue : light);
 
-  static Color get bg => _pick(0xFFFFFFFF, 0xFF0A0D16);
-  static Color get panel => _pick(0xFFF7F7F7, 0xFF121726);
-  static Color get panel2 => _pick(0xFFF2F2F2, 0xFF171D2F);
-  static Color get deep => _pick(0xFFFAFAFA, 0xFF0E1220);
-  static Color get stage => _pick(0xFFF0F0F0, 0xFF161B2B);
-  static Color get line => _pick(0xFFE2E2E2, 0xFF232B44);
-  static Color get track => _pick(0xFFE4E4E4, 0xFF262E48);
-  static Color get dot => _pick(0xFFCFCFCF, 0xFF2A3350);
+  static Color get bg => _pick(0xFFFFFFFF, 0xFF161616);
+  static Color get panel => _pick(0xFFF7F7F7, 0xFF0A0A0A);
+  static Color get panel2 => _pick(0xFFF2F2F2, 0xFF0F0F0F);
+  static Color get deep => _pick(0xFFFAFAFA, 0xFF050505);
+  static Color get stage => _pick(0xFFF0F0F0, 0xFF0D0D0D);
+  static Color get line => _pick(0xFFE2E2E2, 0xFF2A2A2A);
+  static Color get track => _pick(0xFFE4E4E4, 0xFF2A2A2A);
+  static Color get dot => _pick(0xFFCFCFCF, 0xFF3A3A3A);
 
   /// Headlines and strong text.
   static Color get heading => _pick(0xFF000000, 0xFFFFFFFF);
-  static Color get text => _pick(0xFF000000, 0xFFE6E9F2);
-  static Color get soft => _pick(0xFF000000, 0xFFA9B0C7);
-  /// The accent fill: black in light mode, deep navy in dark mode.
-  static Color get blue => _pick(0xFF000000, 0xFF1E3A8A);
-  /// Icons and accent text: black in light mode, glowing navy in dark mode.
-  static Color get blue2 => _pick(0xFF000000, 0xFF5A76D1);
-  static Color get paleBlue => _pick(0xFF000000, 0xFF6F89D8);
+  static Color get text => _pick(0xFF000000, 0xFFF2F2F2);
+  static Color get soft => _pick(0xFF000000, 0xFFA8A8A8);
+
+  /// Button and selected-item fill: black in both themes.
+  static Color get blue => const Color(0xFF000000);
+
+  /// Icons and accent text: black in light mode, white in dark mode.
+  static Color get blue2 => _pick(0xFF000000, 0xFFFFFFFF);
+  static Color get paleBlue => _pick(0xFF000000, 0xFFFFFFFF);
+
+  /// The headline's "that A": black in light mode, the original blue gradient in dark mode.
   static LinearGradient get gradient => LinearGradient(
       colors: dark
           ? [const Color(0xFF5C7DFF), const Color(0xFFA9BBFF)]
           : [const Color(0xFF000000), const Color(0xFF000000)]);
-  static Color get shadow => Colors.black.withValues(alpha: dark ? 0.55 : 0.08);
+  static Color get shadow => Colors.black.withValues(alpha: dark ? 0.6 : 0.08);
   static List<Color> get missionGradient => dark
-      ? [const Color(0xFF1B2347), const Color(0xFF1F3170), const Color(0xFF1B2C52)]
+      ? [const Color(0xFF0A0A0A), const Color(0xFF1F1F1F), const Color(0xFF0F0F0F)]
       : [const Color(0xFFF5F5F5), const Color(0xFFEAEAEA), const Color(0xFFF2F2F2)];
-  static Color get missionText => _pick(0xFF000000, 0xFFCDD2E4);
-  static Color get pill => dark ? Colors.white.withValues(alpha: 0.08) : blue.withValues(alpha: 0.1);
-  static Color tint([double a = 0.16]) => blue.withValues(alpha: dark ? a : a * 0.6);
+  static Color get missionText => _pick(0xFF000000, 0xFFCFCFCF);
+  static Color get pill => dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.1);
+
+  /// Translucent fills behind tags and chips: grey in both themes.
+  static Color tint([double a = 0.16]) =>
+      dark ? Colors.white.withValues(alpha: a * 0.6) : Colors.black.withValues(alpha: a * 0.6);
 }
 
 /// First page, before signing up.
@@ -180,11 +187,12 @@ class _LpButton extends StatelessWidget {
         textStyle: TextStyle(fontSize: small ? 14 : 17, fontWeight: FontWeight.w600),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(small ? 10 : 12),
-          side: ghost ? BorderSide(color: _Lp.line) : BorderSide.none,
+          // Dark mode: black buttons get a thin grey outline so they stand out.
+          side: ghost
+              ? BorderSide(color: _Lp.line)
+              : (_Lp.dark ? const BorderSide(color: Color(0xFF3A3A3A)) : BorderSide.none),
         ),
-        // Dark mode: filled buttons glow softly in navy.
-        elevation: _Lp.dark && !ghost ? 8 : 0,
-        shadowColor: AppColors.glow,
+        elevation: 0,
       ),
       child: !ghost && !small
           ? Row(

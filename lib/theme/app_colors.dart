@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-/// Effective AI's accent colour depends on the theme. Light mode: black
-/// (#000000). Dark mode: a dark, styled navy with a soft glow: [navyFill] for
-/// buttons and selected fills, [blue] (a lighter navy) for icons and accent
-/// text so they stay readable. Surfaces and borders come from `context.palette`.
+/// Effective AI is black and white with no blue. Light mode: black (#000000)
+/// text, icons and buttons on white. Dark mode: black buttons and selected
+/// items ([darkFill]) with white text and icons ([blue], kept under its old
+/// name) on a neutral dark-grey page. Surfaces and borders come from
+/// `context.palette`.
 abstract final class AppColors {
-  /// Dark-mode accent for icons and accent text: glowing navy.
-  static const blue = Color(0xFF5A76D1);
+  /// Dark-mode accent for icons and accent text: white.
+  static const blue = Color(0xFFFFFFFF);
 
-  /// Dark-mode fill for buttons and selected items: deep navy.
-  static const navyFill = Color(0xFF1E3A8A);
-
-  /// The soft glow behind dark-mode icons and buttons.
-  static const glow = Color(0x995A76D1);
+  /// Dark-mode fill for buttons and selected items: black.
+  static const darkFill = Color(0xFF000000);
 
   /// Light-mode accent: black.
   static const lightAccent = Color(0xFF000000);
@@ -22,13 +20,13 @@ abstract final class AppColors {
   static Color brand = lightAccent;
 
   /// Dark-theme surfaces only.
-  static const navy = Color(0xFF0F1629);
-  static const navyBorder = Color(0xFF2A3558);
+  static const navy = Color(0xFF0A0A0A);
+  static const navyBorder = Color(0xFF2A2A2A);
 
   static Color accentFor(Brightness b) => b == Brightness.light ? lightAccent : blue;
 
-  /// Button and selected-item fill for the theme.
-  static Color fillFor(Brightness b) => b == Brightness.light ? lightAccent : navyFill;
+  /// Button and selected-item fill: black in both themes.
+  static Color fillFor(Brightness b) => b == Brightness.light ? lightAccent : darkFill;
 }
 /// Translucent fill behind an icon, pill or chip: the pale tile behind the
 /// folder icon on Home, for example.
