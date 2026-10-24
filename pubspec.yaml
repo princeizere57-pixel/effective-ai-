@@ -17,6 +17,7 @@ dependencies:
   # Uploading books, notes, slides, papers and past exams to My Library
   file_picker: ^8.1.2
   supabase_flutter: ^2.18.3
+  video_player: ^2.14.1
 
 dev_dependencies:
   flutter_test:
@@ -28,3 +29,5 @@ flutter:
   assets:
     - assets/images/logo.png
     - assets/images/google_g.png
+    - assets/video/effective-ai-story.mp4
+    - assets/video/effective-ai-story.jpg

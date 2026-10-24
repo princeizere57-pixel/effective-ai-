@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
 import '../theme/theme_controller.dart';
 import '../widgets/logo_mark.dart';
+import '../widgets/story_video.dart';
 import 'auth_screen.dart';
 
 /// Landing colours for the theme on screen. No blue anywhere except the
@@ -210,16 +211,16 @@ class _LpButton extends StatelessWidget {
 }
 
 class _Logo extends StatelessWidget {
-  const _Logo({this.showName = true, this.size = 36});
+  const _Logo({this.showName = true});
 
   final bool showName;
-  final double size;
+  static const size = 36.0;
 
   @override
   Widget build(BuildContext context) => Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LogoMark(size: size),
+          const LogoMark(size: size),
           if (showName) ...[
             const SizedBox(width: 10),
             Text('Effective AI', style: AppTheme.display(size * 0.55, color: _Lp.heading)),
@@ -709,7 +710,6 @@ class _Hero extends StatefulWidget {
 }
 
 class _HeroState extends State<_Hero> {
-  int _slide = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -810,213 +810,13 @@ class _HeroState extends State<_Hero> {
           _contained(
             max: 1180,
             padding: EdgeInsets.fromLTRB(size.isPhone ? 12 : 24, size.isPhone ? 36 : 48, size.isPhone ? 12 : 24, 0),
-            child: _Showcase(slide: _slide, size: size),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (var i = 0; i < 3; i++)
-                Semantics(
-                  button: true,
-                  selected: i == _slide,
-                  label: '${['Marking', 'Home', 'Diagnose'][i]} preview',
-                  child: GestureDetector(
-                    onTap: () => setState(() => _slide = i),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      curve: AppTheme.easeOutExpo,
-                      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
-                      width: i == _slide ? 36 : 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: i == _slide ? _Lp.blue2 : _Lp.dot,
-                        borderRadius: BorderRadius.circular(999),
-                      ),
-                    ),
-                  ),
-                ),
-            ],
+            // The story film, playing silently on a loop in the app window.
+            child: const _Window(shadow: true, child: StoryVideo()),
           ),
         ],
       ),
     );
   }
-}
-
-/// A window onto the app: sidebar, the chosen screen, and the study assistant.
-class _Showcase extends StatelessWidget {
-  const _Showcase({required this.slide, required this.size});
-
-  final int slide;
-  final ScreenSize size;
-
-  static final _nav = [
-    (Icons.home_outlined, 'Home'),
-    (Icons.folder_copy_outlined, 'My library'),
-    (Icons.forum_outlined, 'Ask'),
-    (Icons.track_changes, 'Diagnose'),
-    (Icons.assignment_outlined, 'Practice'),
-    (Icons.calendar_month_outlined, 'My plan'),
-    (Icons.bar_chart, 'Progress'),
-  ];
-  static final _active = [4, 0, 3];
-  // Exam readiness is a range, not a grade prediction, until it is calibrated.
-  static final _homeTiles = [
-    (Icons.replay, '60–70%', 'READINESS'),
-    (Icons.insights, '2 of 3', 'MISTAKES FIXED'),
-    (Icons.lightbulb_outline, '72%', 'MASTERY'),
-    (Icons.local_fire_department_outlined, '12 days', 'STREAK'),
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    final main = Padding(
-      padding: EdgeInsets.all(size.isPhone ? 16 : 22),
-      child: switch (slide) {
-        0 => _markingSlide(),
-        1 => _homeSlide(),
-        _ => _gapSpaced([
-            const _Misconception(),
-            _mastery([
-              ('Gradient descent', 88),
-              ('Overfitting', 74),
-              ('Bias–variance trade-off', 52),
-              ('Regularisation', 41)
-            ]),
-          ]),
-      },
-    );
-
-    return _Window(
-      shadow: true,
-      child: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (!size.isPhone)
-              Container(
-                width: size.isDesktop ? 200 : 180,
-                padding: const EdgeInsets.fromLTRB(10, 16, 10, 16),
-                decoration: BoxDecoration(color: _Lp.panel, border: Border(right: BorderSide(color: _Lp.line))),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Padding(
-                        padding: EdgeInsets.fromLTRB(6, 0, 0, 14),
-                        child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: FittedBox(fit: BoxFit.scaleDown, child: _Logo(size: 28)))),
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(8, 0, 0, 4),
-                        child: Text('Study', style: TextStyle(color: _Lp.soft, fontSize: 11))),
-                    for (final (i, (icon, label)) in _nav.indexed)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                        decoration: BoxDecoration(
-                          color: i == _active[slide] ? _Lp.tint(0.2) : null,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(children: [
-                          Icon(icon, size: 16, color: _Lp.text),
-                          const SizedBox(width: 10),
-                          Flexible(
-                              child:
-                                  Text(label, overflow: TextOverflow.ellipsis, style: const TextStyle(fontSize: 13))),
-                        ]),
-                      ),
-                  ],
-                ),
-              ),
-            Expanded(child: main),
-            if (size.isDesktop)
-              Container(
-                width: 270,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(border: Border(left: BorderSide(color: _Lp.line))),
-                child: _gapSpaced([
-                  Row(children: [
-                    const Expanded(
-                        child: Text('Study assistant', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15))),
-                    Icon(Icons.close, size: 16, color: _Lp.soft),
-                  ]),
-                  const _Bubble('Which point did I miss?', me: true),
-                  const _Bubble(
-                    'The bias–variance link. Your lecturer frames L2 as “trading a little bias for a lot less '
-                    'variance” (Lecture 6, p. 5).\n\nCan you add one sentence that makes that link?',
-                  ),
-                  const Wrap(spacing: 8, runSpacing: 8, children: [_Tag('Lecture 6'), _Tag('Past papers')]),
-                ]),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _markingSlide() => _gapSpaced([
-        Row(children: [
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('Machine Learning: past paper practice',
-                  style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
-              Text('Written answer, marked against the rubric', style: TextStyle(color: _Lp.soft, fontSize: 13)),
-            ]),
-          ),
-          const _Tag('04:12'),
-        ]),
-        Container(
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-              color: _Lp.panel2, border: Border.all(color: _Lp.line), borderRadius: BorderRadius.circular(14)),
-          child: _rubricMark(),
-        ),
-        _iconLine(Icons.insights, 'Missed point logged as a misconception: L1 vs L2'),
-      ]);
-
-  Widget _homeSlide() => _gapSpaced([
-        Wrap(crossAxisAlignment: WrapCrossAlignment.end, children: [
-          Text('Welcome back, ', style: AppTheme.display(26, color: _Lp.heading)),
-          _GradientText('Alex', style: AppTheme.display(26, color: _Lp.heading)),
-        ]),
-        _muted('Your exam is in 18 days.'),
-        const _Note(
-          icon: Icons.track_changes,
-          title: 'Study next: Regularisation · 25 min',
-          text: 'Mastery 41%, and asked in 4 of your 5 past papers.',
-        ),
-        // Rows of tiles rather than a grid: the showcase measures its height intrinsically.
-        for (final row in size.isPhone ? [_homeTiles.sublist(0, 2), _homeTiles.sublist(2)] : [_homeTiles])
-          Row(children: [
-            for (final (i, (icon, value, label)) in row.indexed) ...[
-              if (i > 0) const SizedBox(width: 10),
-              Expanded(child: _StatTile(icon: icon, value: value, label: label)),
-            ],
-          ]),
-      ]);
-}
-
-class _StatTile extends StatelessWidget {
-  const _StatTile({required this.icon, required this.value, required this.label});
-
-  final IconData icon;
-  final String value;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-            color: _Lp.panel2, border: Border.all(color: _Lp.line), borderRadius: BorderRadius.circular(14)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 20, color: _Lp.blue2),
-            FittedBox(child: Text(value, style: AppTheme.display(22, color: _Lp.heading))),
-            FittedBox(child: Text(label, style: TextStyle(color: _Lp.soft, fontSize: 10, letterSpacing: 0.8))),
-          ],
-        ),
-      );
 }
 
 class _Bubble extends StatelessWidget {

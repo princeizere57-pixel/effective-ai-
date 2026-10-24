@@ -365,9 +365,8 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-tile svg { color: var(--lp-violet-2); }
 .lp-tile b { display: block; font-family: var(--font-display); font-size: 21.6px; color: var(--lp-heading); margin-top: 6px; }
 .lp-tile span { font-size: 9.9px; letter-spacing: .08em; text-transform: uppercase; color: var(--lp-soft); }
-.lp-carousel { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
-.lp-carousel button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 999px; background: var(--lp-dot); transition: width .3s var(--ease); }
-.lp-carousel button[aria-current="true"] { width: 36px; background: var(--lp-violet-2); }
+/* The film is 1920 × 972 (its black letterbox bars were cropped off). */
+.lp-video { display: block; width: 100%; aspect-ratio: 1920 / 972; height: auto; object-fit: cover; background: #000; }
 /* Feature sections, alternating copy and picture */
 .lp-feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; align-items: center; max-width: 1200px; margin: 0 auto; padding: 80px 24px; }
 .lp-feature.flip .lp-copy { order: 2; }
@@ -1664,28 +1663,13 @@ const LP_FEATURES = [
       ${[['Regularisation', 41, 78], ['Bias&ndash;variance', 52, 69]].map(([n, a, b]) => `<div><div class="lp-row" style="margin-bottom:6px"><span class="lp-grow">${n}</span><span class="lp-muted">${a}% &rarr;</span><strong>${b}%</strong></div><div class="lp-bar two"><i style="width:${b}%"></i><b style="width:${a}%"></b></div></div>`).join('')}
       <div class="lp-row"><span class="lp-grow"><strong>Exam readiness</strong><br><span class="lp-muted" style="font-size:10.8px">An estimate from fresh questions, not a grade prediction</span></span><strong style="font-size:18px;color:var(--lp-heading)">60&ndash;70%</strong></div>` },
 ];
-const LP_SLIDES = [
-  () => `<div class="lp-row"><div class="lp-grow"><strong style="font-size:14.4px">Machine Learning: past paper practice</strong><div class="lp-muted">Written answer, marked against the rubric</div></div><span class="lp-chipbtn">${icon('timer', 12)} 04:12</span></div>
-    <div class="lp-card">${lpMark()}</div>
-    <div class="lp-row lp-muted">${icon('insights', 16)}<span class="lp-grow">Missed point logged as a misconception: L1 vs L2</span></div>`,
-  () => `<div><strong style="font-family:var(--font-display);font-size:23.4px;color:var(--lp-heading)">Welcome back, <span class="grad">Alex</span></strong><div class="lp-muted" style="margin-top:4px">Your exam is in 18 days.</div></div>
-    <div class="lp-card"><div class="lp-row">${icon('target', 16)}<strong class="lp-grow">Study next: Regularisation</strong><span class="lp-tag">25 min</span></div><span class="lp-muted">Mastery 41%, and asked in 4 of your 5 past papers.</span></div>
-    <div class="lp-tiles">${[['replay', '60&ndash;70%', 'Readiness'], ['insights', '2 of 3', 'Mistakes fixed'], ['bulb', '72%', 'Mastery'], ['flame', '12 days', 'Streak']].map(([ic, v, l]) => `<div class="lp-tile">${icon(ic, 20)}<b>${v}</b><span>${l}</span></div>`).join('')}</div>`,
-  () => `${lpMisconception(false)}${lpMastery([['Gradient descent', 88], ['Overfitting', 74], ['Bias&ndash;variance trade-off', 52], ['Regularisation', 41]])}`,
-];
-const LP_ACTIVE = [4, 0, 3];
-S.lpSlide = 0;
-function lpShowcase() {
-  const nav = [['home', 'Home'], ['folder', 'My library'], ['chat', 'Ask'], ['target', 'Diagnose'], ['assignment', 'Practice'], ['calendar', 'My plan'], ['barChart', 'Progress']];
-  return `<div class="lp-frame"><div class="lp-dots"><i></i><i></i><i></i></div><div class="lp-app">
-    <div class="lp-app-side"><div class="brand"><span class="brand-mark">${icon('bookOpen', 16)}</span><span class="brand-name">Effective AI</span></div>
-      <span class="lp-lbl">Study</span>${nav.map(([ic, t], i) => `<span class="lp-ni${i === LP_ACTIVE[S.lpSlide] ? ' on' : ''}">${icon(ic, 16)}${t}</span>`).join('')}</div>
-    <div class="lp-app-main">${LP_SLIDES[S.lpSlide]()}</div>
-    <div class="lp-app-chat"><div class="lp-row"><strong class="lp-grow" style="font-size:13.5px">Study assistant</strong>${icon('x', 16)}</div>
-      <div class="lp-bub me">Which point did I miss?</div>
-      <div class="lp-bub">The bias&ndash;variance link. Your lecturer frames L2 as &ldquo;trading a little bias for a lot less variance&rdquo; <span class="lp-cite">p. 5</span>.<br><br>Can you add one sentence that makes that link?</div>
-      <div class="lp-row" style="margin-top:auto"><span class="lp-chipbtn">${icon('article', 12)} Lecture 6</span><span class="lp-chipbtn">${icon('assignment', 12)} Past papers</span></div></div>
-  </div></div>`;
+/* The story film under the headline: plays silently on a loop. Compressed from the 1080p original
+   (no sound track, starts before it has fully downloaded); the poster shows while it loads. */
+const LP_VIDEO = { src: 'media/effective-ai-story.mp4', poster: 'media/effective-ai-story.jpg' };
+function lpVideo() {
+  return `<div class="lp-frame lp-video-frame"><div class="lp-dots"><i></i><i></i><i></i></div>
+    <video class="lp-video" src="${LP_VIDEO.src}" poster="${LP_VIDEO.poster}" autoplay muted loop playsinline preload="auto"
+      aria-label="Effective AI story film: a student goes from late-night cramming to exam-ready with their own course"></video></div>`;
 }
 function drawWelcome() {
   const brand = `<div class="brand"><span class="brand-mark">${icon('bookOpen', 20)}</span><span class="brand-name">Effective AI</span></div>`;
@@ -1705,8 +1689,7 @@ function drawWelcome() {
       <div class="lp-facts"><span>${icon('target', 16)}What to study next</span><span>${icon('insights', 16)}Why you keep getting it wrong</span><span>${icon('check', 16)}Proof you&rsquo;ve fixed it</span></div>
       <div class="lp-ctas"><button class="lp-btn" data-act="wAccount" data-arg="up">Sign up free ${icon('arrow', 18)}</button><button class="lp-btn ghost" data-act="wDemo">Explore the demo</button></div>
     </header>
-    <div class="lp-show"><div id="lp-showcase">${lpShowcase()}</div>
-      <div class="lp-carousel" role="group" aria-label="Choose a preview">${LP_SLIDES.map((_, i) => `<button data-act="lpSlide" data-arg="${i}" aria-label="${['Marking', 'Home', 'Diagnose'][i]} preview" aria-current="${i === S.lpSlide}"></button>`).join('')}</div></div></div>
+    <div class="lp-show">${lpVideo()}</div></div>
     <section class="lp-loop-wrap" id="lp-loop">
       <span class="lp-badge">How it works</span>
       <h2 class="lp-h2">One loop, built on your own course.</h2>
@@ -1724,12 +1707,11 @@ function drawWelcome() {
       ${col('The loop', [['Find your mistakes', 'wEnter', 'diagnose'], ['What to study next', 'wEnter', 'plan'], ['Practise past papers', 'wEnter', 'practice'], ['Proof of progress', 'wEnter', 'progress']])}
       ${col('Your course', [['Course map', 'wEnter', 'library'], ['Ask your notes', 'wEnter', 'ask'], ['Explain a topic', 'wEnter', 'explain'], ['Mock exam', 'wEnter', 'exam']])}
       ${col('Account', [['Log in', 'wAccount', 'in'], ['Sign up free', 'wAccount', 'up'], ['Help', 'wEnter', 'help']])}</footer>`;
+  // People who ask for reduced motion get the film paused, with controls to play it themselves.
+  const video = welcomeEl.querySelector('.lp-video');
+  if (video && matchMedia('(prefers-reduced-motion: reduce)').matches) { video.removeAttribute('autoplay'); video.pause(); video.controls = true; }
 }
 Object.assign(A, {
-  lpSlide: a => {
-    S.lpSlide = +a; document.getElementById('lp-showcase').innerHTML = lpShowcase();
-    welcomeEl.querySelectorAll('.lp-carousel button').forEach((b, i) => b.setAttribute('aria-current', i === S.lpSlide));
-  },
   lpScroll: a => document.getElementById(a)?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
   lpTheme: () => { applyTheme(S.theme === 'dark' ? 'light' : 'dark'); drawWelcome(); },
 });
