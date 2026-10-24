@@ -85,7 +85,7 @@ class AppPalette extends ThemeExtension<AppPalette> {
     mutedForeground: Color(0xFF9AA5C4),
     subtle: Color(0xFF6B7694),
     border: Color(0xFF2A3558),
-    primaryText: Color(0xFFA9BBFF),
+    primaryText: Color(0xFF6F89D8),
     sidebarBg: Color(0xFF080C18),
     sidebarHover: Color(0xFF141B30),
     sidebarActive: Color(0xFF2A3558),

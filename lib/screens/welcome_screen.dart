@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../navigation.dart';
 import '../services/session.dart';
+import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
 import '../theme/theme_controller.dart';
@@ -31,10 +32,11 @@ abstract final class _Lp {
   static Color get heading => _pick(0xFF000000, 0xFFFFFFFF);
   static Color get text => _pick(0xFF000000, 0xFFE6E9F2);
   static Color get soft => _pick(0xFF000000, 0xFFA9B0C7);
-  /// The accent: black in light mode, bright blue in dark mode.
-  static Color get blue => _pick(0xFF000000, 0xFF335CFF);
-  static Color get blue2 => _pick(0xFF000000, 0xFF5C7DFF);
-  static Color get paleBlue => _pick(0xFF000000, 0xFFA9BBFF);
+  /// The accent fill: black in light mode, deep navy in dark mode.
+  static Color get blue => _pick(0xFF000000, 0xFF1E3A8A);
+  /// Icons and accent text: black in light mode, glowing navy in dark mode.
+  static Color get blue2 => _pick(0xFF000000, 0xFF5A76D1);
+  static Color get paleBlue => _pick(0xFF000000, 0xFF6F89D8);
   static LinearGradient get gradient => LinearGradient(
       colors: dark
           ? [const Color(0xFF5C7DFF), const Color(0xFFA9BBFF)]
@@ -180,7 +182,9 @@ class _LpButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(small ? 10 : 12),
           side: ghost ? BorderSide(color: _Lp.line) : BorderSide.none,
         ),
-        elevation: 0,
+        // Dark mode: filled buttons glow softly in navy.
+        elevation: _Lp.dark && !ghost ? 8 : 0,
+        shadowColor: AppColors.glow,
       ),
       child: !ghost && !small
           ? Row(

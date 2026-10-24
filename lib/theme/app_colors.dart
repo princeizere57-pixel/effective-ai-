@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 
-/// Effective AI's accent colour depends on the theme: black (#000000) in light
-/// mode, bright blue (#335CFF) in dark mode. Surfaces and borders come from
-/// `context.palette`.
+/// Effective AI's accent colour depends on the theme. Light mode: black
+/// (#000000). Dark mode: a dark, styled navy with a soft glow: [navyFill] for
+/// buttons and selected fills, [blue] (a lighter navy) for icons and accent
+/// text so they stay readable. Surfaces and borders come from `context.palette`.
 abstract final class AppColors {
-  /// Dark-mode accent: bright blue (#335CFF).
-  static const blue = Color(0xFF335CFF);
+  /// Dark-mode accent for icons and accent text: glowing navy.
+  static const blue = Color(0xFF5A76D1);
+
+  /// Dark-mode fill for buttons and selected items: deep navy.
+  static const navyFill = Color(0xFF1E3A8A);
+
+  /// The soft glow behind dark-mode icons and buttons.
+  static const glow = Color(0x995A76D1);
 
   /// Light-mode accent: black.
   static const lightAccent = Color(0xFF000000);
@@ -19,6 +26,9 @@ abstract final class AppColors {
   static const navyBorder = Color(0xFF2A3558);
 
   static Color accentFor(Brightness b) => b == Brightness.light ? lightAccent : blue;
+
+  /// Button and selected-item fill for the theme.
+  static Color fillFor(Brightness b) => b == Brightness.light ? lightAccent : navyFill;
 }
 /// Translucent fill behind an icon, pill or chip: the pale tile behind the
 /// folder icon on Home, for example.
