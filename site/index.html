@@ -42,7 +42,7 @@
     --violet-dark: #FFFFFF; --violet-pale: rgba(255,255,255,0.08); --violet-pale-hover: rgba(255,255,255,0.14);
     --blue: #FFFFFF; --green: #FFFFFF; --amber: #FFFFFF; --red: #FFFFFF; --blue-pale: rgba(255,255,255,0.08); --green-ink: #FFFFFF; --green-pale: rgba(255,255,255,0.08);
     --amber-ink: #FFFFFF; --amber-pale: rgba(255,255,255,0.08); --red-ink: #FFFFFF; --red-pale: rgba(255,255,255,0.08);
-    --canvas: #161616; --workspace: #161616; --surface: #0A0A0A; --muted: #0F0F0F;
+    --canvas: #0A0D16; --workspace: #0A0D16; --surface: #0A0A0A; --muted: #0F0F0F;
     --text: #F2F2F2; --text-2: #CFCFCF; --text-3: #9A9A9A; --divider: #2A2A2A;
     --shimmer-base: #0F0F0F; --shimmer-hi: #2A2A2A; --toast: #2A2A2A; --mark: rgba(255,255,255,0.18);
     --scrim: rgba(0,0,0,0.6);
@@ -55,7 +55,7 @@
   --violet-dark: #FFFFFF; --violet-pale: rgba(255,255,255,0.08); --violet-pale-hover: rgba(255,255,255,0.14);
   --blue: #FFFFFF; --green: #FFFFFF; --amber: #FFFFFF; --red: #FFFFFF; --blue-pale: rgba(255,255,255,0.08); --green-ink: #FFFFFF; --green-pale: rgba(255,255,255,0.08);
   --amber-ink: #FFFFFF; --amber-pale: rgba(255,255,255,0.08); --red-ink: #FFFFFF; --red-pale: rgba(255,255,255,0.08);
-  --canvas: #161616; --workspace: #161616; --surface: #0A0A0A; --muted: #0F0F0F;
+  --canvas: #0A0D16; --workspace: #0A0D16; --surface: #0A0A0A; --muted: #0F0F0F;
   --text: #F2F2F2; --text-2: #CFCFCF; --text-3: #9A9A9A; --divider: #2A2A2A;
   --shimmer-base: #0F0F0F; --shimmer-hi: #2A2A2A; --toast: #2A2A2A; --mark: rgba(255,255,255,0.18);
   --scrim: rgba(0,0,0,0.6);
@@ -271,15 +271,15 @@ details.acc .body { padding: 0 4px 14px; }
 }
 :root[data-theme="dark"] .welcome {
   --lp-tint-rgb: 255 255 255;
-  --lp-bg: #161616; --lp-panel: #0A0A0A; --lp-panel-2: #0F0F0F; --lp-deep: #050505; --lp-line: #2A2A2A;
+  --lp-bg: #0A0D16; --lp-panel: #0A0A0A; --lp-panel-2: #0F0F0F; --lp-deep: #050505; --lp-line: #2A2A2A;
   --lp-text: #F2F2F2; --lp-soft: #A8A8A8; --lp-heading: #FFFFFF; --lp-violet: #000000; --lp-violet-2: #FFFFFF; --lp-lilac: #FFFFFF;
-  --lp-dot: #3A3A3A; --lp-track: #2A2A2A; --lp-stage: #0D0D0D; --lp-nav: rgba(22,22,22,0.9);
+  --lp-dot: #3A3A3A; --lp-track: #2A2A2A; --lp-stage: #0D0D0D; --lp-nav: rgba(10,13,22,0.9);
   --lp-mission: linear-gradient(135deg, #0A0A0A 0%, #1F1F1F 55%, #0F0F0F 100%); --lp-mission-text: #CFCFCF;
   --lp-pill: rgba(255,255,255,0.08); --lp-shadow: 0 30px 90px rgba(0,0,0,0.6);
   --lp-grad: linear-gradient(90deg, #5C7DFF, #A9BBFF);
   color-scheme: dark;
 }
-/* Dark mode: black fills (buttons, selected items) with white text and white icons on a neutral grey page. The headline keeps its gradient. */
+/* Dark mode: black fills (buttons, selected items) with white text and white icons on a #0A0D16 page. The headline keeps its gradient. */
 :root[data-theme="dark"] .lp-btn:not(.ghost) { box-shadow: inset 0 0 0 1px #3A3A3A, 0 8px 24px rgba(0,0,0,0.45); }
 :root[data-theme="dark"] :is(.btn:not(.outline):not(.text):not(.tonal), .round.fill) { box-shadow: inset 0 0 0 1px #3A3A3A; }
 .lp-theme { background: none; border: 0; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; color: var(--lp-heading); }

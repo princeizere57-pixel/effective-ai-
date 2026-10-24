@@ -77,10 +77,10 @@ class AppPalette extends ThemeExtension<AppPalette> {
     ],
   );
 
-  /// Dark: a neutral dark-grey page (#161616) with near-black panels, black
+  /// Dark: a #0A0D16 page with near-black panels, black
   /// buttons and selected items, and white text and icons. No navy or blue.
   static const dark = AppPalette(
-    background: Color(0xFF161616),
+    background: Color(0xFF0A0D16),
     card: Color(0xFF0A0A0A),
     muted: Color(0xFF0F0F0F),
     foreground: Color(0xFFF2F2F2),

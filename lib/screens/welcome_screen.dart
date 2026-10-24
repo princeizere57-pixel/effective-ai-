@@ -9,7 +9,7 @@ import '../widgets/logo_mark.dart';
 
 /// Landing colours for the theme on screen. No blue anywhere except the
 /// headline's "that A". Light (the default): black text, icons and buttons on
-/// white, with grey tints. Dark: a neutral dark-grey page (#161616) with
+/// white, with grey tints. Dark: a #0A0D16 page with
 /// near-black panels, black buttons, and white text and icons.
 ///
 /// [dark] is set by [WelcomeScreen] on every build; the page is rebuilt from
@@ -19,7 +19,7 @@ abstract final class _Lp {
 
   static Color _pick(int light, int darkValue) => Color(dark ? darkValue : light);
 
-  static Color get bg => _pick(0xFFFFFFFF, 0xFF161616);
+  static Color get bg => _pick(0xFFFFFFFF, 0xFF0A0D16);
   static Color get panel => _pick(0xFFF7F7F7, 0xFF0A0A0A);
   static Color get panel2 => _pick(0xFFF2F2F2, 0xFF0F0F0F);
   static Color get deep => _pick(0xFFFAFAFA, 0xFF050505);
