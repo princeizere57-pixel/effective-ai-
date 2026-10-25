@@ -7,6 +7,7 @@ import 'services/session.dart';
 import 'theme/app_colors.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_controller.dart';
+import 'widgets/effective_ai_splash.dart';
 
 /// All text is drawn at this fraction of its designed size.
 const textScale = 0.9;
@@ -19,7 +20,11 @@ Future<void> main() async {
 }
 
 class EffectiveAiApp extends StatelessWidget {
-  const EffectiveAiApp({super.key});
+  const EffectiveAiApp({super.key, this.showIntro = true});
+
+  /// Plays the launch intro (see [EffectiveAiSplash]). Tests that drive the app
+  /// directly turn it off.
+  final bool showIntro;
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,11 @@ class EffectiveAiApp extends StatelessWidget {
           final media = MediaQuery.of(context);
           return MediaQuery(
             data: media.copyWith(textScaler: TextScaler.linear(media.textScaler.scale(1) * textScale)),
-            child: _AccentScope(brightness: Theme.of(context).brightness, child: child!),
+            // The launch intro sits over the whole app, once per launch, then reveals it.
+            child: EffectiveAiSplash(
+              enabled: showIntro,
+              child: _AccentScope(brightness: Theme.of(context).brightness, child: child!),
+            ),
           );
         },
         home: ValueListenableBuilder<bool>(

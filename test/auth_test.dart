@@ -20,7 +20,7 @@ void main() {
     tester.view.physicalSize = const Size(1440, 900);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    await tester.pumpWidget(const EffectiveAiApp());
+    await tester.pumpWidget(const EffectiveAiApp(showIntro: false));
     await tester.pump();
     await tester.tap(find.text('Log in').first);
     await tester.pump(const Duration(milliseconds: 400));

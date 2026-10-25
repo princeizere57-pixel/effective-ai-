@@ -22,7 +22,7 @@ void main() {
         addTearDown(tester.view.reset);
         themeMode.value = mode;
 
-        await tester.pumpWidget(const EffectiveAiApp());
+        await tester.pumpWidget(const EffectiveAiApp(showIntro: false));
         await tester.pump();
 
         expect(find.text('Start your path to an A'), findsOneWidget);
@@ -43,7 +43,7 @@ void main() {
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
-    await tester.pumpWidget(const EffectiveAiApp());
+    await tester.pumpWidget(const EffectiveAiApp(showIntro: false));
     await tester.pump();
     Color background() => tester.widget<Scaffold>(find.byType(Scaffold).first).backgroundColor!;
     expect(themeMode.value, ThemeMode.light);
