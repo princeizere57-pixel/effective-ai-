@@ -28,7 +28,7 @@ void main() {
           startSection = section;
           AppColors.brand = themeName == 'dark' ? AppColors.blue : AppColors.lightAccent;
           await tester.pumpWidget(MaterialApp(theme: theme(), home: const AppShell()));
-          // Past the loading shimmer and the page-turn animation.
+          // Past the page-turn animation.
           await tester.pump(const Duration(seconds: 1));
           await tester.pump(const Duration(seconds: 1));
           expect(tester.takeException(), isNull);

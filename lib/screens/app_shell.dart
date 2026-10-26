@@ -1,4 +1,3 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 
@@ -19,7 +18,6 @@ import 'explain_screen.dart';
 import 'get_started_screen.dart';
 import 'help_screen.dart';
 import 'library_screen.dart';
-import 'loading_view.dart';
 import 'plan_screen.dart';
 import 'practice_screen.dart';
 import 'progress_screen.dart';
@@ -29,9 +27,8 @@ import 'settings_screen.dart';
 
 /// Fixed sidebar on wide screens, slide-out drawer on phones.
 ///
-/// Opening a section shows the book loader for [_loadTime], then turns to the
-/// section like a book page. The delay stands in for real data loading; once
-/// screens fetch from a backend, finish loading when the data arrives instead.
+/// Pages open straight away. Moving between pages turns to the new one like a
+/// book page; entering from the landing page and reduced motion show it at once.
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
 
@@ -40,15 +37,10 @@ class AppShell extends StatefulWidget {
 }
 
 class _AppShellState extends State<AppShell> {
-  static const _loadTime = Duration(milliseconds: 650);
   static const _turnTime = Duration(milliseconds: 550);
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   AppSection _section = startSection ?? AppSection.home;
-  // Coming in from the landing page opens the first page straight away, without
-  // the book loading animation; it only plays when moving between pages.
-  bool _loading = false;
-  Timer? _timer;
 
   @override
   void initState() {
@@ -56,27 +48,11 @@ class _AppShellState extends State<AppShell> {
     learner.markVisited(AppSection.home.name);
   }
 
-  @override
-  void dispose() {
-    _timer?.cancel();
-    super.dispose();
-  }
-
-  void _finishLoading() {
-    if (mounted) setState(() => _loading = false);
-  }
-
   void _select(AppSection s) {
     _scaffoldKey.currentState?.closeDrawer();
-    if (s == _section && !_loading) return;
+    if (s == _section) return;
     learner.markVisited(s.name);
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    _timer?.cancel();
-    setState(() {
-      _section = s;
-      _loading = !reduceMotion;
-    });
-    if (!reduceMotion) _timer = Timer(_loadTime, _finishLoading);
+    setState(() => _section = s);
   }
 
   Widget _page() => switch (_section) {
@@ -110,9 +86,7 @@ class _AppShellState extends State<AppShell> {
           fit: StackFit.expand,
           children: [...previous, if (current != null) current],
         ),
-        child: _loading && !reduceMotion
-            ? LoadingView(key: ValueKey('loading-${_section.name}'), label: _section.label)
-            : KeyedSubtree(key: ValueKey(_section), child: _page()),
+        child: KeyedSubtree(key: ValueKey(_section), child: _page()),
       ),
     );
 

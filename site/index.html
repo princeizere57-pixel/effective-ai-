@@ -256,30 +256,6 @@ details.acc .body { padding: 0 4px 14px; }
 .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 16px); background: var(--toast); color: #fff; padding: 12px 18px; border-radius: 12px; box-shadow: var(--shadow-hover); font-weight: 500; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s var(--ease); max-width: calc(100% - 32px); z-index: 50; }
 .toast.show { opacity: 1; transform: translate(-50%, 0); }
 
-/* Loading: book loader over a shimmering outline */
-.loading { position: relative; }
-.sk { background: linear-gradient(90deg, var(--shimmer-base) 30%, var(--shimmer-hi) 50%, var(--shimmer-base) 70%); background-size: 200% 100%; animation: shimmer 1.5s ease infinite; border-radius: 8px; }
-@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
-.sk-title { width: min(260px, 70%); height: 34px; } .sk-line { width: min(340px, 90%); height: 16px; margin-top: -10px; }
-.sk-card { height: 120px; border-radius: 16px; } .sk-card.tall { height: 180px; }
-.book-card { position: absolute; left: 50%; top: 150px; transform: translateX(-50%); background: var(--surface); border-radius: 20px; box-shadow: var(--shadow-hover); padding: 30px 36px 22px; display: flex; flex-direction: column; align-items: center; gap: 16px; }
-.book-card p { margin: 0; color: var(--text-2); font-weight: 600; white-space: nowrap; }
-.book { position: relative; width: 112px; height: 73px; perspective: 600px; }
-.book::after { content: ""; position: absolute; left: 55px; top: 4px; bottom: 4px; width: 2px; background: var(--divider); }
-.bpage { position: absolute; top: 0; width: 56px; height: 73px; background: var(--surface); border: 1px solid var(--divider); display: flex; flex-direction: column; justify-content: space-evenly; padding: 10px 8px 10px 10px; }
-.bpage.left { left: 0; border-radius: 8px 0 0 8px; padding: 10px 10px 10px 8px; }
-.bpage.right { left: 56px; border-radius: 0 8px 8px 0; }
-.bpage i { display: block; height: 6px; border-radius: 3px; background: var(--shimmer-base); position: relative; overflow: hidden; }
-.bpage i:nth-child(even) { width: 70%; }
-.bpage i::after { content: ""; position: absolute; inset: 0; background: var(--c); transform-origin: left; }
-.bpage.right i::after { transform: scaleX(0); animation: inkFill 1.4s cubic-bezier(.65,0,.35,1) infinite; }
-.bpage.right i:nth-child(2)::after { animation-delay: .1s; } .bpage.right i:nth-child(3)::after { animation-delay: .2s; } .bpage.right i:nth-child(4)::after { animation-delay: .3s; }
-@keyframes inkFill { 0% { transform: scaleX(0); } 70%, 100% { transform: scaleX(1); } }
-.turning { position: absolute; left: 56px; top: 0; width: 56px; height: 73px; transform-origin: left center; transform-style: preserve-3d; animation: pageTurn 1.4s cubic-bezier(.65,0,.35,1) infinite; }
-.turning .bpage { left: 0; backface-visibility: hidden; box-shadow: 0 0 8px rgba(0,0,0,0.15); }
-.turning .bpage.back { transform: rotateY(180deg); border-radius: 8px 0 0 8px; }
-.turning .bpage.front i::after { transform: scaleX(0); }
-@keyframes pageTurn { from { transform: rotateY(0deg); } to { transform: rotateY(-180deg); } }
 
 /* Landing page before sign-up (mirrors lib/screens/welcome_screen.dart). Light by default: black
    (#000000) text, icons and accents on white. Dark when the visitor chooses it: light text over a near-black background. */
@@ -526,7 +502,7 @@ button.qg-head:hover { background: var(--violet-pale); }
 }
 @media (max-width: 480px) { .stats { --min: 140px; } .stat-value { font-size: 23.4px; } .knode { width: 92px; font-size: 9.9px; } }
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .page.turn-in, .sk, .turning, .bpage.right i::after { animation: none; }
+  .reveal, .page.turn-in { animation: none; }
   .nav-btn svg, .icon-tile svg, .brand-mark svg { animation: none !important; }
   .bar > i, .toast, .sidebar, .switch::after, .card-btn { transition: none; }
 }
@@ -1402,18 +1378,13 @@ function render(scrollTop, turn) {
   requestAnimationFrame(() => requestAnimationFrame(() => main.querySelectorAll('.bar > i').forEach(i => { i.style.width = i.dataset.w; })));
   if (scrollTop) window.scrollTo({ top: 0 });
 }
-const LINE_COLORS = [V.violet, V.blue, V.green, V.amber];
-// instant: open the page straight away, without the book loading animation (used when entering the app).
+
+// Opens a page straight away. Moving between pages uses the quick page-turn; entering the app
+// from the landing page (instant) and reduced motion show the page with no animation.
 function go(screen, instant) {
   stopMock(); S.session = null; S.screen = screen; L.visited.add(screen);
   app.classList.remove('drawer-open'); clearTimeout(loadTimer);
-  if (instant || reduceMotion()) { render(true, false); return; }
-  const lines = LINE_COLORS.map(c => `<i style="--c:${c}"></i>`).join('');
-  main.innerHTML = `<div class="page loading" aria-busy="true"><div class="sk sk-title"></div><div class="sk sk-line"></div>
-    <div class="grid" style="--min:200px">${'<div class="sk sk-card"></div>'.repeat(4)}</div><div class="grid">${'<div class="sk sk-card tall"></div>'.repeat(3)}</div>
-    <div class="book-card" role="status"><div class="book" aria-hidden="true"><div class="bpage left">${lines}</div><div class="bpage right">${lines}</div><div class="turning"><div class="bpage front">${lines}</div><div class="bpage back">${lines}</div></div></div><p>Opening ${SECTIONS[screen][0]}</p></div></div>`;
-  renderNav(); window.scrollTo({ top: 0 });
-  loadTimer = setTimeout(() => render(false, true), 650);
+  render(true, !instant && !reduceMotion());
 }
 const hostTheme = document.documentElement.getAttribute('data-theme');
 function applyTheme(c) { S.theme = c; const r = document.documentElement; if (c === 'system') { hostTheme ? r.setAttribute('data-theme', hostTheme) : r.removeAttribute('data-theme'); } else r.setAttribute('data-theme', c); }
