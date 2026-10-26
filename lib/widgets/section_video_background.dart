@@ -142,8 +142,8 @@ class _SectionVideoBackgroundState extends State<SectionVideoBackground> with Wi
                   children: [
                     const ColoredBox(color: Color(0xFF0A0D16)),
                     ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                      child: Transform.scale(scale: 1.05, child: media),
+                      imageFilter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                      child: Transform.scale(scale: 1.02, child: media),
                     ),
                     DecoratedBox(decoration: BoxDecoration(gradient: widget.shade)),
                   ],

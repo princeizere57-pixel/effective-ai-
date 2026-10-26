@@ -57,9 +57,16 @@ abstract final class _Lp {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: dark
-            ? const [Color(0xD60A0D16), Color(0xB80A0D16), Color(0xE00A0D16)]
-            : const [Color(0xE6FFFFFF), Color(0xCCFFFFFF), Color(0xEBFFFFFF)],
+            ? const [Color(0xAD0A0D16), Color(0x750A0D16), Color(0xB80A0D16)]
+            : const [Color(0xBDFFFFFF), Color(0x8FFFFFFF), Color(0xC2FFFFFF)],
       );
+
+  /// Soft glow behind text over the section videos, in the page background colour.
+  static List<Shadow> get textGlow {
+    final c = dark ? const Color(0xE60A0D16) : const Color(0xEBFFFFFF);
+    return [Shadow(color: c, blurRadius: 14), Shadow(color: c, blurRadius: 4)];
+  }
+
   static Color get pill => dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.1);
 
   /// Translucent fills behind tags and chips: grey in both themes.
@@ -928,7 +935,8 @@ class _Loop extends StatelessWidget {
           Text(
             'One loop, built on your own course.',
             textAlign: TextAlign.center,
-            style: AppTheme.display(size.isPhone ? 26 : 40, color: _Lp.heading).copyWith(height: 1.1),
+            style: AppTheme.display(size.isPhone ? 26 : 40, color: _Lp.heading)
+                .copyWith(height: 1.1, shadows: _Lp.textGlow),
           ),
           const SizedBox(height: 20),
           ConstrainedBox(
@@ -937,7 +945,7 @@ class _Loop extends StatelessWidget {
               'Other study apps help you study. Effective AI tells you what to study next, why you keep getting it '
               'wrong, and shows when you’ve actually fixed it, using your own course and your own past papers.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: _Lp.soft, fontSize: size.isPhone ? 16 : 19, height: 1.6),
+              style: TextStyle(color: _Lp.soft, fontSize: size.isPhone ? 16 : 19, height: 1.6, shadows: _Lp.textGlow),
             ),
           ),
           const SizedBox(height: 40),
@@ -1110,6 +1118,8 @@ class _FeatureSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final f = feature;
+    // Over the "Why you're wrong" video, a soft glow keeps the text clean.
+    final glow = f.id == 'diagnose' ? _Lp.textGlow : null;
     final copy = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -1118,12 +1128,13 @@ class _FeatureSection extends StatelessWidget {
         Text(
           f.title,
           style: AppTheme.display(size.isPhone ? 26 : (size == ScreenSize.tablet ? 34 : 42), color: _Lp.heading)
-              .copyWith(height: 1.08, letterSpacing: -0.5),
+              .copyWith(height: 1.08, letterSpacing: -0.5, shadows: glow),
         ),
         const SizedBox(height: 20),
         ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 520),
-          child: Text(f.text, style: TextStyle(color: _Lp.soft, fontSize: size.isPhone ? 16 : 19, height: 1.6)),
+          child: Text(f.text,
+              style: TextStyle(color: _Lp.soft, fontSize: size.isPhone ? 16 : 19, height: 1.6, shadows: glow)),
         ),
         const SizedBox(height: 30),
         _LpButton(f.cta, onPressed: () => enterApp(section: f.section)),
@@ -1137,7 +1148,7 @@ class _FeatureSection extends StatelessWidget {
                 TextSpan(text: 'Connects: ', style: TextStyle(color: _Lp.text, fontWeight: FontWeight.w700)),
                 TextSpan(text: f.connects),
               ]),
-              style: TextStyle(color: _Lp.soft, fontSize: 15, height: 1.45),
+              style: TextStyle(color: _Lp.soft, fontSize: 15, height: 1.45, shadows: glow),
             ),
           ),
         ]),
@@ -1212,7 +1223,7 @@ class _Mission extends StatelessWidget {
                   ),
                 ]),
                 textAlign: TextAlign.center,
-                style: h2,
+                style: h2.copyWith(shadows: _Lp.textGlow),
               ),
               const SizedBox(height: 18),
               ConstrainedBox(
@@ -1221,7 +1232,8 @@ class _Mission extends StatelessWidget {
                   'A great tutor shouldn’t depend on your budget. Effective AI turns the materials you already have '
                   'into a tutor that knows your course, finds the mistake behind each wrong answer and shows you when it’s fixed.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: _Lp.missionText, fontSize: size.isPhone ? 16 : 18, height: 1.6),
+                  style: TextStyle(
+                      color: _Lp.missionText, fontSize: size.isPhone ? 16 : 18, height: 1.6, shadows: _Lp.textGlow),
                 ),
               ),
               const SizedBox(height: 24),

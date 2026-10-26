@@ -268,11 +268,13 @@ details.acc .body { padding: 0 4px 14px; }
   --lp-grad: linear-gradient(90deg, #000000, #000000);
   --violet: #000000; --shadow-violet: 0 4px 20px rgba(0,0,0,0.3);
   --lp-tint-rgb: 0 0 0; /* tints are grey in light mode, blue in dark */
-  --lp-vshade: linear-gradient(180deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,.8) 50%, rgba(255,255,255,.92) 100%);
+  --lp-vshade: linear-gradient(180deg, rgba(255,255,255,.74) 0%, rgba(255,255,255,.56) 50%, rgba(255,255,255,.76) 100%);
+  --lp-glow: rgba(255,255,255,.92); /* soft halo behind text over the section videos */
   min-height: 100%; background: var(--lp-bg); color: var(--lp-text); color-scheme: light; overflow-x: clip;
 }
 :root[data-theme="dark"] .welcome {
-  --lp-vshade: linear-gradient(180deg, rgba(10,13,22,.84) 0%, rgba(10,13,22,.72) 50%, rgba(10,13,22,.88) 100%);
+  --lp-glow: rgba(10,13,22,.9);
+  --lp-vshade: linear-gradient(180deg, rgba(10,13,22,.68) 0%, rgba(10,13,22,.46) 50%, rgba(10,13,22,.72) 100%);
   --lp-tint-rgb: 255 255 255;
   --lp-bg: #0A0D16; --lp-panel: #0A0A0A; --lp-panel-2: #0F0F0F; --lp-deep: #050505; --lp-line: #2A2A2A;
   --lp-text: #F2F2F2; --lp-soft: #A8A8A8; --lp-heading: #FFFFFF; --lp-violet: #000000; --lp-violet-2: #FFFFFF; --lp-lilac: #FFFFFF;
@@ -360,10 +362,19 @@ details.acc .body { padding: 0 4px 14px; }
    theme shade; the content keeps its usual 1152px column. */
 .lp-has-vbg { position: relative; isolation: isolate; overflow: hidden; }
 .lp-vbg { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: #0A0D16; pointer-events: none; }
-.lp-vbg-video { display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(3px); transform: scale(1.05); } /* soft blur keeps the film's on-screen text from competing with ours */
+.lp-vbg-video { display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(1px); transform: scale(1.02); } /* a light blur keeps the film's on-screen text from competing with ours */
 .lp-vbg-shade { position: absolute; inset: 0; background: var(--lp-vshade); }
 .lp-feature.lp-has-vbg, .lp-loop-wrap.lp-has-vbg { max-width: none; padding-inline: max(24px, calc((100% - 1152px) / 2)); }
 .lp-loop-wrap.lp-has-vbg { padding-bottom: 72px; }
+/* A soft glow behind the headings and text over the section videos keeps them clean and readable
+   while the film stays visible around them: a blurred halo pad behind each heading, and a light
+   text halo on the body text. Gradient words get a drop-shadow instead so their colours stay. */
+.lp-has-vbg .lp-h2 { position: relative; }
+.lp-has-vbg .lp-h2::before { content: ""; position: absolute; inset: -22px -40px; z-index: -1; border-radius: 999px;
+  background: radial-gradient(closest-side, var(--lp-glow), transparent); filter: blur(6px); pointer-events: none; }
+.lp-has-vbg :is(.lp-h2, .lp-loop-lede, .lp-copy > p, .lp-note, .lp-loop-back) { text-shadow: 0 0 14px var(--lp-glow), 0 0 4px var(--lp-glow); }
+.lp-mission > .lp-has-vbg > p { text-shadow: 0 0 14px var(--lp-glow), 0 0 4px var(--lp-glow); }
+.lp-has-vbg .grad { text-shadow: none; filter: drop-shadow(0 0 10px var(--lp-glow)); }
 .lp-mission { max-width: 1200px; margin: 40px auto; padding: 0 24px; }
 .lp-mission > div { border-radius: 28px; padding: 64px 24px; text-align: center; background: var(--lp-mission); display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .lp-mission p { color: var(--lp-mission-text); font-size: clamp(14.4px, 1.4vw, 17.1px); line-height: 1.6; max-width: 62ch; }
