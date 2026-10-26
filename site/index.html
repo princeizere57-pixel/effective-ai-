@@ -1403,10 +1403,11 @@ function render(scrollTop, turn) {
   if (scrollTop) window.scrollTo({ top: 0 });
 }
 const LINE_COLORS = [V.violet, V.blue, V.green, V.amber];
-function go(screen) {
+// instant: open the page straight away, without the book loading animation (used when entering the app).
+function go(screen, instant) {
   stopMock(); S.session = null; S.screen = screen; L.visited.add(screen);
   app.classList.remove('drawer-open'); clearTimeout(loadTimer);
-  if (reduceMotion()) { render(true, false); return; }
+  if (instant || reduceMotion()) { render(true, false); return; }
   const lines = LINE_COLORS.map(c => `<i style="--c:${c}"></i>`).join('');
   main.innerHTML = `<div class="page loading" aria-busy="true"><div class="sk sk-title"></div><div class="sk sk-line"></div>
     <div class="grid" style="--min:200px">${'<div class="sk sk-card"></div>'.repeat(4)}</div><div class="grid">${'<div class="sk sk-card tall"></div>'.repeat(3)}</div>
@@ -1784,7 +1785,7 @@ function enterApp(section, question) {
   S.welcome = WELCOME[Math.floor(Math.random() * WELCOME.length)];
   welcomeEl.hidden = true; app.hidden = false;
   if (question) { S.ask.text = question; S.ask.question = question; S.ask.ans = answer(question, new Set(indexedDocs().map(d => d.id))); section = 'ask'; }
-  go(section);
+  go(section, true); // straight in from the landing page: no book animation
 }
 Object.assign(A, {
   wEnter: a => enterApp(a),

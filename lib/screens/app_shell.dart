@@ -45,14 +45,15 @@ class _AppShellState extends State<AppShell> {
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   AppSection _section = startSection ?? AppSection.home;
-  bool _loading = true;
+  // Coming in from the landing page opens the first page straight away, without
+  // the book loading animation; it only plays when moving between pages.
+  bool _loading = false;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     learner.markVisited(AppSection.home.name);
-    _timer = Timer(_loadTime, _finishLoading);
   }
 
   @override
