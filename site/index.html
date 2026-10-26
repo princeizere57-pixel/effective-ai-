@@ -268,9 +268,11 @@ details.acc .body { padding: 0 4px 14px; }
   --lp-grad: linear-gradient(90deg, #000000, #000000);
   --violet: #000000; --shadow-violet: 0 4px 20px rgba(0,0,0,0.3);
   --lp-tint-rgb: 0 0 0; /* tints are grey in light mode, blue in dark */
+  --lp-vshade: linear-gradient(180deg, rgba(255,255,255,.9) 0%, rgba(255,255,255,.8) 50%, rgba(255,255,255,.92) 100%);
   min-height: 100%; background: var(--lp-bg); color: var(--lp-text); color-scheme: light; overflow-x: clip;
 }
 :root[data-theme="dark"] .welcome {
+  --lp-vshade: linear-gradient(180deg, rgba(10,13,22,.84) 0%, rgba(10,13,22,.72) 50%, rgba(10,13,22,.88) 100%);
   --lp-tint-rgb: 255 255 255;
   --lp-bg: #0A0D16; --lp-panel: #0A0A0A; --lp-panel-2: #0F0F0F; --lp-deep: #050505; --lp-line: #2A2A2A;
   --lp-text: #F2F2F2; --lp-soft: #A8A8A8; --lp-heading: #FFFFFF; --lp-violet: #000000; --lp-violet-2: #FFFFFF; --lp-lilac: #FFFFFF;
@@ -354,6 +356,14 @@ details.acc .body { padding: 0 4px 14px; }
 .lp-stage .lp-frame { box-shadow: none; }
 .lp-stage .lp-body { padding: 22px; display: flex; flex-direction: column; gap: 12px; font-size: 11.7px; }
 .lp-cap { font-size: 10.8px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--lp-soft); }
+/* Section video backgrounds: the clip fills the section edge to edge (object-fit: cover) under a
+   theme shade; the content keeps its usual 1152px column. */
+.lp-has-vbg { position: relative; isolation: isolate; overflow: hidden; }
+.lp-vbg { position: absolute; inset: 0; z-index: -1; overflow: hidden; background: #0A0D16; pointer-events: none; }
+.lp-vbg-video { display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(3px); transform: scale(1.05); } /* soft blur keeps the film's on-screen text from competing with ours */
+.lp-vbg-shade { position: absolute; inset: 0; background: var(--lp-vshade); }
+.lp-feature.lp-has-vbg, .lp-loop-wrap.lp-has-vbg { max-width: none; padding-inline: max(24px, calc((100% - 1152px) / 2)); }
+.lp-loop-wrap.lp-has-vbg { padding-bottom: 72px; }
 .lp-mission { max-width: 1200px; margin: 40px auto; padding: 0 24px; }
 .lp-mission > div { border-radius: 28px; padding: 64px 24px; text-align: center; background: var(--lp-mission); display: flex; flex-direction: column; align-items: center; gap: 18px; }
 .lp-mission p { color: var(--lp-mission-text); font-size: clamp(14.4px, 1.4vw, 17.1px); line-height: 1.6; max-width: 62ch; }
@@ -1694,9 +1704,35 @@ function lpVideo() {
     <video class="lp-video" src="${LP_VIDEO.src}" poster="${LP_VIDEO.poster}" autoplay muted loop playsinline preload="auto"
       aria-label="Effective AI story film: a student goes from late-night cramming to exam-ready with their own course"></video></div>`;
 }
+/* Section video backgrounds (the HTML/CSS "video background" technique): a silent looping clip
+   stretched behind the section with object-fit: cover, under a shade that follows the theme
+   (frosted white in light mode, deep navy-black in dark) so the text stays sharp. Each clip is
+   cut from the story film to match its section, with the burned-in captions cropped off.
+   Clips only download when their section comes near the screen, pause when it leaves or the tab
+   is hidden, and show their still frame instead for reduced motion or data saver. */
+const LP_SECTION_VIDEOS = { loop: 'how-it-works', diagnose: 'why-youre-wrong', mission: 'our-mission' };
+const lpVideoBg = name => `<div class="lp-vbg" aria-hidden="true"><video class="lp-vbg-video" data-src="media/${name}.mp4" poster="media/${name}.jpg" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video><div class="lp-vbg-shade"></div></div>`;
+let lpVideoObserver = null;
+function lpStartSectionVideos() {
+  lpVideoObserver?.disconnect(); lpVideoObserver = null;
+  const videos = [...welcomeEl.querySelectorAll('.lp-vbg-video')];
+  const stillOnly = matchMedia('(prefers-reduced-motion: reduce)').matches || navigator.connection?.saveData === true;
+  if (stillOnly || !videos.length) return;
+  const start = v => { if (!v.getAttribute('src')) v.src = v.dataset.src; v.play().catch(() => {}); };
+  if (!('IntersectionObserver' in window)) { videos.forEach(start); return; }
+  lpVideoObserver = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting && !document.hidden) start(e.target); else e.target.pause();
+  }), { rootMargin: '200px 0px' });
+  videos.forEach(v => lpVideoObserver.observe(v));
+}
+// Pause every landing video while the tab is hidden; the observer restarts the visible ones.
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) welcomeEl.querySelectorAll('video').forEach(v => v.pause());
+  else if (lpVideoObserver) { const vs = [...welcomeEl.querySelectorAll('.lp-vbg-video')]; vs.forEach(v => lpVideoObserver.unobserve(v)); vs.forEach(v => lpVideoObserver.observe(v)); }
+});
 function drawWelcome() {
   const brand = `<div class="brand"><span class="brand-mark">${icon('bookOpen', 20)}</span><span class="brand-name">Effective AI</span></div>`;
-  const feature = (f, i) => `<section class="lp-feature${i % 2 ? ' flip' : ''}" id="lp-${f.id}">
+  const feature = (f, i) => `<section class="lp-feature${i % 2 ? ' flip' : ''}${LP_SECTION_VIDEOS[f.id] ? ' lp-has-vbg' : ''}" id="lp-${f.id}">${LP_SECTION_VIDEOS[f.id] ? lpVideoBg(LP_SECTION_VIDEOS[f.id]) : ''}
       <div class="lp-copy"><span class="lp-badge">${f.badge}</span><h2 class="lp-h2">${f.title}</h2><p>${f.text}</p>
         <button class="lp-btn" data-act="wEnter" data-arg="${f.id}">${f.cta} ${icon('arrow', 18)}</button>
         <div class="lp-note">${icon('link', 18)}<span><strong>Connects:</strong> ${f.link}</span></div></div>
@@ -1713,7 +1749,7 @@ function drawWelcome() {
       <div class="lp-ctas"><button class="lp-btn" data-act="wAccount" data-arg="up">Sign up free ${icon('arrow', 18)}</button><button class="lp-btn ghost" data-act="wDemo">Explore the demo</button></div>
     </header>
     <div class="lp-show">${lpVideo()}</div></div>
-    <section class="lp-loop-wrap" id="lp-loop">
+    <section class="lp-loop-wrap lp-has-vbg" id="lp-loop">${lpVideoBg(LP_SECTION_VIDEOS.loop)}
       <span class="lp-badge">How it works</span>
       <h2 class="lp-h2">One loop, built on your own course.</h2>
       <p class="lp-loop-lede">Other study apps help you study. Effective AI tells you what to study next, why you keep getting it wrong, and shows when you&rsquo;ve actually fixed it, using your own course and your own past papers.</p>
@@ -1721,7 +1757,7 @@ function drawWelcome() {
       <p class="lp-loop-back">${icon('refresh', 16)}Then round again, until your weakest idea isn&rsquo;t weak any more.</p>
     </section>
     <div id="lp-features">${LP_FEATURES.map(feature).join('')}</div>
-    <section class="lp-mission" id="lp-mission"><div>
+    <section class="lp-mission" id="lp-mission"><div class="lp-has-vbg">${lpVideoBg(LP_SECTION_VIDEOS.mission)}
       <span class="lp-mpill">${icon('heart', 16)}Our mission</span>
       <h2 class="lp-h2" style="margin:0 !important">Help every student reach <span class="grad">the grade they&rsquo;ve earned</span></h2>
       <p>A great tutor shouldn&rsquo;t depend on your budget. Effective AI turns the materials you already have into a tutor that knows your course, finds the mistake behind each wrong answer and shows you when it&rsquo;s fixed.</p>
@@ -1733,6 +1769,7 @@ function drawWelcome() {
   // People who ask for reduced motion get the film paused, with controls to play it themselves.
   const video = welcomeEl.querySelector('.lp-video');
   if (video && matchMedia('(prefers-reduced-motion: reduce)').matches) { video.removeAttribute('autoplay'); video.pause(); video.controls = true; }
+  lpStartSectionVideos();
 }
 Object.assign(A, {
   lpScroll: a => document.getElementById(a)?.scrollIntoView({ behavior: 'smooth', block: 'start' }),

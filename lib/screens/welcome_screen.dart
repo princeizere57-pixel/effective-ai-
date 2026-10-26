@@ -6,6 +6,7 @@ import '../theme/app_theme.dart';
 import '../theme/breakpoints.dart';
 import '../theme/theme_controller.dart';
 import '../widgets/logo_mark.dart';
+import '../widgets/section_video_background.dart';
 import '../widgets/story_video.dart';
 import 'auth_screen.dart';
 
@@ -48,10 +49,17 @@ abstract final class _Lp {
           ? [const Color(0xFF5C7DFF), const Color(0xFFA9BBFF)]
           : [const Color(0xFF000000), const Color(0xFF000000)]);
   static Color get shadow => Colors.black.withValues(alpha: dark ? 0.6 : 0.08);
-  static List<Color> get missionGradient => dark
-      ? [const Color(0xFF0A0A0A), const Color(0xFF1F1F1F), const Color(0xFF0F0F0F)]
-      : [const Color(0xFFF5F5F5), const Color(0xFFEAEAEA), const Color(0xFFF2F2F2)];
   static Color get missionText => _pick(0xFF000000, 0xFFCFCFCF);
+
+  /// Shade over the section video backgrounds: frosted white in light mode, deep
+  /// navy-black in dark mode, so the text stays sharp over the film.
+  static LinearGradient get videoShade => LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: dark
+            ? const [Color(0xD60A0D16), Color(0xB80A0D16), Color(0xE00A0D16)]
+            : const [Color(0xE6FFFFFF), Color(0xCCFFFFFF), Color(0xEBFFFFFF)],
+      );
   static Color get pill => dark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.1);
 
   /// Translucent fills behind tags and chips: grey in both themes.
@@ -710,7 +718,6 @@ class _Hero extends StatefulWidget {
 }
 
 class _HeroState extends State<_Hero> {
-
   @override
   Widget build(BuildContext context) {
     final size = widget.size;
@@ -912,7 +919,7 @@ class _Loop extends StatelessWidget {
         ]),
     };
 
-    return _contained(
+    final content = _contained(
       padding: EdgeInsets.fromLTRB(pad, size.isPhone ? 56 : 88, pad, 8),
       child: Column(
         children: [
@@ -944,6 +951,8 @@ class _Loop extends StatelessWidget {
         ],
       ),
     );
+    // The "How it works" clip from the story film plays behind the section.
+    return SectionVideoBackground(clip: 'how-it-works', shade: _Lp.videoShade, child: content);
   }
 }
 
@@ -1141,7 +1150,7 @@ class _FeatureSection extends StatelessWidget {
     );
 
     final stacked = !size.isDesktop;
-    return _contained(
+    final content = _contained(
       padding: EdgeInsets.symmetric(horizontal: pad, vertical: size.isPhone ? 44 : 72),
       child: stacked
           ? Column(
@@ -1154,6 +1163,10 @@ class _FeatureSection extends StatelessWidget {
               ],
             ),
     );
+    // "Why you're wrong" gets its clip from the story film behind it.
+    final clip = const {'diagnose': 'why-youre-wrong'}[f.id];
+    if (clip == null) return content;
+    return SectionVideoBackground(clip: clip, shade: _Lp.videoShade, child: content);
   }
 }
 
@@ -1170,53 +1183,51 @@ class _Mission extends StatelessWidget {
     final h2 = AppTheme.display(size.isPhone ? 26 : 40, color: _Lp.heading).copyWith(height: 1.1);
     return _contained(
       padding: EdgeInsets.fromLTRB(size.isPhone ? 12 : pad, 40, size.isPhone ? 12 : pad, 40),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: size.isPhone ? 18 : 24, vertical: size.isPhone ? 44 : 64),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(28),
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: _Lp.missionGradient,
-          ),
-        ),
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(color: _Lp.pill, borderRadius: BorderRadius.circular(999)),
-              child: Row(mainAxisSize: MainAxisSize.min, children: [
-                Icon(Icons.favorite_border, size: 16, color: _Lp.heading),
-                const SizedBox(width: 8),
-                const Text('Our mission', style: TextStyle(fontWeight: FontWeight.w600)),
-              ]),
-            ),
-            const SizedBox(height: 18),
-            Text.rich(
-              TextSpan(children: [
-                const TextSpan(text: 'Help every student reach '),
-                WidgetSpan(
-                  alignment: PlaceholderAlignment.baseline,
-                  baseline: TextBaseline.alphabetic,
-                  child: _GradientText('the grade they’ve earned', style: h2),
-                ),
-              ]),
-              textAlign: TextAlign.center,
-              style: h2,
-            ),
-            const SizedBox(height: 18),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 680),
-              child: Text(
-                'A great tutor shouldn’t depend on your budget. Effective AI turns the materials you already have '
-                'into a tutor that knows your course, finds the mistake behind each wrong answer and shows you when it’s fixed.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: _Lp.missionText, fontSize: size.isPhone ? 16 : 18, height: 1.6),
+      // The "Our mission" clip from the story film plays behind the rounded card.
+      child: SectionVideoBackground(
+        clip: 'our-mission',
+        shade: _Lp.videoShade,
+        borderRadius: BorderRadius.circular(28),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: size.isPhone ? 18 : 24, vertical: size.isPhone ? 44 : 64),
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(color: _Lp.pill, borderRadius: BorderRadius.circular(999)),
+                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                  Icon(Icons.favorite_border, size: 16, color: _Lp.heading),
+                  const SizedBox(width: 8),
+                  const Text('Our mission', style: TextStyle(fontWeight: FontWeight.w600)),
+                ]),
               ),
-            ),
-            const SizedBox(height: 24),
-            _LpButton('Sign up free', onPressed: () => showAccountDialog(context, signUp: true)),
-          ],
+              const SizedBox(height: 18),
+              Text.rich(
+                TextSpan(children: [
+                  const TextSpan(text: 'Help every student reach '),
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.baseline,
+                    baseline: TextBaseline.alphabetic,
+                    child: _GradientText('the grade they’ve earned', style: h2),
+                  ),
+                ]),
+                textAlign: TextAlign.center,
+                style: h2,
+              ),
+              const SizedBox(height: 18),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 680),
+                child: Text(
+                  'A great tutor shouldn’t depend on your budget. Effective AI turns the materials you already have '
+                  'into a tutor that knows your course, finds the mistake behind each wrong answer and shows you when it’s fixed.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: _Lp.missionText, fontSize: size.isPhone ? 16 : 18, height: 1.6),
+                ),
+              ),
+              const SizedBox(height: 24),
+              _LpButton('Sign up free', onPressed: () => showAccountDialog(context, signUp: true)),
+            ],
+          ),
         ),
       ),
     );
@@ -1301,5 +1312,4 @@ class _Footer extends StatelessWidget {
 
 /// Log in, "Start your path to an A" and "Sign up free" all open the sign-in
 /// screen: Continue with Google, or email and password.
-Future<void> showAccountDialog(BuildContext context, {required bool signUp}) =>
-    showAuthDialog(context, signUp: signUp);
+Future<void> showAccountDialog(BuildContext context, {required bool signUp}) => showAuthDialog(context, signUp: signUp);
